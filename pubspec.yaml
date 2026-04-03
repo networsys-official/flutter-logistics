@@ -1,0 +1,27 @@
+name: logistic_by_strom
+description: "Logistic App for Bahamas"
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.11.3
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_riverpod: ^3.3.1
+  go_router: ^17.2.0
+  provider: ^6.1.5+1
+  riverpod_annotation: ^4.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  riverpod_generator: ^4.0.3
+  build_runner: ^2.13.1
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
