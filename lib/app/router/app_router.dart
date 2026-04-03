@@ -2,6 +2,8 @@ import 'package:go_router/go_router.dart';
 
 import 'package:logistic_by_strom/app/router/app_routes.dart';
 import 'package:logistic_by_strom/app/widgets/app_shell_scaffold.dart';
+import 'package:logistic_by_strom/features/auth/presentation/views/login_page.dart';
+import 'package:logistic_by_strom/features/auth/presentation/views/register_page.dart';
 import 'package:logistic_by_strom/features/onboarding/presentation/views/onboarding_page.dart';
 import 'package:logistic_by_strom/features/onboarding/presentation/views/splash_page.dart';
 import 'package:logistic_by_strom/features/dashboard/presentation/views/dashboard_page.dart';
@@ -21,6 +23,14 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.onboarding,
         builder: (context, state) => const OnboardingPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.login,
+        builder: (context, state) => const LoginPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.register,
+        builder: (context, state) => const RegisterPage(),
       ),
       ShellRoute(
         builder: (context, state, child) => AppShellScaffold(child: child),

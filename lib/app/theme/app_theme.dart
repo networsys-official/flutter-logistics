@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:logistic_by_strom/app/theme/app_colors.dart';
 
@@ -13,21 +14,8 @@ class AppTheme {
   static const double space6 = 32;
   static const double radiusMd = 18;
   static const double radiusLg = 28;
-
-  static final ThemeData lightTheme = ThemeData(
-    useMaterial3: true,
-    scaffoldBackgroundColor: AppColors.cloud100,
-    colorScheme: const ColorScheme.light(
-      primary: AppColors.ocean500,
-      secondary: AppColors.coral500,
-      tertiary: AppColors.gold500,
-      surface: AppColors.white,
-      onPrimary: AppColors.white,
-      onSecondary: AppColors.white,
-      onSurface: AppColors.ink900,
-      outline: AppColors.cloud200,
-    ),
-    textTheme: const TextTheme(
+  static final TextTheme _textTheme = GoogleFonts.plusJakartaSansTextTheme(
+    const TextTheme(
       displayLarge: TextStyle(
         fontSize: 40,
         height: 1.05,
@@ -74,12 +62,28 @@ class AppTheme {
         letterSpacing: 0.2,
       ),
     ),
-    appBarTheme: const AppBarTheme(
+  );
+
+  static final ThemeData lightTheme = ThemeData(
+    useMaterial3: true,
+    scaffoldBackgroundColor: AppColors.white,
+    colorScheme: const ColorScheme.light(
+      primary: AppColors.authPrimary,
+      secondary: AppColors.coral500,
+      tertiary: AppColors.gold500,
+      surface: AppColors.white,
+      onPrimary: AppColors.white,
+      onSecondary: AppColors.white,
+      onSurface: AppColors.ink900,
+      outline: AppColors.cloud200,
+    ),
+    textTheme: _textTheme,
+    appBarTheme: AppBarTheme(
       elevation: 0,
       centerTitle: false,
       backgroundColor: Colors.transparent,
       foregroundColor: AppColors.ink900,
-      titleTextStyle: TextStyle(
+      titleTextStyle: GoogleFonts.plusJakartaSans(
         fontSize: 18,
         fontWeight: FontWeight.w700,
         color: AppColors.ink900,
@@ -96,12 +100,14 @@ class AppTheme {
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         elevation: 0,
-        backgroundColor: AppColors.ocean500,
+        backgroundColor: AppColors.authPrimary,
         foregroundColor: AppColors.white,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        textStyle: const TextStyle(
-          fontSize: 14,
+        disabledBackgroundColor: AppColors.cloud200,
+        disabledForegroundColor: AppColors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        textStyle: GoogleFonts.plusJakartaSans(
+          fontSize: 16,
           fontWeight: FontWeight.w700,
           letterSpacing: 0.2,
         ),
@@ -110,33 +116,51 @@ class AppTheme {
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
         foregroundColor: AppColors.ink900,
+        backgroundColor: AppColors.white,
         side: const BorderSide(color: AppColors.cloud200),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        textStyle: GoogleFonts.plusJakartaSans(
+          fontSize: 14,
+          fontWeight: FontWeight.w700,
+        ),
       ),
     ),
     inputDecorationTheme: InputDecorationTheme(
-      filled: true,
-      fillColor: AppColors.white,
-      hintStyle: const TextStyle(
-        color: AppColors.ink500,
+      filled: false,
+      hintStyle: GoogleFonts.plusJakartaSans(
+        color: AppColors.authMuted,
         fontSize: 14,
         fontWeight: FontWeight.w500,
       ),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(16),
-        borderSide: const BorderSide(color: AppColors.cloud200),
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: AppColors.authFieldBorder),
       ),
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(16),
-        borderSide: const BorderSide(color: AppColors.cloud200),
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: AppColors.authFieldBorder),
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(16),
-        borderSide: const BorderSide(color: AppColors.ocean500, width: 1.4),
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: AppColors.authPrimary, width: 1.4),
       ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: AppColors.danger500),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: const BorderSide(color: AppColors.danger500, width: 1.4),
+      ),
+    ),
+    checkboxTheme: CheckboxThemeData(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+      side: const BorderSide(color: AppColors.authPrimary, width: 1.4),
+      fillColor: const WidgetStatePropertyAll(AppColors.authPrimary),
+      checkColor: const WidgetStatePropertyAll(AppColors.white),
+      visualDensity: VisualDensity.compact,
     ),
     chipTheme: ChipThemeData(
       backgroundColor: AppColors.ocean100,
@@ -144,20 +168,20 @@ class AppTheme {
       secondarySelectedColor: AppColors.ocean500,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-      labelStyle: const TextStyle(
+      labelStyle: GoogleFonts.plusJakartaSans(
         color: AppColors.ink900,
         fontWeight: FontWeight.w700,
       ),
-      secondaryLabelStyle: const TextStyle(
+      secondaryLabelStyle: GoogleFonts.plusJakartaSans(
         color: AppColors.white,
         fontWeight: FontWeight.w700,
       ),
     ),
-    navigationBarTheme: const NavigationBarThemeData(
+    navigationBarTheme: NavigationBarThemeData(
       backgroundColor: AppColors.white,
       elevation: 0,
       labelTextStyle: WidgetStatePropertyAll(
-        TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
+        GoogleFonts.plusJakartaSans(fontSize: 12, fontWeight: FontWeight.w700),
       ),
     ),
     dividerColor: AppColors.cloud200,

@@ -22,7 +22,7 @@ class _SplashPageState extends State<SplashPage> {
     super.initState();
     _timer = Timer(const Duration(milliseconds: 2000), () {
       if (mounted) {
-        context.go(AppRoutes.onboarding);
+        context.go(AppRoutes.register);
       }
     });
   }
