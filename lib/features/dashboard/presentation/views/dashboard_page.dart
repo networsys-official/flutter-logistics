@@ -3,9 +3,9 @@ import 'package:provider/provider.dart';
 
 import 'package:logistic_by_strom/app/theme/app_colors.dart';
 import 'package:logistic_by_strom/app/theme/app_theme.dart';
-import 'package:logistic_by_strom/core/models/dashboard_snapshot.dart';
-import 'package:logistic_by_strom/core/models/shipment.dart';
+import 'package:logistic_by_strom/features/dashboard/domain/models/dashboard_snapshot.dart';
 import 'package:logistic_by_strom/features/dashboard/presentation/view_models/dashboard_view_model.dart';
+import 'package:logistic_by_strom/features/shipments/domain/models/shipment.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});

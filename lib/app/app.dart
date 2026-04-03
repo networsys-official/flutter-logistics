@@ -3,12 +3,12 @@ import 'package:provider/provider.dart';
 
 import 'package:logistic_by_strom/app/router/app_router.dart';
 import 'package:logistic_by_strom/app/theme/app_theme.dart';
-import 'package:logistic_by_strom/core/repositories/logistics_repository.dart';
-import 'package:logistic_by_strom/core/repositories/settings_repository.dart';
-import 'package:logistic_by_strom/core/services/mock_logistics_service.dart';
-import 'package:logistic_by_strom/core/services/mock_settings_service.dart';
 import 'package:logistic_by_strom/features/dashboard/presentation/view_models/dashboard_view_model.dart';
+import 'package:logistic_by_strom/features/settings/data/repositories/settings_repository.dart';
+import 'package:logistic_by_strom/features/settings/data/services/mock_settings_service.dart';
 import 'package:logistic_by_strom/features/settings/presentation/view_models/settings_view_model.dart';
+import 'package:logistic_by_strom/features/shipments/data/repositories/logistics_repository.dart';
+import 'package:logistic_by_strom/features/shipments/data/services/mock_logistics_service.dart';
 import 'package:logistic_by_strom/features/shipments/presentation/view_models/shipments_view_model.dart';
 
 class LogisticApp extends StatelessWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
-import 'package:logistic_by_strom/core/models/app_settings.dart';
-import 'package:logistic_by_strom/core/repositories/settings_repository.dart';
+import 'package:logistic_by_strom/features/settings/data/repositories/settings_repository.dart';
+import 'package:logistic_by_strom/features/settings/domain/models/app_settings.dart';
 
 class SettingsViewModel extends ChangeNotifier {
   SettingsViewModel({required SettingsRepository settingsRepository})

@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
-import 'package:logistic_by_strom/core/models/shipment.dart';
-import 'package:logistic_by_strom/core/repositories/logistics_repository.dart';
+import 'package:logistic_by_strom/features/shipments/data/repositories/logistics_repository.dart';
+import 'package:logistic_by_strom/features/shipments/domain/models/shipment.dart';
 
 class ShipmentsViewModel extends ChangeNotifier {
   ShipmentsViewModel({required LogisticsRepository logisticsRepository})

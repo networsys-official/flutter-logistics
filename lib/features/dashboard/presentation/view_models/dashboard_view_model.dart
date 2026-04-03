@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
-import 'package:logistic_by_strom/core/models/dashboard_snapshot.dart';
-import 'package:logistic_by_strom/core/repositories/logistics_repository.dart';
+import 'package:logistic_by_strom/features/dashboard/domain/models/dashboard_snapshot.dart';
+import 'package:logistic_by_strom/features/shipments/data/repositories/logistics_repository.dart';
 
 class DashboardViewModel extends ChangeNotifier {
   DashboardViewModel({required LogisticsRepository logisticsRepository})

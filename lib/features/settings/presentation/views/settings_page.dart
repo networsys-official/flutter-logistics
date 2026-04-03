@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:logistic_by_strom/app/theme/app_theme.dart';
-import 'package:logistic_by_strom/core/models/app_settings.dart';
+import 'package:logistic_by_strom/features/settings/domain/models/app_settings.dart';
 import 'package:logistic_by_strom/features/settings/presentation/view_models/settings_view_model.dart';
 
 class SettingsPage extends StatelessWidget {

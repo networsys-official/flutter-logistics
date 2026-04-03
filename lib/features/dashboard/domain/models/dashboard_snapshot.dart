@@ -1,4 +1,4 @@
-import 'package:logistic_by_strom/core/models/shipment.dart';
+import 'package:logistic_by_strom/features/shipments/domain/models/shipment.dart';
 
 class DashboardSnapshot {
   const DashboardSnapshot({

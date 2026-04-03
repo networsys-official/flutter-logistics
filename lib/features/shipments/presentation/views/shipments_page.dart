@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:logistic_by_strom/app/theme/app_colors.dart';
 import 'package:logistic_by_strom/app/theme/app_theme.dart';
-import 'package:logistic_by_strom/core/models/shipment.dart';
+import 'package:logistic_by_strom/features/shipments/domain/models/shipment.dart';
 import 'package:logistic_by_strom/features/shipments/presentation/view_models/shipments_view_model.dart';
 
 class ShipmentsPage extends StatelessWidget {
@@ -24,7 +24,7 @@ class ShipmentsPage extends StatelessWidget {
               Text('Shipment board', style: textTheme.headlineMedium),
               const SizedBox(height: 8),
               Text(
-                'Feature-based MVVM keeps screen logic in the view model while the repository remains the single source of truth.',
+                'Feature-based layers keep UI logic inside the view model while repositories remain the single source of truth.',
                 style: textTheme.bodyLarge,
               ),
               const SizedBox(height: AppTheme.space3),
