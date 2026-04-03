@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:logistic_by_strom/app/router/app_routes.dart';
 import 'package:logistic_by_strom/app/theme/app_colors.dart';
+import 'package:logistic_by_strom/core/constants/app_images.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -56,6 +57,6 @@ class _BrandMark extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset('assets/images/logo.png', fit: BoxFit.contain);
+    return Image.asset(AppImages.logo, fit: BoxFit.contain);
   }
 }
