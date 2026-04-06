@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:logistic_by_strom/app/theme/app_colors.dart';
-import 'package:logistic_by_strom/app/theme/app_theme.dart';
+import 'package:logistic_by_strom/app/theme/app_spacing.dart';
 
 class AuthShell extends StatelessWidget {
   const AuthShell({
@@ -26,10 +26,10 @@ class AuthShell extends StatelessWidget {
             constraints: const BoxConstraints(maxWidth: 430),
             child: SingleChildScrollView(
               padding: const EdgeInsets.fromLTRB(
-                AppTheme.space4,
-                AppTheme.space6,
-                AppTheme.space4,
-                AppTheme.space5,
+                AppSpacing.space4,
+                AppSpacing.space6,
+                AppSpacing.space4,
+                AppSpacing.space5,
               ),
               child: child,
             ),

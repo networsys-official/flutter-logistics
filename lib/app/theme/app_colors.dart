@@ -3,25 +3,47 @@ import 'package:flutter/material.dart';
 class AppColors {
   AppColors._();
 
-  static const Color ink900 = Color(0xFF1B2530);
-  static const Color ink700 = Color(0xFF51606D);
-  static const Color ink500 = Color(0xFF98A1A9);
-  static const Color cloud100 = Color(0xFFF8FAF8);
-  static const Color cloud200 = Color(0xFFD6DCE1);
+  // --- Neutrals (Text, Backgrounds & Borders) ---
+  /// Deep dark color for primary headlines and main text.
+  static const Color neutral900 = Color(0xFF1B2530);
+  /// Medium gray for secondary text and subtitles.
+  static const Color neutral700 = Color(0xFF51606D);
+  /// Light gray for disabled text or less important captions.
+  static const Color neutral500 = Color(0xFF98A1A9);
+  /// Very light gray for divider lines and subtle borders.
+  static const Color neutral200 = Color(0xFFD6DCE1);
+  /// Very light background tint for scaffold background.
+  static const Color neutral100 = Color(0xFFF8FAF8);
+  /// Pure white for main backgrounds and elevated surfaces.
   static const Color white = Color(0xFFFFFFFF);
 
-  static const Color ocean600 = Color(0xFF1F5C6A);
-  static const Color ocean500 = Color(0xFF2A7688);
-  static const Color ocean100 = Color(0xFFD6EEF4);
+  // --- Branding Colors ---
+  /// Primary brand color.
+  static const Color primary = Color(0xFF3D8900);
+  /// Darker shade of primary.
+  static const Color primaryDark = Color(0xFF2E6900);
+  /// Main secondary brand color.
+  static const Color secondary = Color(0xFF2A7688);
+  /// Darker shade of secondary.
+  static const Color secondaryDark = Color(0xFF1F5C6A);
+  /// Light tint of secondary for containers.
+  static const Color secondaryContainer = Color(0xFFD6EEF4);
+  /// Accent highlight color.
+  static const Color accent = Color(0xFFE48A62);
 
-  static const Color coral500 = Color(0xFFE48A62);
-  static const Color gold500 = Color(0xFFD6A53A);
-  static const Color success500 = Color(0xFF328A00);
-  static const Color warning500 = Color(0xFFE2932D);
-  static const Color danger500 = Color(0xFFD65858);
+  // --- Semantic & Status Colors ---
+  /// Semantic success green.
+  static const Color success = Color(0xFF328A00);
+  /// Semantic warning orange.
+  static const Color warning = Color(0xFFE2932D);
+  /// Semantic error red.
+  static const Color error = Color(0xFFD65858);
+  /// Informational status color.
+  static const Color info = Color(0xFFD6A53A);
 
-  static const Color authPrimary = Color(0xFF3D8900);
-  static const Color authPrimaryDark = Color(0xFF2E6900);
-  static const Color authFieldBorder = Color(0xFFC8CDD2);
-  static const Color authMuted = Color(0xFFADB3B8);
+  // --- Component Specific ---
+  /// Border color for input fields.
+  static const Color inputBorder = Color(0xFFC8CDD2);
+  /// Hint text color for input fields.
+  static const Color inputHint = Color(0xFFADB3B8);
 }

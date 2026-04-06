@@ -20,39 +20,39 @@ class AppTheme {
         fontSize: 40,
         height: 1.05,
         fontWeight: FontWeight.w800,
-        color: AppColors.ink900,
+        color: AppColors.neutral900,
         letterSpacing: -1.1,
       ),
       headlineMedium: TextStyle(
         fontSize: 28,
         height: 1.15,
         fontWeight: FontWeight.w700,
-        color: AppColors.ink900,
+        color: AppColors.neutral900,
         letterSpacing: -0.6,
       ),
       titleLarge: TextStyle(
         fontSize: 20,
         height: 1.2,
         fontWeight: FontWeight.w700,
-        color: AppColors.ink900,
+        color: AppColors.neutral900,
       ),
       titleMedium: TextStyle(
         fontSize: 16,
         height: 1.3,
         fontWeight: FontWeight.w700,
-        color: AppColors.ink900,
+        color: AppColors.neutral900,
       ),
       bodyLarge: TextStyle(
         fontSize: 16,
         height: 1.5,
         fontWeight: FontWeight.w500,
-        color: AppColors.ink700,
+        color: AppColors.neutral700,
       ),
       bodyMedium: TextStyle(
         fontSize: 14,
         height: 1.45,
         fontWeight: FontWeight.w500,
-        color: AppColors.ink700,
+        color: AppColors.neutral700,
       ),
       labelLarge: TextStyle(
         fontSize: 14,
@@ -68,25 +68,25 @@ class AppTheme {
     useMaterial3: true,
     scaffoldBackgroundColor: AppColors.white,
     colorScheme: const ColorScheme.light(
-      primary: AppColors.authPrimary,
-      secondary: AppColors.coral500,
-      tertiary: AppColors.gold500,
+      primary: AppColors.primary,
+      secondary: AppColors.accent,
+      tertiary: AppColors.info,
       surface: AppColors.white,
       onPrimary: AppColors.white,
       onSecondary: AppColors.white,
-      onSurface: AppColors.ink900,
-      outline: AppColors.cloud200,
+      onSurface: AppColors.neutral900,
+      outline: AppColors.neutral200,
     ),
     textTheme: _textTheme,
     appBarTheme: AppBarTheme(
       elevation: 0,
       centerTitle: false,
       backgroundColor: Colors.transparent,
-      foregroundColor: AppColors.ink900,
+      foregroundColor: AppColors.neutral900,
       titleTextStyle: GoogleFonts.plusJakartaSans(
         fontSize: 18,
         fontWeight: FontWeight.w700,
-        color: AppColors.ink900,
+        color: AppColors.neutral900,
       ),
     ),
     cardTheme: CardThemeData(
@@ -100,10 +100,10 @@ class AppTheme {
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
         elevation: 0,
-        backgroundColor: AppColors.authPrimary,
+        backgroundColor: AppColors.primary,
         foregroundColor: AppColors.white,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-        disabledBackgroundColor: AppColors.cloud200,
+        disabledBackgroundColor: AppColors.neutral200,
         disabledForegroundColor: AppColors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         textStyle: GoogleFonts.plusJakartaSans(
@@ -115,9 +115,9 @@ class AppTheme {
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
-        foregroundColor: AppColors.ink900,
+        foregroundColor: AppColors.neutral900,
         backgroundColor: AppColors.white,
-        side: const BorderSide(color: AppColors.cloud200),
+        side: const BorderSide(color: AppColors.neutral200),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         textStyle: GoogleFonts.plusJakartaSans(
@@ -129,47 +129,47 @@ class AppTheme {
     inputDecorationTheme: InputDecorationTheme(
       filled: false,
       hintStyle: GoogleFonts.plusJakartaSans(
-        color: AppColors.authMuted,
+        color: AppColors.inputHint,
         fontSize: 14,
         fontWeight: FontWeight.w500,
       ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: AppColors.authFieldBorder),
+        borderSide: const BorderSide(color: AppColors.inputBorder),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: AppColors.authFieldBorder),
+        borderSide: const BorderSide(color: AppColors.inputBorder),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: AppColors.authPrimary, width: 1.4),
+        borderSide: const BorderSide(color: AppColors.primary, width: 1.4),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: AppColors.danger500),
+        borderSide: const BorderSide(color: AppColors.error),
       ),
       focusedErrorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: AppColors.danger500, width: 1.4),
+        borderSide: const BorderSide(color: AppColors.error, width: 1.4),
       ),
     ),
     checkboxTheme: CheckboxThemeData(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-      side: const BorderSide(color: AppColors.authPrimary, width: 1.4),
-      fillColor: const WidgetStatePropertyAll(AppColors.authPrimary),
+      side: const BorderSide(color: AppColors.primary, width: 1.4),
+      fillColor: const WidgetStatePropertyAll(AppColors.primary),
       checkColor: const WidgetStatePropertyAll(AppColors.white),
       visualDensity: VisualDensity.compact,
     ),
     chipTheme: ChipThemeData(
-      backgroundColor: AppColors.ocean100,
-      selectedColor: AppColors.ocean500,
-      secondarySelectedColor: AppColors.ocean500,
+      backgroundColor: AppColors.neutral100,
+      selectedColor: AppColors.secondary,
+      secondarySelectedColor: AppColors.secondary,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       labelStyle: GoogleFonts.plusJakartaSans(
-        color: AppColors.ink900,
+        color: AppColors.neutral900,
         fontWeight: FontWeight.w700,
       ),
       secondaryLabelStyle: GoogleFonts.plusJakartaSans(
@@ -184,6 +184,6 @@ class AppTheme {
         GoogleFonts.plusJakartaSans(fontSize: 12, fontWeight: FontWeight.w700),
       ),
     ),
-    dividerColor: AppColors.cloud200,
+    dividerColor: AppColors.neutral200,
   );
 }

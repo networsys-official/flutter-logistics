@@ -50,7 +50,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     ref.listen(authViewModelProvider, (previous, next) {
       next.when(
         data: (state) {
-          if (state.isLoggedIn) context.go(AppRoutes.dashboard);
+          if (state.isLoggedIn) context.go(AppRoutes.home);
         },
         error: (e, _) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -102,7 +102,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               child: TextButton(
                 onPressed: () {},
                 style: TextButton.styleFrom(
-                  foregroundColor: AppColors.ink900,
+                  foregroundColor: AppColors.neutral900,
                   padding: EdgeInsets.zero,
                   minimumSize: Size.zero,
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -132,7 +132,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               'or login with',
               textAlign: TextAlign.center,
               style: textTheme.bodyMedium?.copyWith(
-                color: AppColors.ink700,
+                color: AppColors.neutral700,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -148,7 +148,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   child: Text(
                     'Sign Up',
                     style: textTheme.bodyMedium?.copyWith(
-                      color: AppColors.authPrimary,
+                      color: AppColors.primary,
                       fontWeight: FontWeight.w700,
                     ),
                   ),

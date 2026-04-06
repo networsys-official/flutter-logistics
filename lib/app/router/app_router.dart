@@ -5,6 +5,7 @@ import 'package:logistic_by_strom/app/router/app_routes.dart';
 import 'package:logistic_by_strom/app/widgets/app_shell_scaffold.dart';
 import 'package:logistic_by_strom/features/auth/ui/views/login_page.dart';
 import 'package:logistic_by_strom/features/auth/ui/views/register_page.dart';
+import 'package:logistic_by_strom/features/home/ui/views/home_page.dart';
 import 'package:logistic_by_strom/features/onboarding/ui/views/onboarding_page.dart';
 import 'package:logistic_by_strom/features/onboarding/ui/views/splash_page.dart';
 
@@ -34,9 +35,9 @@ class AppRouter {
         builder: (context, state, child) => AppShellScaffold(child: child),
         routes: [
           GoRoute(
-            path: AppRoutes.dashboard,
+            path: AppRoutes.home,
             builder: (context, state) => const Scaffold(
-              body: Center(child: Text('Dashboard Placeholder')),
+              body: Center(child: HomePage()),
             ),
           ),
           // GoRoute(

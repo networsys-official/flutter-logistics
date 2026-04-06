@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:logistic_by_strom/features/dashboard/data/models/dashboard_snapshot.dart';
+import 'package:logistic_by_strom/features/home/data/models/dashboard_snapshot.dart';
 import 'package:logistic_by_strom/features/shipments/data/services/mock_logistics_service.dart';
 import 'package:logistic_by_strom/features/shipments/data/models/shipment.dart';
 

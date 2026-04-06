@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import 'package:logistic_by_strom/app/router/app_routes.dart';
 import 'package:logistic_by_strom/app/theme/app_colors.dart';
-import 'package:logistic_by_strom/app/theme/app_theme.dart';
+import 'package:logistic_by_strom/app/theme/app_spacing.dart';
 import 'package:logistic_by_strom/features/onboarding/data/onboarding_slides.dart';
 import 'package:logistic_by_strom/features/onboarding/data/models/onboarding_slide.dart';
 import 'package:logistic_by_strom/features/onboarding/ui/view_models/onboarding_view_model.dart';
@@ -34,7 +34,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   }
 
   void _goToDashboard() {
-    context.go(AppRoutes.dashboard);
+    context.go(AppRoutes.home);
   }
 
   Future<void> _next() async {
@@ -66,8 +66,8 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(
-            horizontal: AppTheme.space4,
-            vertical: AppTheme.space3,
+            horizontal: AppSpacing.space4,
+            vertical: AppSpacing.space3,
           ),
           child: Column(
             children: [
@@ -78,8 +78,8 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                   currentIndex: currentPage,
                 ),
               ),
-              const SizedBox(height: AppTheme.space4),
-              const SizedBox(height: AppTheme.space5),
+              const SizedBox(height: AppSpacing.space4),
+              const SizedBox(height: AppSpacing.space5),
               Expanded(
                 child: PageView.builder(
                   controller: _pageController,
@@ -121,7 +121,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                                     ),
                                   ),
                                 ),
-                                const SizedBox(height: AppTheme.space3),
+                                const SizedBox(height: AppSpacing.space3),
                                 AnimatedSwitcher(
                                   duration: const Duration(
                                     milliseconds: 280,
@@ -146,7 +146,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(bottom: AppTheme.space3),
+                padding: const EdgeInsets.only(bottom: AppSpacing.space3),
                 child: Row(
                   children: [
                     TextButton(

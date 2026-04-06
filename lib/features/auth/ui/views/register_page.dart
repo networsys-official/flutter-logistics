@@ -117,7 +117,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     ref.listen(authViewModelProvider, (previous, next) {
       next.when(
         data: (state) {
-          if (state.isLoggedIn) context.go(AppRoutes.dashboard);
+          if (state.isLoggedIn) context.go(AppRoutes.home);
         },
         error: (e, _) {
           ScaffoldMessenger.of(
@@ -153,15 +153,15 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
             Text(
               _currentStep == 0 ? 'Step 1 of 2' : 'Step 2 of 2',
               style: textTheme.bodyMedium?.copyWith(
-                color: AppColors.authPrimary,
+                color: AppColors.primary,
                 fontWeight: FontWeight.w700,
               ),
             ),
             const SizedBox(height: 12),
             LinearProgressIndicator(
               value: _currentStep == 0 ? 0.5 : 1,
-              backgroundColor: AppColors.authPrimary.withValues(alpha: 0.16),
-              color: AppColors.authPrimary,
+              backgroundColor: AppColors.primary.withValues(alpha: 0.16),
+              color: AppColors.primary,
               minHeight: 6,
               borderRadius: BorderRadius.circular(999),
             ),
@@ -229,7 +229,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                   child: Text(
                     'Log In',
                     style: textTheme.bodyMedium?.copyWith(
-                      color: AppColors.authPrimary,
+                      color: AppColors.primary,
                       fontWeight: FontWeight.w800,
                     ),
                   ),
@@ -435,7 +435,7 @@ class _StepTwo extends StatelessWidget {
                   child: Text(
                     'Accept Terms & Conditions & Privacy Policy of App',
                     style: textTheme.bodyMedium?.copyWith(
-                      color: AppColors.authPrimary,
+                      color: AppColors.primary,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -466,23 +466,23 @@ InputDecoration _fieldDecoration(
     alignLabelWithHint: true,
     floatingLabelBehavior: FloatingLabelBehavior.auto,
     labelStyle: textTheme.bodyMedium?.copyWith(
-      color: AppColors.authMuted,
+      color: AppColors.inputHint,
       fontWeight: FontWeight.w500,
     ),
     floatingLabelStyle: textTheme.bodyMedium?.copyWith(
-      color: AppColors.authPrimary,
+      color: AppColors.primary,
       fontWeight: FontWeight.w700,
     ),
     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(color: AppColors.authFieldBorder, width: 1),
+      borderSide: const BorderSide(color: AppColors.inputBorder, width: 1),
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(color: AppColors.authPrimary, width: 1.5),
+      borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
     ),
     filled: true,
-    fillColor: AppColors.cloud100.withValues(alpha: 0.5),
+    fillColor: AppColors.neutral100.withValues(alpha: 0.5),
   );
 }
