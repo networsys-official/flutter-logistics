@@ -1,5 +1,5 @@
 import 'package:logistic_by_strom/core/constants/app_images.dart';
-import 'package:logistic_by_strom/features/onboarding/domain/models/onboarding_slide.dart';
+import 'package:logistic_by_strom/features/onboarding/data/models/onboarding_slide.dart';
 
 const List<OnboardingSlide> onboardingSlides = [
   OnboardingSlide(

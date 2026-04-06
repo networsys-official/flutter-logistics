@@ -1,5 +1,5 @@
 import 'package:logistic_by_strom/features/settings/data/services/mock_settings_service.dart';
-import 'package:logistic_by_strom/features/settings/domain/models/app_settings.dart';
+import 'package:logistic_by_strom/features/settings/data/models/app_settings.dart';
 
 class SettingsRepository {
   SettingsRepository({required MockSettingsService service}) : _service = service;

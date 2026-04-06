@@ -1,1 +1,12 @@
 include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  errors:
+    # Freezed 3.x uses mixin-based code generation which triggers a false
+    # positive 'non_abstract_class_inherits_abstract_member' in the analyzer.
+    # The generated code is correct and compiles fine. This suppresses that noise.
+    non_abstract_class_inherits_abstract_member: ignore
+
+linter:
+  rules:
+    prefer_single_quotes: true

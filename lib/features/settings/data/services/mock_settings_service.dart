@@ -1,4 +1,4 @@
-import 'package:logistic_by_strom/features/settings/domain/models/app_settings.dart';
+import 'package:logistic_by_strom/features/settings/data/models/app_settings.dart';
 
 class MockSettingsService {
   AppSettings _settings = const AppSettings(

@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:logistic_by_strom/features/dashboard/domain/models/dashboard_snapshot.dart';
+import 'package:logistic_by_strom/features/dashboard/data/models/dashboard_snapshot.dart';
 import 'package:logistic_by_strom/features/shipments/data/services/mock_logistics_service.dart';
-import 'package:logistic_by_strom/features/shipments/domain/models/shipment.dart';
+import 'package:logistic_by_strom/features/shipments/data/models/shipment.dart';
 
 class LogisticsRepository {
   LogisticsRepository({required MockLogisticsService service})

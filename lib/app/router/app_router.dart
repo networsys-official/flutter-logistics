@@ -1,14 +1,12 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:logistic_by_strom/app/router/app_routes.dart';
 import 'package:logistic_by_strom/app/widgets/app_shell_scaffold.dart';
-import 'package:logistic_by_strom/features/auth/presentation/views/login_page.dart';
-import 'package:logistic_by_strom/features/auth/presentation/views/register_page.dart';
-import 'package:logistic_by_strom/features/onboarding/presentation/views/onboarding_page.dart';
-import 'package:logistic_by_strom/features/onboarding/presentation/views/splash_page.dart';
-import 'package:logistic_by_strom/features/dashboard/presentation/views/dashboard_page.dart';
-import 'package:logistic_by_strom/features/settings/presentation/views/settings_page.dart';
-import 'package:logistic_by_strom/features/shipments/presentation/views/shipments_page.dart';
+import 'package:logistic_by_strom/features/auth/ui/views/login_page.dart';
+import 'package:logistic_by_strom/features/auth/ui/views/register_page.dart';
+import 'package:logistic_by_strom/features/onboarding/ui/views/onboarding_page.dart';
+import 'package:logistic_by_strom/features/onboarding/ui/views/splash_page.dart';
 
 class AppRouter {
   AppRouter._();
@@ -37,16 +35,18 @@ class AppRouter {
         routes: [
           GoRoute(
             path: AppRoutes.dashboard,
-            builder: (context, state) => const DashboardPage(),
+            builder: (context, state) => const Scaffold(
+              body: Center(child: Text('Dashboard Placeholder')),
+            ),
           ),
-          GoRoute(
-            path: AppRoutes.shipments,
-            builder: (context, state) => const ShipmentsPage(),
-          ),
-          GoRoute(
-            path: AppRoutes.settings,
-            builder: (context, state) => const SettingsPage(),
-          ),
+          // GoRoute(
+          //   path: AppRoutes.shipments,
+          //   builder: (context, state) => const ShipmentsPage(),
+          // ),
+          // GoRoute(
+          //   path: AppRoutes.settings,
+          //   builder: (context, state) => const SettingsPage(),
+          // ),
         ],
       ),
     ],

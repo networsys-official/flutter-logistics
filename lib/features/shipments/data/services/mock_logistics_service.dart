@@ -1,4 +1,4 @@
-import 'package:logistic_by_strom/features/shipments/domain/models/shipment.dart';
+import 'package:logistic_by_strom/features/shipments/data/models/shipment.dart';
 
 class MockLogisticsService {
   Future<List<Shipment>> fetchShipments() async {
