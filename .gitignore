@@ -35,9 +35,19 @@ skills-lock.json
 /android/.kotlin/
 
 # Local OS / design scratch files kept outside app assets
-/Location.png
-/OB *.png
-/Splash.png
+/*.png
+/*.jpg
+/*.jpeg
+.env
+.env.*
+
+# Flutter generated files
+*.g.dart
+*.freezed.dart
+*.mocks.dart
+*.inject.summary
+*.inject.dart
+.flutter-plugins
 
 # Symbolication related
 app.*.symbols
@@ -49,3 +59,7 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+
+# Agent File
+GEMINI.md
