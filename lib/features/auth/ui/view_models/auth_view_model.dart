@@ -51,7 +51,6 @@ class AuthViewModel extends _$AuthViewModel {
     required String mobile,
     required String address,
     required String password,
-    required String addressType,
     required int countryId,
   }) async {
     state = const AsyncValue.loading();
@@ -64,7 +63,6 @@ class AuthViewModel extends _$AuthViewModel {
         mobile: mobile,
         address: address,
         password: password,
-        addressType: addressType,
         countryId: countryId,
       );
       await _persistAuthData(authData);
@@ -99,12 +97,14 @@ class AuthViewModel extends _$AuthViewModel {
     }
   }
 
-  // ---------------------------------------------------------------------------
-  // Private helpers
-  // ---------------------------------------------------------------------------
+
 
   Future<void> _persistAuthData(AuthState authData) async {
-    if (authData.token != null && authData.user != null) {
+    if (authData.token != null &&
+        authData.user != null &&
+        authData.user!.id.isNotEmpty &&
+        authData.user!.name.isNotEmpty &&
+        authData.user!.email.isNotEmpty) {
       final storage = ref.read(storageServiceProvider.notifier);
       await storage.saveToken(authData.token!);
       await storage.saveUser(jsonEncode(authData.user!.toJson()));

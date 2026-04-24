@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:logistic_by_strom/core/network/api_endpoints.dart';
 import 'package:logistic_by_strom/core/network/api_exceptions.dart';
@@ -16,7 +19,7 @@ class ApiClient {
   ApiClient(this._storageService) {
     _dio = Dio(
       BaseOptions(
-        baseUrl: ApiEndpoints.baseUrl,
+        baseUrl: _resolveBaseUrl(),
         connectTimeout: const Duration(seconds: 15),
         receiveTimeout: const Duration(seconds: 15),
         headers: {
@@ -46,6 +49,18 @@ class ApiClient {
 
   late final Dio _dio;
   final StorageService _storageService;
+
+  String _resolveBaseUrl() {
+    if (ApiEndpoints.configuredBaseUrl.isNotEmpty) {
+      return ApiEndpoints.configuredBaseUrl;
+    }
+
+    if (!kIsWeb && Platform.isAndroid) {
+      return 'http://10.0.2.2/api/v1';
+    }
+
+    return 'http://localhost/api/v1';
+  }
 
   Future<Response> get(
     String path, {

@@ -34,7 +34,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   }
 
   void _goToDashboard() {
-    context.go(AppRoutes.home);
+    context.go(AppRoutes.register);
   }
 
   Future<void> _next() async {

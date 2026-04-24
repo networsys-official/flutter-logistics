@@ -4,20 +4,22 @@ import 'package:go_router/go_router.dart';
 
 import 'package:logistic_by_strom/app/router/app_routes.dart';
 import 'package:logistic_by_strom/app/theme/app_colors.dart';
+import 'package:logistic_by_strom/app/widgets/app_dropdown_field.dart';
 import 'package:logistic_by_strom/core/utils/validators.dart';
 import 'package:logistic_by_strom/features/auth/ui/view_models/auth_view_model.dart';
 import 'package:logistic_by_strom/features/auth/ui/widgets/auth_logo_header.dart';
 import 'package:logistic_by_strom/features/auth/ui/widgets/auth_shell.dart';
 import 'package:logistic_by_strom/features/auth/ui/widgets/auth_text_field.dart';
 
-const _addressTypes = ['home', 'office', 'warehouse', 'other'];
+const _countries = [(id: 1, name: 'Bahamas')];
 
-const _countries = [
-  (id: 1, name: 'Bahamas (Nassau)'),
-  (id: 2, name: 'United States'),
-  (id: 3, name: 'United Kingdom'),
-  (id: 4, name: 'United Arab Emirates'),
-  (id: 5, name: 'Singapore'),
+const _islands = [
+  'Nassau',
+  'Freeport',
+  'Abaco',
+  'Andros',
+  'Eleuthera',
+  'Exuma',
 ];
 
 class RegisterPage extends ConsumerStatefulWidget {
@@ -29,27 +31,28 @@ class RegisterPage extends ConsumerStatefulWidget {
 
 class _RegisterPageState extends ConsumerState<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
+  final _firstNameController = TextEditingController();
+  final _surnameController = TextEditingController();
   final _emailController = TextEditingController();
+  final _streetAddressController = TextEditingController();
   final _mobileController = TextEditingController();
-  final _addressLine1Controller = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
-  // Ephemeral UI state only — these don't belong in ViewModel
   int _currentStep = 0;
-  String? _selectedType;
-  int? _selectedCountryId = 1;
+  final int _selectedCountryId = 1;
+  String _selectedIsland = 'Nassau';
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
   bool _acceptedTerms = true;
 
   @override
   void dispose() {
-    _nameController.dispose();
+    _firstNameController.dispose();
+    _surnameController.dispose();
     _emailController.dispose();
+    _streetAddressController.dispose();
     _mobileController.dispose();
-    _addressLine1Controller.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
@@ -58,20 +61,6 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
   bool _validateCurrentStep() {
     final isValid = _formKey.currentState?.validate() ?? false;
     if (!isValid) return false;
-
-    if (_currentStep == 0 && _selectedType == null) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Type is required')));
-      return false;
-    }
-
-    if (_currentStep == 1 && _selectedCountryId == null) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Country is required')));
-      return false;
-    }
 
     return true;
   }
@@ -95,18 +84,41 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
       return;
     }
 
-
     await ref
         .read(authViewModelProvider.notifier)
         .register(
-          name: _nameController.text,
+          name: _fullName,
           email: _emailController.text,
           mobile: _mobileController.text,
-          address: _addressLine1Controller.text,
+          address: _fullAddress,
           password: _passwordController.text,
-          addressType: _selectedType!,
-          countryId: _selectedCountryId!,
+          countryId: _selectedCountryId,
         );
+  }
+
+  String get _fullName {
+    return [
+      _firstNameController.text.trim(),
+      _surnameController.text.trim(),
+    ].where((part) => part.isNotEmpty).join(' ');
+  }
+
+  String get _selectedCountryName {
+    final selected = _countries.where(
+      (country) => country.id == _selectedCountryId,
+    );
+    if (selected.isEmpty) {
+      return 'Bahamas';
+    }
+    return selected.first.name;
+  }
+
+  String get _fullAddress {
+    return [
+      _streetAddressController.text.trim(),
+      _selectedIsland,
+      _selectedCountryName,
+    ].where((part) => part.isNotEmpty).join(', ');
   }
 
   @override
@@ -168,22 +180,25 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
             const SizedBox(height: 32),
             if (_currentStep == 0)
               _StepOne(
-                nameController: _nameController,
+                firstNameController: _firstNameController,
+                surnameController: _surnameController,
                 emailController: _emailController,
-                mobileController: _mobileController,
-                selectedType: _selectedType,
-                onTypeChanged: (v) => setState(() => _selectedType = v),
+                selectedCountryId: _selectedCountryId,
+                selectedIsland: _selectedIsland,
+                streetAddressController: _streetAddressController,
+                onIslandChanged: (value) {
+                  if (value == null) return;
+                  setState(() => _selectedIsland = value);
+                },
               ),
             if (_currentStep == 1)
               _StepTwo(
-                addressController: _addressLine1Controller,
+                mobileController: _mobileController,
                 passwordController: _passwordController,
                 confirmPasswordController: _confirmPasswordController,
-                selectedCountryId: _selectedCountryId,
                 obscurePassword: _obscurePassword,
                 obscureConfirmPassword: _obscureConfirmPassword,
                 acceptedTerms: _acceptedTerms,
-                onCountryChanged: (v) => setState(() => _selectedCountryId = v),
                 onObscurePasswordToggle: () =>
                     setState(() => _obscurePassword = !_obscurePassword),
                 onObscureConfirmPasswordToggle: () => setState(
@@ -243,43 +258,48 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
   }
 }
 
-// ---------------------------------------------------------------------------
-// Private widget — Step 1
-// ✅ Extracted as separate widget class (not helper method)
-// ---------------------------------------------------------------------------
-
 class _StepOne extends StatelessWidget {
   const _StepOne({
-    required this.nameController,
+    required this.firstNameController,
+    required this.surnameController,
     required this.emailController,
-    required this.mobileController,
-    required this.selectedType,
-    required this.onTypeChanged,
+    required this.selectedCountryId,
+    required this.selectedIsland,
+    required this.streetAddressController,
+    required this.onIslandChanged,
   });
 
-  final TextEditingController nameController;
+  final TextEditingController firstNameController;
+  final TextEditingController surnameController;
   final TextEditingController emailController;
-  final TextEditingController mobileController;
-  final String? selectedType;
-  final ValueChanged<String?> onTypeChanged;
+  final int selectedCountryId;
+  final String selectedIsland;
+  final TextEditingController streetAddressController;
+  final ValueChanged<String?> onIslandChanged;
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         AuthTextField(
-          label: 'Name',
-          hintText: 'Enter full name',
-          controller: nameController,
+          label: 'First Name',
+          hintText: 'Enter first name',
+          controller: firstNameController,
           textInputAction: TextInputAction.next,
-          validator: Validators.name,
+          validator: (value) => Validators.required(value, 'First name'),
         ),
         const SizedBox(height: 22),
         AuthTextField(
-          label: 'Email',
+          label: 'Surname',
+          hintText: 'Enter surname',
+          controller: surnameController,
+          textInputAction: TextInputAction.next,
+          validator: (value) => Validators.required(value, 'Surname'),
+        ),
+        const SizedBox(height: 22),
+        AuthTextField(
+          label: 'Email Address',
           hintText: 'Enter email address',
           controller: emailController,
           keyboardType: TextInputType.emailAddress,
@@ -287,69 +307,57 @@ class _StepOne extends StatelessWidget {
           validator: Validators.email,
         ),
         const SizedBox(height: 22),
-        AuthTextField(
-          label: 'Mobile Number',
-          hintText: 'Enter mobile number',
-          controller: mobileController,
-          keyboardType: TextInputType.phone,
-          textInputAction: TextInputAction.next,
-          validator: Validators.mobile,
+        AppDropdownField<int>(
+          label: 'Country',
+          hintText: 'Select country',
+          items: _countries.map((country) => country.id).toList(),
+          value: selectedCountryId,
+          itemLabelBuilder: (id) =>
+              _countries.firstWhere((country) => country.id == id).name,
+          onChanged: null,
         ),
         const SizedBox(height: 22),
-        DropdownButtonFormField<String>(
-          initialValue: selectedType,
-          isDense: false,
-          decoration: _fieldDecoration(
-            context,
-            label: 'Type',
-            hint: 'Select address type',
-          ),
-          items: _addressTypes
-              .map(
-                (type) => DropdownMenuItem<String>(
-                  value: type,
-                  child: Text(
-                    type[0].toUpperCase() + type.substring(1),
-                    style: textTheme.bodyMedium,
-                  ),
-                ),
-              )
-              .toList(),
-          onChanged: onTypeChanged,
+        AppDropdownField<String>(
+          label: 'Island',
+          hintText: 'Select island',
+          items: _islands,
+          value: selectedIsland,
+          itemLabelBuilder: (island) => island,
+          onChanged: onIslandChanged,
+        ),
+        const SizedBox(height: 22),
+        AuthTextField(
+          label: 'Street Address',
+          hintText: 'Enter street address',
+          controller: streetAddressController,
+          textInputAction: TextInputAction.next,
+          validator: (value) => Validators.required(value, 'Street address'),
         ),
       ],
     );
   }
 }
 
-// ---------------------------------------------------------------------------
-// Private widget — Step 2
-// ---------------------------------------------------------------------------
-
 class _StepTwo extends StatelessWidget {
   const _StepTwo({
-    required this.addressController,
+    required this.mobileController,
     required this.passwordController,
     required this.confirmPasswordController,
-    required this.selectedCountryId,
     required this.obscurePassword,
     required this.obscureConfirmPassword,
     required this.acceptedTerms,
-    required this.onCountryChanged,
     required this.onObscurePasswordToggle,
     required this.onObscureConfirmPasswordToggle,
     required this.onTermsChanged,
     required this.textTheme,
   });
 
-  final TextEditingController addressController;
+  final TextEditingController mobileController;
   final TextEditingController passwordController;
   final TextEditingController confirmPasswordController;
-  final int? selectedCountryId;
   final bool obscurePassword;
   final bool obscureConfirmPassword;
   final bool acceptedTerms;
-  final ValueChanged<int?> onCountryChanged;
   final VoidCallback onObscurePasswordToggle;
   final VoidCallback onObscureConfirmPasswordToggle;
   final ValueChanged<bool?> onTermsChanged;
@@ -360,31 +368,13 @@ class _StepTwo extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        DropdownButtonFormField<int>(
-          initialValue: selectedCountryId,
-          isDense: false,
-          decoration: _fieldDecoration(
-            context,
-            label: 'Country',
-            hint: 'Select country',
-          ),
-          items: _countries
-              .map(
-                (country) => DropdownMenuItem<int>(
-                  value: country.id,
-                  child: Text(country.name),
-                ),
-              )
-              .toList(),
-          onChanged: onCountryChanged,
-        ),
-        const SizedBox(height: 22),
         AuthTextField(
-          label: 'Address Line',
-          hintText: 'Enter address line',
-          controller: addressController,
+          label: 'Mobile Number',
+          hintText: 'Enter mobile number',
+          controller: mobileController,
+          keyboardType: TextInputType.phone,
           textInputAction: TextInputAction.next,
-          validator: (value) => Validators.required(value, 'Address line'),
+          validator: Validators.mobile,
         ),
         const SizedBox(height: 22),
         AuthTextField(
@@ -447,42 +437,4 @@ class _StepTwo extends StatelessWidget {
       ],
     );
   }
-}
-
-// ---------------------------------------------------------------------------
-// Shared helper — dropdown decoration (DRY principle)
-// ---------------------------------------------------------------------------
-
-InputDecoration _fieldDecoration(
-  BuildContext context, {
-  required String label,
-  required String hint,
-}) {
-  final textTheme = Theme.of(context).textTheme;
-
-  return InputDecoration(
-    labelText: label,
-    hintText: hint,
-    alignLabelWithHint: true,
-    floatingLabelBehavior: FloatingLabelBehavior.auto,
-    labelStyle: textTheme.bodyMedium?.copyWith(
-      color: AppColors.inputHint,
-      fontWeight: FontWeight.w500,
-    ),
-    floatingLabelStyle: textTheme.bodyMedium?.copyWith(
-      color: AppColors.primary,
-      fontWeight: FontWeight.w700,
-    ),
-    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-    enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(color: AppColors.inputBorder, width: 1),
-    ),
-    focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
-    ),
-    filled: true,
-    fillColor: AppColors.neutral100.withValues(alpha: 0.5),
-  );
 }
