@@ -5,6 +5,7 @@ import 'package:logistic_by_strom/core/network/api_client.dart';
 import 'package:logistic_by_strom/core/services/storage_service.dart';
 import 'package:logistic_by_strom/features/auth/data/auth_repository.dart';
 import 'package:logistic_by_strom/features/auth/data/models/auth_state.dart';
+import 'package:logistic_by_strom/features/auth/data/models/registration_response.dart';
 
 part 'auth_view_model.g.dart';
 
@@ -45,29 +46,25 @@ class AuthViewModel extends _$AuthViewModel {
     });
   }
 
-  Future<void> register({
+  Future<RegistrationResponse> register({
     required String name,
     required String email,
-    required String mobile,
+    required String phone,
     required String address,
     required String password,
     required int countryId,
+    required int locationId
   }) async {
-    state = const AsyncValue.loading();
-
-    state = await AsyncValue.guard(() async {
-      final repository = ref.read(authRepositoryProvider);
-      final authData = await repository.register(
-        name: name,
-        email: email,
-        mobile: mobile,
-        address: address,
-        password: password,
-        countryId: countryId,
-      );
-      await _persistAuthData(authData);
-      return authData;
-    });
+    final repository = ref.read(authRepositoryProvider);
+    return repository.register(
+      name: name,
+      email: email,
+      phone: phone,
+      address: address,
+      password: password,
+      countryId: countryId,
+      locationId: locationId,
+    );
   }
 
   Future<void> logout() async {
@@ -96,8 +93,6 @@ class AuthViewModel extends _$AuthViewModel {
       await logout();
     }
   }
-
-
 
   Future<void> _persistAuthData(AuthState authData) async {
     if (authData.token != null &&

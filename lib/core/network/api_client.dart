@@ -32,7 +32,7 @@ class ApiClient {
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {
-          // Token Injection
+          // Attach the token already stored after a backend auth response.
           final token = await _storageService.getToken();
           if (token != null && token.isNotEmpty) {
             options.headers['Authorization'] = 'Bearer $token';
@@ -40,7 +40,6 @@ class ApiClient {
           return handler.next(options);
         },
         onError: (DioException e, handler) {
-          // You could optionally refresh token here on 401
           return handler.next(e);
         },
       ),

@@ -6,21 +6,15 @@ import 'package:logistic_by_strom/app/router/app_routes.dart';
 import 'package:logistic_by_strom/app/theme/app_colors.dart';
 import 'package:logistic_by_strom/app/widgets/app_dropdown_field.dart';
 import 'package:logistic_by_strom/core/utils/validators.dart';
+import 'package:logistic_by_strom/features/auth/data/delivery_zones.dart';
+import 'package:logistic_by_strom/features/auth/data/models/delivery_zone.dart';
+import 'package:logistic_by_strom/features/auth/data/models/registration_response.dart';
 import 'package:logistic_by_strom/features/auth/ui/view_models/auth_view_model.dart';
 import 'package:logistic_by_strom/features/auth/ui/widgets/auth_logo_header.dart';
 import 'package:logistic_by_strom/features/auth/ui/widgets/auth_shell.dart';
 import 'package:logistic_by_strom/features/auth/ui/widgets/auth_text_field.dart';
 
 const _countries = [(id: 1, name: 'Bahamas')];
-
-const _islands = [
-  'Nassau',
-  'Freeport',
-  'Abaco',
-  'Andros',
-  'Eleuthera',
-  'Exuma',
-];
 
 class RegisterPage extends ConsumerStatefulWidget {
   const RegisterPage({super.key});
@@ -41,7 +35,8 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
 
   int _currentStep = 0;
   final int _selectedCountryId = 1;
-  String _selectedIsland = 'Nassau';
+  DeliveryZone _selectedDeliveryZone = deliveryZones.first;
+  bool _isRegistering = false;
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
   bool _acceptedTerms = true;
@@ -84,16 +79,39 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
       return;
     }
 
-    await ref
-        .read(authViewModelProvider.notifier)
-        .register(
-          name: _fullName,
-          email: _emailController.text,
-          mobile: _mobileController.text,
-          address: _fullAddress,
-          password: _passwordController.text,
-          countryId: _selectedCountryId,
-        );
+    setState(() => _isRegistering = true);
+
+    try {
+      final RegistrationResponse response = await ref
+          .read(authViewModelProvider.notifier)
+          .register(
+            name: _fullName,
+            email: _emailController.text,
+            phone: _mobileController.text,
+            address: _fullAddress,
+            password: _passwordController.text,
+            countryId: _selectedCountryId,
+            locationId: _selectedDeliveryZone.id
+          );
+
+      if (!mounted) return;
+
+      final message =
+          response.message ??
+          'Registration successful. Continue with OTP verification.';
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(message)));
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Registration Failed: $e')));
+    } finally {
+      if (mounted) {
+        setState(() => _isRegistering = false);
+      }
+    }
   }
 
   String get _fullName {
@@ -116,7 +134,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
   String get _fullAddress {
     return [
       _streetAddressController.text.trim(),
-      _selectedIsland,
+      _selectedDeliveryZone.label,
       _selectedCountryName,
     ].where((part) => part.isNotEmpty).join(', ');
   }
@@ -124,21 +142,6 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final authState = ref.watch(authViewModelProvider);
-
-    ref.listen(authViewModelProvider, (previous, next) {
-      next.when(
-        data: (state) {
-          if (state.isLoggedIn) context.go(AppRoutes.home);
-        },
-        error: (e, _) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text('Registration Failed: $e')));
-        },
-        loading: () {},
-      );
-    });
 
     return AuthShell(
       appBar: AppBar(
@@ -184,11 +187,11 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                 surnameController: _surnameController,
                 emailController: _emailController,
                 selectedCountryId: _selectedCountryId,
-                selectedIsland: _selectedIsland,
+                selectedDeliveryZone: _selectedDeliveryZone,
                 streetAddressController: _streetAddressController,
-                onIslandChanged: (value) {
+                onDeliveryZoneChanged: (value) {
                   if (value == null) return;
-                  setState(() => _selectedIsland = value);
+                  setState(() => _selectedDeliveryZone = value);
                 },
               ),
             if (_currentStep == 1)
@@ -216,8 +219,8 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
               ),
             if (_currentStep == 1) ...[
               ElevatedButton(
-                onPressed: authState.isLoading ? null : _submit,
-                child: authState.isLoading
+                onPressed: _isRegistering ? null : _submit,
+                child: _isRegistering
                     ? const SizedBox(
                         height: 20,
                         width: 20,
@@ -264,18 +267,18 @@ class _StepOne extends StatelessWidget {
     required this.surnameController,
     required this.emailController,
     required this.selectedCountryId,
-    required this.selectedIsland,
+    required this.selectedDeliveryZone,
     required this.streetAddressController,
-    required this.onIslandChanged,
+    required this.onDeliveryZoneChanged,
   });
 
   final TextEditingController firstNameController;
   final TextEditingController surnameController;
   final TextEditingController emailController;
   final int selectedCountryId;
-  final String selectedIsland;
+  final DeliveryZone selectedDeliveryZone;
   final TextEditingController streetAddressController;
-  final ValueChanged<String?> onIslandChanged;
+  final ValueChanged<DeliveryZone?> onDeliveryZoneChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -317,13 +320,13 @@ class _StepOne extends StatelessWidget {
           onChanged: null,
         ),
         const SizedBox(height: 22),
-        AppDropdownField<String>(
-          label: 'Island',
-          hintText: 'Select island',
-          items: _islands,
-          value: selectedIsland,
-          itemLabelBuilder: (island) => island,
-          onChanged: onIslandChanged,
+        AppDropdownField<DeliveryZone>(
+          label: 'Delivery Zone',
+          hintText: 'Select delivery zone',
+          items: deliveryZones,
+          value: selectedDeliveryZone,
+          itemLabelBuilder: (zone) => zone.label,
+          onChanged: onDeliveryZoneChanged,
         ),
         const SizedBox(height: 22),
         AuthTextField(
