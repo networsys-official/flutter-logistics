@@ -91,7 +91,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
             address: _fullAddress,
             password: _passwordController.text,
             countryId: _selectedCountryId,
-            locationId: _selectedDeliveryZone.id
+            locationId: _selectedDeliveryZone.id,
           );
 
       if (!mounted) return;
@@ -102,6 +102,14 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(message)));
+      context.push(
+        AppRoutes.otp,
+        extra: {
+          'userId': response.userId,
+          'email': _emailController.text.trim(),
+          'phone': _mobileController.text.trim(),
+        },
+      );
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(

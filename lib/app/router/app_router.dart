@@ -34,16 +34,22 @@ class AppRouter {
       ),
       GoRoute(
         path: AppRoutes.otp,
-        builder: (context, state) => const OtpPage(),
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>? ?? const {};
+          return OtpPage(
+            userId: extra['userId'] as String,
+            email: extra['email'] as String?,
+            phone: extra['phone'] as String?,
+          );
+        },
       ),
       ShellRoute(
         builder: (context, state, child) => AppShellScaffold(child: child),
         routes: [
           GoRoute(
             path: AppRoutes.home,
-            builder: (context, state) => const Scaffold(
-              body: Center(child: HomePage()),
-            ),
+            builder: (context, state) =>
+                const Scaffold(body: Center(child: HomePage())),
           ),
           // GoRoute(
           //   path: AppRoutes.shipments,

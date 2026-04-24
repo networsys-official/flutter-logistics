@@ -25,7 +25,7 @@ class AuthRepository {
     required String address,
     required String password,
     required int countryId,
-    required int locationId
+    required int locationId,
   }) async {
     final response = await _apiClient.post(
       ApiEndpoints.register,
@@ -41,20 +41,38 @@ class AuthRepository {
     );
 
     final data = _asMap(response.data);
-    final user = AuthUser.fromResponse(data);
-
-    if (user == null) {
+    final registrationResponse = RegistrationResponse.fromJson(data);
+    if (registrationResponse.userId.isEmpty) {
       throw ServerException(
         'Registration succeeded but the response format was not recognized.',
         statusCode: response.statusCode,
       );
     }
 
-    return RegistrationResponse(
-      user: user,
-      message: _extractMessage(data),
-      otpRequired: true,
+    return registrationResponse;
+  }
+
+  Future<AuthState> verifyOtp({
+    required String userId,
+    required String otp,
+  }) async {
+    final response = await _apiClient.post(
+      ApiEndpoints.verifyOtp,
+      data: {'user_id': userId, 'otp': otp},
     );
+
+    final data = _asMap(response.data);
+    final user = AuthUser.fromResponse(data);
+    final token = _extractToken(data);
+
+    if (user == null || token == null || token.isEmpty) {
+      throw ServerException(
+        'OTP verification succeeded but the response format was not recognized.',
+        statusCode: response.statusCode,
+      );
+    }
+
+    return AuthState(user: user, token: token);
   }
 
   Future<void> logout() async {
@@ -77,16 +95,22 @@ class AuthRepository {
     return const <String, dynamic>{};
   }
 
-  String? _extractMessage(Map<String, dynamic> data) {
-    final directMessage = data['message'];
-    if (directMessage is String && directMessage.isNotEmpty) {
-      return directMessage;
+  String? _extractToken(Map<String, dynamic> data) {
+    final directToken = data['token'] ?? data['access_token'];
+    if (directToken is String && directToken.isNotEmpty) {
+      return directToken;
     }
 
     final nestedData = _asMap(data['data']);
-    final nestedMessage = nestedData['message'];
-    if (nestedMessage is String && nestedMessage.isNotEmpty) {
-      return nestedMessage;
+    final nestedToken = nestedData['token'] ?? nestedData['access_token'];
+    if (nestedToken is String && nestedToken.isNotEmpty) {
+      return nestedToken;
+    }
+
+    final auth = _asMap(data['auth']);
+    final authToken = auth['token'] ?? auth['access_token'];
+    if (authToken is String && authToken.isNotEmpty) {
+      return authToken;
     }
 
     return null;

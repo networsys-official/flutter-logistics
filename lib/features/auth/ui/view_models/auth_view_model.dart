@@ -53,7 +53,7 @@ class AuthViewModel extends _$AuthViewModel {
     required String address,
     required String password,
     required int countryId,
-    required int locationId
+    required int locationId,
   }) async {
     final repository = ref.read(authRepositoryProvider);
     return repository.register(
@@ -65,6 +65,17 @@ class AuthViewModel extends _$AuthViewModel {
       countryId: countryId,
       locationId: locationId,
     );
+  }
+
+  Future<void> verifyOtp({required String userId, required String otp}) async {
+    state = const AsyncValue.loading();
+
+    state = await AsyncValue.guard(() async {
+      final repository = ref.read(authRepositoryProvider);
+      final authData = await repository.verifyOtp(userId: userId, otp: otp);
+      await _persistAuthData(authData);
+      return authData;
+    });
   }
 
   Future<void> logout() async {
