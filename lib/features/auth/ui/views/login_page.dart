@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:logistic_by_strom/core/constants/strings/auth_strings.dart';
+import 'package:logistic_by_strom/core/constants/strings/error_strings.dart';
 import 'package:logistic_by_strom/core/router/app_routes.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 
@@ -55,7 +57,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         },
         error: (e, _) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Login Failed: $e')),
+            SnackBar(content: Text('${ErrorStrings.loginFailed}$e')),
           );
         },
         loading: () {},
@@ -68,11 +70,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const AuthLogoHeader(title: 'LOGIN'),
+            const AuthLogoHeader(title: AuthStrings.loginTitle),
             const SizedBox(height: 42),
             AuthTextField(
-              label: 'Mobile Number',
-              hintText: 'Enter mobile number',
+              label: AuthStrings.mobileNumber,
+              hintText: AuthStrings.mobileNumberHint,
               controller: _mobileController,
               keyboardType: TextInputType.phone,
               textInputAction: TextInputAction.next,
@@ -80,8 +82,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             ),
             const SizedBox(height: 22),
             AuthTextField(
-              label: 'Password',
-              hintText: 'Enter password',
+              label: AuthStrings.password,
+              hintText: AuthStrings.passwordHint,
               controller: _passwordController,
               obscureText: _obscurePassword,
               textInputAction: TextInputAction.done,
@@ -109,7 +111,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 ),
                 child: const Text(
-                  'Forgot Password?',
+                  AuthStrings.forgotPassword,
                   style: TextStyle(decoration: TextDecoration.underline),
                 ),
               ),
@@ -126,11 +128,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         color: Colors.white,
                       ),
                     )
-                  : const Text('Login'),
+                  : const Text(AuthStrings.loginButton),
             ),
             const SizedBox(height: 26),
             Text(
-              'or login with',
+              AuthStrings.orLoginWith,
               textAlign: TextAlign.center,
               style: textTheme.bodyMedium?.copyWith(
                 color: AppColors.neutral700,
@@ -143,11 +145,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Don't have an account? ", style: textTheme.bodyMedium),
+                Text(AuthStrings.dontHaveAccount, style: textTheme.bodyMedium),
                 GestureDetector(
                   onTap: () => context.go(AppRoutes.register),
                   child: Text(
-                    'Sign Up',
+                    AuthStrings.signUp,
                     style: textTheme.bodyMedium?.copyWith(
                       color: AppColors.primary,
                       fontWeight: FontWeight.w700,

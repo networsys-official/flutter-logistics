@@ -1,3 +1,5 @@
+import 'package:logistic_by_strom/core/constants/strings/error_strings.dart';
+
 class Validators {
   Validators._();
 
@@ -5,7 +7,7 @@ class Validators {
   /// Returns an error message if the value is null or empty.
   static String? required(String? value, String fieldName) {
     if (value == null || value.trim().isEmpty) {
-      return '$fieldName is required';
+      return '$fieldName ${ErrorStrings.requiredField}';
     }
     return null;
   }
@@ -19,7 +21,7 @@ class Validators {
     }
 
     if (value!.trim().length < 2) {
-      return 'Name must be at least 2 characters';
+      return ErrorStrings.minNameLength;
     }
 
     return null;
@@ -34,7 +36,7 @@ class Validators {
 
     final emailRegex = RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$');
     if (!emailRegex.hasMatch(value!.trim())) {
-      return 'Enter a valid email address';
+      return ErrorStrings.invalidEmail;
     }
 
     return null;
@@ -50,7 +52,7 @@ class Validators {
 
     final mobileRegex = RegExp(r'^[0-9+]{8,15}$');
     if (!mobileRegex.hasMatch(value!.trim())) {
-      return 'Enter a valid mobile number';
+      return ErrorStrings.invalidMobile;
     }
 
     return null;
@@ -65,7 +67,7 @@ class Validators {
     }
 
     if (value!.length < 6) {
-      return 'Password must be at least 6 characters';
+      return ErrorStrings.minPasswordLength;
     }
 
     return null;
@@ -79,7 +81,7 @@ class Validators {
     }
 
     if (value != password) {
-      return 'Passwords do not match';
+      return ErrorStrings.passwordMismatch;
     }
 
     return null;

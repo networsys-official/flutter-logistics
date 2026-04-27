@@ -1,4 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:logistic_by_strom/core/constants/strings/app_strings.dart';
 import 'package:logistic_by_strom/features/onboarding/data/onboarding_slides.dart';
 
 part 'onboarding_view_model.g.dart';
@@ -10,7 +11,7 @@ class OnboardingViewModel extends _$OnboardingViewModel {
 
   int get currentPage => state;
   bool get isLastPage => state == onboardingSlides.length - 1;
-  String get primaryActionLabel => isLastPage ? 'Start' : 'Next';
+  String get primaryActionLabel => isLastPage ? AppStrings.start : AppStrings.nextCapitalized;
 
   void updatePage(int index) {
     if (state == index) {

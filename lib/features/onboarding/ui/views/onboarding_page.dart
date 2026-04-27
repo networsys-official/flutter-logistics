@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:logistic_by_strom/core/constants/strings/app_strings.dart';
 import 'package:logistic_by_strom/core/router/app_routes.dart';
-import 'package:logistic_by_strom/core/theme/app_colors.dart';
+
 import 'package:logistic_by_strom/core/theme/app_spacing.dart';
 
 
@@ -63,12 +64,12 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.space4,
-            vertical: AppSpacing.space3,
+            horizontal: AppSpacing.md,
+            vertical: AppSpacing.sm,
           ),
           child: Column(
             children: [
@@ -79,8 +80,8 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                   currentIndex: currentPage,
                 ),
               ),
-              const SizedBox(height: AppSpacing.space4),
-              const SizedBox(height: AppSpacing.space5),
+              const SizedBox(height: AppSpacing.md),
+              const SizedBox(height: AppSpacing.md),
               Expanded(
                 child: PageView.builder(
                   controller: _pageController,
@@ -90,10 +91,10 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                     final OnboardingSlide slide = onboardingSlides[index];
 
                     return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      padding: AppSpacing.paddingMd,
                       child: Column(
                         children: [
-                          const SizedBox(height: 8),
+                           SizedBox(height: AppSpacing.md),
                           Expanded(
                             flex: 5,
                             child: Center(
@@ -122,7 +123,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                                     ),
                                   ),
                                 ),
-                                const SizedBox(height: AppSpacing.space3),
+                                const SizedBox(height: AppSpacing.lg),
                                 AnimatedSwitcher(
                                   duration: const Duration(
                                     milliseconds: 280,
@@ -147,7 +148,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(bottom: AppSpacing.space3),
+                padding: const EdgeInsets.only(bottom: AppSpacing.sm),
                 child: Row(
                   children: [
                     TextButton(
@@ -159,7 +160,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                           fontWeight: FontWeight.w700,
                         ),
                       ),
-                      child: const Text('Skip'),
+                      child: const Text(AppStrings.skip),
                     ),
                     const Spacer(),
                     SizedBox(

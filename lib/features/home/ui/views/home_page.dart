@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:logistic_by_strom/core/constants/strings/app_strings.dart';
+import 'package:logistic_by_strom/core/constants/strings/home_strings.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 import '../widgets/home_app_bar.dart';
 import '../widgets/shipment_card.dart';
@@ -42,19 +44,19 @@ class HomePage extends StatelessWidget {
                       children: [
                         _buildActionGrid(),
                         const SizedBox(height: 24),
-                        const SectionHeader(title: 'Current Shipment'),
+                        const SectionHeader(title: HomeStrings.currentShipment),
                         const ShipmentCard(
                           title: 'Current',
                           id: '#HWDSF776567DS',
-                          status: 'On the way',
+                          status: HomeStrings.onTheWay,
                           date: '30 March',
                           showTimeline: true,
                         ),
-                        const SectionHeader(title: 'Recent Shipments'),
+                        const SectionHeader(title: HomeStrings.recentShipments),
                         const ShipmentCard(
                           title: 'Recent',
                           id: '#BAH99228834XL',
-                          status: 'Delivered',
+                          status: HomeStrings.delivered,
                           date: '28 March',
                         ),
                         const SizedBox(height: 100),
@@ -92,22 +94,22 @@ class HomePage extends StatelessWidget {
         children: [
           _ActionItem(
             icon: Icons.receipt_long_rounded,
-            label: 'Invoice',
+            label: HomeStrings.invoice,
             color: AppColors.error,
           ),
           _ActionItem(
             icon: Icons.timer_outlined,
-            label: 'Stand By',
+            label: HomeStrings.standBy,
             color: AppColors.secondary,
           ),
           _ActionItem(
             icon: Icons.cancel_outlined,
-            label: 'Cancelled',
+            label: HomeStrings.cancelled,
             color: AppColors.warning,
           ),
           _ActionItem(
             icon: Icons.calculate_outlined,
-            label: 'Calculator',
+            label: HomeStrings.calculator,
             color: AppColors.info,
           ),
         ],
@@ -211,7 +213,7 @@ class SectionHeader extends StatelessWidget {
             ),
           ),
           const Text(
-            'View All',
+            AppStrings.viewAll,
             style: TextStyle(
               color: AppColors.primary,
               fontWeight: FontWeight.bold,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logistic_by_strom/core/constants/strings/app_strings.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 
 class HomeAppBar extends StatelessWidget {
@@ -42,7 +43,7 @@ class HomeAppBar extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Logistic',
+              AppStrings.logistic,
               style: TextStyle(
                 color: AppColors.white,
                 fontWeight: FontWeight.w800,
@@ -50,7 +51,7 @@ class HomeAppBar extends StatelessWidget {
               ),
             ),
             Text(
-              'Systems',
+              AppStrings.systems,
               style: TextStyle(
                 color: AppColors.white,
                 fontSize: 12,
