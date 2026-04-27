@@ -4,7 +4,14 @@ import 'package:logistic_by_strom/core/theme/app_colors.dart';
 /// Bottom navigation bar with a notched FAB slot in the center.
 /// Tabs: Home | Order | [FAB] | Support | Account
 class HomeBottomNav extends StatelessWidget {
-  const HomeBottomNav({super.key});
+  final int currentIndex;
+  final ValueChanged<int> onTap;
+
+  const HomeBottomNav({
+    super.key,
+    required this.currentIndex,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,25 +28,28 @@ class HomeBottomNav extends StatelessWidget {
           _NavItem(
             icon: Icons.home_filled,
             label: 'Home',
-            isActive: true,
-            onTap: () {},
+            isActive: currentIndex == 0,
+            onTap: () => onTap(0),
           ),
           _NavItem(
             icon: Icons.local_shipping_outlined,
             label: 'Order',
-            onTap: () {},
+            isActive: currentIndex == 1,
+            onTap: () => onTap(1),
           ),
-          // FAB spacer
+          // FAB spacer for the notch
           const SizedBox(width: 48),
           _NavItem(
             icon: Icons.headset_mic_outlined,
             label: 'Support',
-            onTap: () {},
+            isActive: currentIndex == 2,
+            onTap: () => onTap(2),
           ),
           _NavItem(
             icon: Icons.person_2_outlined,
             label: 'Account',
-            onTap: () {},
+            isActive: currentIndex == 3,
+            onTap: () => onTap(3),
           ),
         ],
       ),

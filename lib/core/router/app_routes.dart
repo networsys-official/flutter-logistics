@@ -5,6 +5,8 @@ class AppRoutes {
   static const String onboarding = '/onboarding';
   static const String home = '/';
   static const String shipments = '/shipments';
+  static const String support = '/support';
+  static const String account = '/account';
   static const String settings = '/settings';
   static const String login = '/login';
   static const String register = '/register';
@@ -13,16 +15,14 @@ class AppRoutes {
   static const List<String> bottomNavLocations = [
     home,
     shipments,
-    settings,
+    support,
+    account,
   ];
 
   static int indexFromLocation(String location) {
-    if (location.startsWith(shipments)) {
-      return 1;
-    }
-    if (location.startsWith(settings)) {
-      return 2;
-    }
+    if (location.startsWith(shipments)) return 1;
+    if (location.startsWith(support)) return 2;
+    if (location.startsWith(account)) return 3;
     return 0;
   }
 }

@@ -8,6 +8,8 @@ import 'package:logistic_by_strom/features/auth/ui/views/otp_page.dart';
 import 'package:logistic_by_strom/features/home/ui/views/home_page.dart';
 import 'package:logistic_by_strom/features/onboarding/ui/views/onboarding_page.dart';
 import 'package:logistic_by_strom/features/onboarding/ui/views/splash_page.dart';
+import 'package:logistic_by_strom/features/accounts/ui/views/account_page.dart';
+import 'package:logistic_by_strom/features/shipments/ui/views/shipments_page.dart';
 import 'package:logistic_by_strom/shared/widgets/app_shell_scaffold.dart';
 
 class AppRouter {
@@ -51,10 +53,20 @@ class AppRouter {
             builder: (context, state) =>
                 const Scaffold(body: Center(child: HomePage())),
           ),
-          // GoRoute(
-          //   path: AppRoutes.shipments,
-          //   builder: (context, state) => const ShipmentsPage(),
-          // ),
+          GoRoute(
+            path: AppRoutes.account,
+            builder: (context, state) => const AccountPage(),
+          ),
+          GoRoute(
+            path: AppRoutes.shipments,
+            builder: (context, state) => const ShipmentsPage(),
+          ),
+          GoRoute(
+            path: AppRoutes.support,
+            builder: (context, state) => const Scaffold(
+              body: Center(child: Text('Support Page')),
+            ),
+          ),
           // GoRoute(
           //   path: AppRoutes.settings,
           //   builder: (context, state) => const SettingsPage(),
