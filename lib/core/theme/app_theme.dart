@@ -25,16 +25,12 @@ class AppTheme {
     appBarTheme: AppBarTheme(
       elevation: 0,
       centerTitle: false,
-      backgroundColor: AppColors.primary,
-      foregroundColor: AppColors.primary,
+      backgroundColor: Colors.transparent,
+      foregroundColor: Colors.transparent,
       titleTextStyle: GoogleFonts.plusJakartaSans(
         fontSize: 18,
         fontWeight: FontWeight.w700,
         color: AppColors.neutral900,
-      ),
-      systemOverlayStyle: SystemUiOverlayStyle(
-        statusBarColor: AppColors.primary,
-        statusBarIconBrightness: Brightness.light,
       ),
     ),
     cardTheme: CardThemeData(

@@ -6,6 +6,7 @@ import 'package:logistic_by_strom/core/constants/strings/auth_strings.dart';
 import 'package:logistic_by_strom/core/constants/strings/error_strings.dart';
 import 'package:logistic_by_strom/core/router/app_routes.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
+import 'package:logistic_by_strom/core/theme/app_spacing.dart';
 
 import 'package:logistic_by_strom/core/utils/validators.dart';
 import 'package:logistic_by_strom/features/auth/data/delivery_zones.dart';
@@ -175,7 +176,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const AuthLogoHeader(title: AuthStrings.signUpTitle),
-            const SizedBox(height: 18),
+            SizedBox(height: AppSpacing.md),
             Text(
               _currentStep == 0 ? AuthStrings.step1of2 : AuthStrings.step2of2,
               style: textTheme.bodyMedium?.copyWith(
@@ -183,7 +184,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                 fontWeight: FontWeight.w700,
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: AppSpacing.md),
             LinearProgressIndicator(
               value: _currentStep == 0 ? 0.5 : 1,
               backgroundColor: AppColors.primary.withValues(alpha: 0.16),
@@ -222,7 +223,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                     setState(() => _acceptedTerms = v ?? false),
                 textTheme: textTheme,
               ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.md),
             if (_currentStep == 0)
               ElevatedButton(
                 onPressed: _goToNextStep,
@@ -233,8 +234,8 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                 onPressed: _isRegistering ? null : _submit,
                 child: _isRegistering
                     ? const SizedBox(
-                        height: 20,
-                        width: 20,
+                        height: AppSpacing.lg,
+                        width: AppSpacing.lg,
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
                           color: Colors.white,
@@ -242,13 +243,13 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                       )
                     : const Text(AuthStrings.signUpButton),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.sm),
               OutlinedButton(
                 onPressed: () => setState(() => _currentStep = 0),
                 child: const Text(AppStrings.back),
               ),
             ],
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSpacing.md),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -303,7 +304,7 @@ class _StepOne extends StatelessWidget {
           textInputAction: TextInputAction.next,
           validator: (value) => Validators.required(value, AuthStrings.firstName),
         ),
-        const SizedBox(height: 22),
+        const SizedBox(height: AppSpacing.lg),
         AuthTextField(
           label: AuthStrings.surname,
           hintText: AuthStrings.surnameHint,
@@ -311,7 +312,7 @@ class _StepOne extends StatelessWidget {
           textInputAction: TextInputAction.next,
           validator: (value) => Validators.required(value, AuthStrings.surname),
         ),
-        const SizedBox(height: 22),
+        const SizedBox(height: AppSpacing.lg),
         AuthTextField(
           label: AuthStrings.emailAddress,
           hintText: AuthStrings.emailAddressHint,
@@ -320,7 +321,7 @@ class _StepOne extends StatelessWidget {
           textInputAction: TextInputAction.next,
           validator: Validators.email,
         ),
-        const SizedBox(height: 22),
+        const SizedBox(height: AppSpacing.lg),
         AppDropdownField<int>(
           label: AuthStrings.country,
           hintText: AuthStrings.countryHint,
@@ -330,7 +331,7 @@ class _StepOne extends StatelessWidget {
               _countries.firstWhere((country) => country.id == id).name,
           onChanged: null,
         ),
-        const SizedBox(height: 22),
+        const SizedBox(height: AppSpacing.lg),
         AppDropdownField<DeliveryZone>(
           label: AuthStrings.deliveryZone,
           hintText: AuthStrings.deliveryZoneHint,
@@ -339,7 +340,7 @@ class _StepOne extends StatelessWidget {
           itemLabelBuilder: (zone) => zone.label,
           onChanged: onDeliveryZoneChanged,
         ),
-        const SizedBox(height: 22),
+        const SizedBox(height: AppSpacing.lg),
         AuthTextField(
           label: AuthStrings.streetAddress,
           hintText: AuthStrings.streetAddressHint,
@@ -390,7 +391,7 @@ class _StepTwo extends StatelessWidget {
           textInputAction: TextInputAction.next,
           validator: Validators.mobile,
         ),
-        const SizedBox(height: 22),
+        const SizedBox(height: AppSpacing.lg),
         AuthTextField(
           label: AuthStrings.password,
           hintText: AuthStrings.passwordHint,
@@ -407,7 +408,7 @@ class _StepTwo extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 22),
+        const SizedBox(height: AppSpacing.lg),
         AuthTextField(
           label: AuthStrings.confirmPassword,
           hintText: AuthStrings.confirmPasswordHint,
@@ -425,17 +426,17 @@ class _StepTwo extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 18),
+        const SizedBox(height: AppSpacing.md),
         InkWell(
           onTap: () => onTermsChanged(!acceptedTerms),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Checkbox(value: acceptedTerms, onChanged: onTermsChanged),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 14),
+                  padding: const EdgeInsets.only(top: AppSpacing.md),
                   child: Text(
                     AuthStrings.acceptTerms,
                     style: textTheme.bodyMedium?.copyWith(
