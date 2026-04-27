@@ -11,19 +11,19 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.light,
-        statusBarBrightness: Brightness.dark,
-      ),
-      child: Scaffold(
-        backgroundColor: AppColors.neutral100,
-        body: Stack(
+    return Scaffold(
+      backgroundColor: AppColors.neutral100,
+      body: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: const SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.light, // For Android
+          statusBarBrightness: Brightness.dark, // For iOS
+        ),
+        child: Stack(
           children: [
-            // Modern Header Background
+            // Modern Header Background - extended to top
             Container(
-              height: 260,
+              height: 280, // Increased height to account for status bar
               decoration: const BoxDecoration(
                 color: AppColors.primary,
                 borderRadius: BorderRadius.only(
@@ -68,10 +68,10 @@ class HomePage extends StatelessWidget {
             ),
           ],
         ),
-        floatingActionButton: _buildFAB(),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        bottomNavigationBar: _buildBottomNav(),
       ),
+      floatingActionButton: _buildFAB(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: _buildBottomNav(),
     );
   }
 

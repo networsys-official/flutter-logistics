@@ -155,20 +155,20 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     final textTheme = Theme.of(context).textTheme;
 
     return AuthShell(
-      appBar: AppBar(
-        backgroundColor: AppColors.white,
-        scrolledUnderElevation: 0,
-        leading: IconButton(
-          onPressed: () {
-            if (_currentStep == 1) {
-              setState(() => _currentStep = 0);
-              return;
-            }
-            context.go(AppRoutes.login);
-          },
-          icon: const Icon(Icons.arrow_back_ios_new_rounded),
-        ),
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: AppColors.white,
+      //   scrolledUnderElevation: 0,
+      //   leading: IconButton(
+      //     onPressed: () {
+      //       if (_currentStep == 1) {
+      //         setState(() => _currentStep = 0);
+      //         return;
+      //       }
+      //       context.go(AppRoutes.login);
+      //     },
+      //     icon: const Icon(Icons.arrow_back_ios_new_rounded),
+      //   ),
+      // ),
       child: Form(
         key: _formKey,
         child: Column(
