@@ -15,8 +15,11 @@ import 'package:logistic_by_strom/shared/widgets/app_shell_scaffold.dart';
 class AppRouter {
   AppRouter._();
 
+  static final _rootNavigatorKey = GlobalKey<NavigatorState>();
+
   static final GoRouter router = GoRouter(
     initialLocation: AppRoutes.splash,
+    navigatorKey: _rootNavigatorKey,
     routes: [
       GoRoute(
         path: AppRoutes.splash,
@@ -45,32 +48,51 @@ class AppRouter {
           );
         },
       ),
-      ShellRoute(
-        builder: (context, state, child) => AppShellScaffold(child: child),
-        routes: [
-          GoRoute(
-            path: AppRoutes.home,
-            builder: (context, state) =>
-                const Scaffold(body: Center(child: HomePage())),
+      
+      // Stateful Navigation Shell for preserved tab states
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) {
+          return AppShellScaffold(navigationShell: navigationShell);
+        },
+        branches: [
+          // Home Branch
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.home,
+                builder: (context, state) => const HomePage(),
+              ),
+            ],
           ),
-          GoRoute(
-            path: AppRoutes.account,
-            builder: (context, state) => const AccountPage(),
+          // Shipments Branch
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.shipments,
+                builder: (context, state) => const ShipmentsPage(),
+              ),
+            ],
           ),
-          GoRoute(
-            path: AppRoutes.shipments,
-            builder: (context, state) => const ShipmentsPage(),
+          // Support Branch
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.support,
+                builder: (context, state) => const Scaffold(
+                  body: Center(child: Text('Support Page')),
+                ),
+              ),
+            ],
           ),
-          GoRoute(
-            path: AppRoutes.support,
-            builder: (context, state) => const Scaffold(
-              body: Center(child: Text('Support Page')),
-            ),
+          // Account Branch
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: AppRoutes.account,
+                builder: (context, state) => const AccountPage(),
+              ),
+            ],
           ),
-          // GoRoute(
-          //   path: AppRoutes.settings,
-          //   builder: (context, state) => const SettingsPage(),
-          // ),
         ],
       ),
     ],

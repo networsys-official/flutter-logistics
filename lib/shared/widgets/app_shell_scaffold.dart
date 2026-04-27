@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:logistic_by_strom/core/router/app_routes.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
-import 'package:logistic_by_strom/features/home/ui/widgets/home_bottom_nav.dart';
+import 'package:logistic_by_strom/shared/widgets/app_bottom_nav.dart';
 
 class AppShellScaffold extends StatelessWidget {
-  const AppShellScaffold({required this.child, super.key});
+  const AppShellScaffold({required this.navigationShell, super.key});
 
-  final Widget child;
+  /// The navigation shell and container for the branch Navigators.
+  final StatefulNavigationShell navigationShell;
 
   @override
   Widget build(BuildContext context) {
-    final location = GoRouterState.of(context).uri.path;
-    final currentIndex = AppRoutes.indexFromLocation(location);
-
     return Scaffold(
-      body: SafeArea(child: child),
+
+      body: navigationShell,
+      extendBody: true,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -25,12 +24,18 @@ class AppShellScaffold extends StatelessWidget {
         shape: const CircleBorder(),
         child: const Icon(Icons.add, color: AppColors.white),
       ),
-      bottomNavigationBar: HomeBottomNav(
-        currentIndex: currentIndex,
-        onTap: (index) {
-          context.go(AppRoutes.bottomNavLocations[index]);
-        },
+      bottomNavigationBar: AppBottomNav(
+        currentIndex: navigationShell.currentIndex,
+        onTap: (index) => _onTap(context, index),
       ),
+    );
+  }
+
+  void _onTap(BuildContext context, int index) {
+
+    navigationShell.goBranch(
+      index,
+      initialLocation: index == navigationShell.currentIndex,
     );
   }
 }

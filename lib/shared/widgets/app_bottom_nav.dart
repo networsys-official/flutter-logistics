@@ -3,11 +3,11 @@ import 'package:logistic_by_strom/core/theme/app_colors.dart';
 
 /// Bottom navigation bar with a notched FAB slot in the center.
 /// Tabs: Home | Order | [FAB] | Support | Account
-class HomeBottomNav extends StatelessWidget {
+class AppBottomNav extends StatelessWidget {
   final int currentIndex;
   final ValueChanged<int> onTap;
 
-  const HomeBottomNav({
+  const AppBottomNav({
     super.key,
     required this.currentIndex,
     required this.onTap,
@@ -33,7 +33,7 @@ class HomeBottomNav extends StatelessWidget {
           ),
           _NavItem(
             icon: Icons.local_shipping_outlined,
-            label: 'Order',
+            label: 'Shipment',
             isActive: currentIndex == 1,
             onTap: () => onTap(1),
           ),
