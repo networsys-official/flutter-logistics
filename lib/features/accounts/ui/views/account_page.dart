@@ -14,34 +14,10 @@ class AccountPage extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.neutral100,
-      body: CustomScrollView(
-        slivers: [
-          _buildAppBar(context),
-          SliverToBoxAdapter(
-            child: accountState.when(
-              data: (profile) => _buildBody(context, ref, profile),
-              loading: () => const Center(
-                child: Padding(
-                  padding: EdgeInsets.all(32.0),
-                  child: CircularProgressIndicator(),
-                ),
-              ),
-              error: (e, _) => Center(child: Text('Error: $e')),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildAppBar(BuildContext context) {
-    return SliverAppBar(
-      expandedHeight: 120.0,
-      floating: false,
-      pinned: true,
-      backgroundColor: AppColors.white,
-      elevation: 0,
-      flexibleSpace: FlexibleSpaceBar(
+      appBar: AppBar(
+        backgroundColor: AppColors.white,
+        elevation: 0,
+        centerTitle: false,
         title: Text(
           AccountStrings.accountTitle,
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -49,15 +25,23 @@ class AccountPage extends ConsumerWidget {
                 fontWeight: FontWeight.bold,
               ),
         ),
-        titlePadding: const EdgeInsets.only(left: 20, bottom: 16),
-        centerTitle: false,
+      ),
+      body: accountState.when(
+        data: (profile) => SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: _buildBody(context, ref, profile),
+        ),
+        loading: () => const Center(
+          child: CircularProgressIndicator(),
+        ),
+        error: (e, _) => Center(child: Text('Error: $e')),
       ),
     );
   }
 
   Widget _buildBody(BuildContext context, WidgetRef ref, UserProfile? profile) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -112,7 +96,7 @@ class AccountPage extends ConsumerWidget {
           ),
           const SizedBox(height: 32),
           _buildLogoutButton(context),
-          const SizedBox(height: 40),
+          const SizedBox(height: 80), // Extra space for bottom nav & FAB
         ],
       ),
     );
