@@ -1,7 +1,7 @@
 import 'package:logistic_by_strom/core/network/api_client.dart';
 import 'package:logistic_by_strom/core/network/api_endpoints.dart';
 import 'package:logistic_by_strom/core/network/api_exceptions.dart';
-import 'package:logistic_by_strom/features/auth/data/models/auth_state.dart';
+import 'package:logistic_by_strom/shared/data/models/auth_state.dart';
 import 'package:logistic_by_strom/features/auth/data/models/registration_response.dart';
 
 class AuthRepository {

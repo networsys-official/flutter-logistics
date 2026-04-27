@@ -3,8 +3,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:logistic_by_strom/core/network/api_client.dart';
 import 'package:logistic_by_strom/core/services/storage_service.dart';
-import 'package:logistic_by_strom/features/auth/data/auth_repository.dart';
-import 'package:logistic_by_strom/features/auth/data/models/auth_state.dart';
+import 'package:logistic_by_strom/shared/data/repositories/auth_repository.dart';
+import 'package:logistic_by_strom/shared/data/models/auth_state.dart';
 import 'package:logistic_by_strom/features/auth/data/models/registration_response.dart';
 
 part 'auth_view_model.g.dart';
