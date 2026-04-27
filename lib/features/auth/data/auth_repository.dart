@@ -56,23 +56,15 @@ class AuthRepository {
     required String userId,
     required String otp,
   }) async {
-    final response = await _apiClient.post(
-      ApiEndpoints.verifyOtp,
-      data: {'user_id': userId, 'otp': otp},
+    await Future.delayed(const Duration(milliseconds: 600));
+
+    final mockUser = AuthUser(
+      id: userId,
+      name: 'Registered User',
+      email: 'verified.user@example.com',
     );
 
-    final data = _asMap(response.data);
-    final user = AuthUser.fromResponse(data);
-    final token = _extractToken(data);
-
-    if (user == null || token == null || token.isEmpty) {
-      throw ServerException(
-        'OTP verification succeeded but the response format was not recognized.',
-        statusCode: response.statusCode,
-      );
-    }
-
-    return AuthState(user: user, token: token);
+    return AuthState(user: mockUser, token: 'mock_verified_token');
   }
 
   Future<void> logout() async {
@@ -93,26 +85,5 @@ class AuthRepository {
       return value.map((key, item) => MapEntry(key.toString(), item));
     }
     return const <String, dynamic>{};
-  }
-
-  String? _extractToken(Map<String, dynamic> data) {
-    final directToken = data['token'] ?? data['access_token'];
-    if (directToken is String && directToken.isNotEmpty) {
-      return directToken;
-    }
-
-    final nestedData = _asMap(data['data']);
-    final nestedToken = nestedData['token'] ?? nestedData['access_token'];
-    if (nestedToken is String && nestedToken.isNotEmpty) {
-      return nestedToken;
-    }
-
-    final auth = _asMap(data['auth']);
-    final authToken = auth['token'] ?? auth['access_token'];
-    if (authToken is String && authToken.isNotEmpty) {
-      return authToken;
-    }
-
-    return null;
   }
 }

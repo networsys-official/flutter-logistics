@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:logistic_by_strom/app/app.dart';
+import 'package:logistic_by_strom/app.dart';
 
 void main() {
   testWidgets('boots routed MVVM shell', (tester) async {

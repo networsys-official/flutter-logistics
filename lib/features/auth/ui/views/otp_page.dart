@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:logistic_by_strom/app/router/app_routes.dart';
-import 'package:logistic_by_strom/app/theme/app_colors.dart';
+
+import 'package:logistic_by_strom/core/router/app_routes.dart';
+import 'package:logistic_by_strom/core/theme/app_colors.dart';
 import 'package:logistic_by_strom/features/auth/ui/view_models/auth_view_model.dart';
 import 'package:logistic_by_strom/features/auth/ui/widgets/auth_logo_header.dart';
 import 'package:logistic_by_strom/features/auth/ui/widgets/auth_shell.dart';
@@ -51,19 +52,19 @@ class _OtpPageState extends ConsumerState<OtpPage> {
       );
     });
 
-    final subtitle = widget.email != null && widget.email!.isNotEmpty
-        ? 'OTP has been sent to ${widget.email}'
-        : widget.phone != null && widget.phone!.isNotEmpty
-        ? 'OTP has been sent to ${widget.phone}'
-        : 'Enter the OTP sent to your registered account';
+    final subtitle = 'Enter the OTP sent to your registered account';
 
     return AuthShell(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
+
         children: [
           AuthLogoHeader(title: 'OTP Verification', subtitle: subtitle),
           const SizedBox(height: 48),
-          OtpInput(onChanged: (code) => setState(() => _otpCode = code)),
+          OtpInput(
+            fieldHeight: 120,
+            onChanged: (code) => setState(() => _otpCode = code),
+          ),
           const SizedBox(height: 32),
           Center(
             child: OtpTimer(

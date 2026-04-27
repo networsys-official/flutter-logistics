@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:logistic_by_strom/core/router/app_routes.dart';
+import 'package:logistic_by_strom/core/theme/app_colors.dart';
 
-import 'package:logistic_by_strom/app/router/app_routes.dart';
-import 'package:logistic_by_strom/app/theme/app_colors.dart';
-import 'package:logistic_by_strom/app/widgets/app_dropdown_field.dart';
 import 'package:logistic_by_strom/core/utils/validators.dart';
 import 'package:logistic_by_strom/features/auth/data/delivery_zones.dart';
 import 'package:logistic_by_strom/features/auth/data/models/delivery_zone.dart';
@@ -13,6 +12,7 @@ import 'package:logistic_by_strom/features/auth/ui/view_models/auth_view_model.d
 import 'package:logistic_by_strom/features/auth/ui/widgets/auth_logo_header.dart';
 import 'package:logistic_by_strom/features/auth/ui/widgets/auth_shell.dart';
 import 'package:logistic_by_strom/features/auth/ui/widgets/auth_text_field.dart';
+import 'package:logistic_by_strom/shared/widgets/app_dropdown_field.dart';
 
 const _countries = [(id: 1, name: 'Bahamas')];
 

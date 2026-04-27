@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:logistic_by_strom/app/theme/app_colors.dart';
+import 'package:logistic_by_strom/core/theme/app_colors.dart';
 
 class ShipmentCard extends StatelessWidget {
   final String title;

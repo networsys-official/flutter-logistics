@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:logistic_by_strom/app/router/app_routes.dart';
-import 'package:logistic_by_strom/app/widgets/app_shell_scaffold.dart';
+import 'package:logistic_by_strom/core/router/app_routes.dart';
 import 'package:logistic_by_strom/features/auth/ui/views/login_page.dart';
 import 'package:logistic_by_strom/features/auth/ui/views/register_page.dart';
 import 'package:logistic_by_strom/features/auth/ui/views/otp_page.dart';
 import 'package:logistic_by_strom/features/home/ui/views/home_page.dart';
 import 'package:logistic_by_strom/features/onboarding/ui/views/onboarding_page.dart';
 import 'package:logistic_by_strom/features/onboarding/ui/views/splash_page.dart';
+import 'package:logistic_by_strom/shared/widgets/app_shell_scaffold.dart';
 
 class AppRouter {
   AppRouter._();
