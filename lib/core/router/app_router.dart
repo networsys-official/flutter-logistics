@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:logistic_by_strom/core/router/app_routes.dart';
+import 'package:logistic_by_strom/features/auth/ui/view_models/auth_view_model.dart';
 import 'package:logistic_by_strom/features/auth/ui/views/login_page.dart';
 import 'package:logistic_by_strom/features/auth/ui/views/register_page.dart';
 import 'package:logistic_by_strom/features/auth/ui/views/otp_page.dart';
@@ -12,14 +14,39 @@ import 'package:logistic_by_strom/features/accounts/ui/views/account_page.dart';
 import 'package:logistic_by_strom/features/shipments/ui/views/shipments_page.dart';
 import 'package:logistic_by_strom/shared/widgets/app_shell_scaffold.dart';
 
-class AppRouter {
-  AppRouter._();
+part 'app_router.g.dart';
 
-  static final _rootNavigatorKey = GlobalKey<NavigatorState>();
+@riverpod
+GoRouter appRouter(Ref ref) {
+  final authState = ref.watch(authViewModelProvider);
+  final rootNavigatorKey = GlobalKey<NavigatorState>();
 
-  static final GoRouter router = GoRouter(
+  return GoRouter(
     initialLocation: AppRoutes.splash,
-    navigatorKey: _rootNavigatorKey,
+    navigatorKey: rootNavigatorKey,
+    // Redirect logic based on Auth State
+    redirect: (context, state) {
+      final isLoading = authState.isLoading;
+      final isLoggedIn = authState.value?.isLoggedIn ?? false;
+      
+      final isLoggingIn = state.uri.path == AppRoutes.login || 
+                          state.uri.path == AppRoutes.register ||
+                          state.uri.path == AppRoutes.otp;
+      final isSplash = state.uri.path == AppRoutes.splash;
+      final isOnboarding = state.uri.path == AppRoutes.onboarding;
+
+      if (isLoading || isSplash) return null;
+
+      if (!isLoggedIn) {
+        // If not logged in and not on an auth page, go to login
+        return isLoggingIn || isOnboarding ? null : AppRoutes.login;
+      }
+
+      // If logged in and trying to go to login, go home
+      if (isLoggedIn && isLoggingIn) return AppRoutes.home;
+
+      return null;
+    },
     routes: [
       GoRoute(
         path: AppRoutes.splash,
@@ -48,14 +75,11 @@ class AppRouter {
           );
         },
       ),
-      
-      // Stateful Navigation Shell for preserved tab states
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           return AppShellScaffold(navigationShell: navigationShell);
         },
         branches: [
-          // Home Branch
           StatefulShellBranch(
             routes: [
               GoRoute(
@@ -64,7 +88,6 @@ class AppRouter {
               ),
             ],
           ),
-          // Shipments Branch
           StatefulShellBranch(
             routes: [
               GoRoute(
@@ -73,7 +96,6 @@ class AppRouter {
               ),
             ],
           ),
-          // Support Branch
           StatefulShellBranch(
             routes: [
               GoRoute(
@@ -84,7 +106,6 @@ class AppRouter {
               ),
             ],
           ),
-          // Account Branch
           StatefulShellBranch(
             routes: [
               GoRoute(

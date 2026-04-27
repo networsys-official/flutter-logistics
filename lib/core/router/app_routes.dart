@@ -12,7 +12,7 @@ class AppRoutes {
   static const String register = '/register';
   static const String otp = '/otp';
 
-  // These are now handled as branches in AppRouter
+  // Order must match StatefulShellRoute branches in AppRouter
   static const List<String> bottomNavLocations = [
     home,
     shipments,

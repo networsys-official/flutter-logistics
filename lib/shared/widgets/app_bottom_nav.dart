@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:logistic_by_strom/core/constants/enums/app_tabs.dart';
+import 'package:logistic_by_strom/core/constants/strings/menu_strings.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 
-/// Bottom navigation bar with a notched FAB slot in the center.
-/// Tabs: Home | Order | [FAB] | Support | Account
 class AppBottomNav extends StatelessWidget {
   final int currentIndex;
   final ValueChanged<int> onTap;
@@ -12,6 +13,11 @@ class AppBottomNav extends StatelessWidget {
     required this.currentIndex,
     required this.onTap,
   });
+
+  void _handleTap(int index) {
+    HapticFeedback.lightImpact();
+    onTap(index);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,29 +33,28 @@ class AppBottomNav extends StatelessWidget {
         children: [
           _NavItem(
             icon: Icons.home_filled,
-            label: 'Home',
-            isActive: currentIndex == 0,
-            onTap: () => onTap(0),
+            label: MenuStrings.home,
+            isActive: currentIndex == AppTab.home.index,
+            onTap: () => _handleTap(AppTab.home.index),
           ),
           _NavItem(
             icon: Icons.local_shipping_outlined,
-            label: 'Shipment',
-            isActive: currentIndex == 1,
-            onTap: () => onTap(1),
+            label: MenuStrings.shipping,
+            isActive: currentIndex == AppTab.shipments.index,
+            onTap: () => _handleTap(AppTab.shipments.index),
           ),
-          // FAB spacer for the notch
-          const SizedBox(width: 48),
+          const SizedBox(width: 48), // FAB Spacer
           _NavItem(
             icon: Icons.headset_mic_outlined,
-            label: 'Support',
-            isActive: currentIndex == 2,
-            onTap: () => onTap(2),
+            label: MenuStrings.support,
+            isActive: currentIndex == AppTab.support.index,
+            onTap: () => _handleTap(AppTab.support.index),
           ),
           _NavItem(
             icon: Icons.person_2_outlined,
-            label: 'Account',
-            isActive: currentIndex == 3,
-            onTap: () => onTap(3),
+            label: MenuStrings.profile,
+            isActive: currentIndex == AppTab.account.index,
+            onTap: () => _handleTap(AppTab.account.index),
           ),
         ],
       ),
@@ -73,23 +78,29 @@ class _NavItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = isActive ? AppColors.primary : AppColors.neutral500;
-    return GestureDetector(
-      onTap: onTap,
-      behavior: HitTestBehavior.opaque,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, color: color, size: 24),
-          const SizedBox(height: 3),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 11,
-              fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
-              color: color,
+    
+    return Semantics(
+      label: label,
+      selected: isActive,
+      button: true,
+      child: GestureDetector(
+        onTap: onTap,
+        behavior: HitTestBehavior.opaque,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, color: color, size: 24),
+            const SizedBox(height: 3),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
+                color: color,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
