@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:logistic_by_strom/core/constants/strings/app_strings.dart';
+import 'package:logistic_by_strom/core/constants/strings/auth_strings.dart';
+import 'package:logistic_by_strom/core/constants/strings/error_strings.dart';
 import 'package:logistic_by_strom/core/router/app_routes.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 
@@ -72,7 +75,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
-            'Accept Terms & Conditions & Privacy Policy to continue',
+            AuthStrings.acceptTermsError,
           ),
         ),
       );
@@ -98,7 +101,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
 
       final message =
           response.message ??
-          'Registration successful. Continue with OTP verification.';
+          AuthStrings.registrationSuccess;
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(message)));
@@ -114,7 +117,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
       if (!mounted) return;
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('Registration Failed: $e')));
+      ).showSnackBar(SnackBar(content: Text('${ErrorStrings.registrationFailed}$e')));
     } finally {
       if (mounted) {
         setState(() => _isRegistering = false);
@@ -171,10 +174,10 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const AuthLogoHeader(title: 'SIGN UP'),
+            const AuthLogoHeader(title: AuthStrings.signUpTitle),
             const SizedBox(height: 18),
             Text(
-              _currentStep == 0 ? 'Step 1 of 2' : 'Step 2 of 2',
+              _currentStep == 0 ? AuthStrings.step1of2 : AuthStrings.step2of2,
               style: textTheme.bodyMedium?.copyWith(
                 color: AppColors.primary,
                 fontWeight: FontWeight.w700,
@@ -223,7 +226,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
             if (_currentStep == 0)
               ElevatedButton(
                 onPressed: _goToNextStep,
-                child: const Text('NEXT'),
+                child: const Text(AppStrings.next),
               ),
             if (_currentStep == 1) ...[
               ElevatedButton(
@@ -237,23 +240,23 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                           color: Colors.white,
                         ),
                       )
-                    : const Text('SIGN UP'),
+                    : const Text(AuthStrings.signUpButton),
               ),
               const SizedBox(height: 12),
               OutlinedButton(
                 onPressed: () => setState(() => _currentStep = 0),
-                child: const Text('BACK'),
+                child: const Text(AppStrings.back),
               ),
             ],
             const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Already have an account ? ', style: textTheme.bodyMedium),
+                Text(AuthStrings.alreadyHaveAccount, style: textTheme.bodyMedium),
                 GestureDetector(
                   onTap: () => context.go(AppRoutes.login),
                   child: Text(
-                    'Log In',
+                    AuthStrings.logIn,
                     style: textTheme.bodyMedium?.copyWith(
                       color: AppColors.primary,
                       fontWeight: FontWeight.w800,
@@ -294,24 +297,24 @@ class _StepOne extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         AuthTextField(
-          label: 'First Name',
-          hintText: 'Enter first name',
+          label: AuthStrings.firstName,
+          hintText: AuthStrings.firstNameHint,
           controller: firstNameController,
           textInputAction: TextInputAction.next,
-          validator: (value) => Validators.required(value, 'First name'),
+          validator: (value) => Validators.required(value, AuthStrings.firstName),
         ),
         const SizedBox(height: 22),
         AuthTextField(
-          label: 'Surname',
-          hintText: 'Enter surname',
+          label: AuthStrings.surname,
+          hintText: AuthStrings.surnameHint,
           controller: surnameController,
           textInputAction: TextInputAction.next,
-          validator: (value) => Validators.required(value, 'Surname'),
+          validator: (value) => Validators.required(value, AuthStrings.surname),
         ),
         const SizedBox(height: 22),
         AuthTextField(
-          label: 'Email Address',
-          hintText: 'Enter email address',
+          label: AuthStrings.emailAddress,
+          hintText: AuthStrings.emailAddressHint,
           controller: emailController,
           keyboardType: TextInputType.emailAddress,
           textInputAction: TextInputAction.next,
@@ -319,8 +322,8 @@ class _StepOne extends StatelessWidget {
         ),
         const SizedBox(height: 22),
         AppDropdownField<int>(
-          label: 'Country',
-          hintText: 'Select country',
+          label: AuthStrings.country,
+          hintText: AuthStrings.countryHint,
           items: _countries.map((country) => country.id).toList(),
           value: selectedCountryId,
           itemLabelBuilder: (id) =>
@@ -329,8 +332,8 @@ class _StepOne extends StatelessWidget {
         ),
         const SizedBox(height: 22),
         AppDropdownField<DeliveryZone>(
-          label: 'Delivery Zone',
-          hintText: 'Select delivery zone',
+          label: AuthStrings.deliveryZone,
+          hintText: AuthStrings.deliveryZoneHint,
           items: deliveryZones,
           value: selectedDeliveryZone,
           itemLabelBuilder: (zone) => zone.label,
@@ -338,11 +341,11 @@ class _StepOne extends StatelessWidget {
         ),
         const SizedBox(height: 22),
         AuthTextField(
-          label: 'Street Address',
-          hintText: 'Enter street address',
+          label: AuthStrings.streetAddress,
+          hintText: AuthStrings.streetAddressHint,
           controller: streetAddressController,
           textInputAction: TextInputAction.next,
-          validator: (value) => Validators.required(value, 'Street address'),
+          validator: (value) => Validators.required(value, AuthStrings.streetAddress),
         ),
       ],
     );
@@ -380,8 +383,8 @@ class _StepTwo extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         AuthTextField(
-          label: 'Mobile Number',
-          hintText: 'Enter mobile number',
+          label: AuthStrings.mobileNumber,
+          hintText: AuthStrings.mobileNumberHint,
           controller: mobileController,
           keyboardType: TextInputType.phone,
           textInputAction: TextInputAction.next,
@@ -389,8 +392,8 @@ class _StepTwo extends StatelessWidget {
         ),
         const SizedBox(height: 22),
         AuthTextField(
-          label: 'Password',
-          hintText: 'Enter password',
+          label: AuthStrings.password,
+          hintText: AuthStrings.passwordHint,
           controller: passwordController,
           obscureText: obscurePassword,
           textInputAction: TextInputAction.next,
@@ -406,8 +409,8 @@ class _StepTwo extends StatelessWidget {
         ),
         const SizedBox(height: 22),
         AuthTextField(
-          label: 'Confirm Password',
-          hintText: 'Enter confirm password',
+          label: AuthStrings.confirmPassword,
+          hintText: AuthStrings.confirmPasswordHint,
           controller: confirmPasswordController,
           obscureText: obscureConfirmPassword,
           textInputAction: TextInputAction.done,
@@ -434,7 +437,7 @@ class _StepTwo extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 14),
                   child: Text(
-                    'Accept Terms & Conditions & Privacy Policy of App',
+                    AuthStrings.acceptTerms,
                     style: textTheme.bodyMedium?.copyWith(
                       color: AppColors.primary,
                       fontWeight: FontWeight.w500,

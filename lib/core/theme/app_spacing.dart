@@ -1,13 +1,31 @@
+import 'package:flutter/material.dart';
+
 class AppSpacing {
   AppSpacing._();
 
-  static const double space1 = 8;
-  static const double space2 = 12;
-  static const double space3 = 16;
-  static const double space4 = 20;
-  static const double space5 = 24;
-  static const double space6 = 32;
-  
-  static const double radiusMd = 18;
-  static const double radiusLg = 28;
+  // Padding / Margin values
+  static const double xs = 4.0;
+  static const double sm = 8.0;
+  static const double md = 16.0;
+  static const double lg = 24.0;
+  static const double xl = 32.0;
+  static const double xxl = 48.0;
+
+  // Common EdgeInsets (reusable)
+  static const EdgeInsets paddingSm = EdgeInsets.all(sm);
+  static const EdgeInsets paddingMd = EdgeInsets.all(md);
+  static const EdgeInsets paddingLg = EdgeInsets.all(lg);
+  static const EdgeInsets paddingHorizontalMd = EdgeInsets.symmetric(
+    horizontal: md,
+  );
+  static const EdgeInsets paddingVerticalMd = EdgeInsets.symmetric(
+    vertical: md,
+  );
+
+  // Border Radius
+
+  static const double radiusSm = 8.0;
+  static const double radiusMd = 12.0;
+  static const double radiusLg = 16.0;
+  static const double radiusXl = 24.0;
 }

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:logistic_by_strom/core/constants/strings/app_strings.dart';
+import 'package:logistic_by_strom/core/constants/strings/auth_strings.dart';
+import 'package:logistic_by_strom/core/constants/strings/error_strings.dart';
 
 import 'package:logistic_by_strom/core/router/app_routes.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
@@ -45,21 +48,22 @@ class _OtpPageState extends ConsumerState<OtpPage> {
         },
         error: (e, _) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('OTP Verification Failed: $e')),
+            SnackBar(content: Text('${ErrorStrings.otpVerificationFailed}$e')),
           );
         },
         loading: () {},
       );
     });
 
-    final subtitle = 'Enter the OTP sent to your registered account';
-
     return AuthShell(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
 
         children: [
-          AuthLogoHeader(title: 'OTP Verification', subtitle: subtitle),
+          const AuthLogoHeader(
+            title: AuthStrings.otpVerification,
+            subtitle: AuthStrings.otpSubtitle,
+          ),
           const SizedBox(height: 48),
           OtpInput(
             fieldHeight: 120,
@@ -69,7 +73,7 @@ class _OtpPageState extends ConsumerState<OtpPage> {
           Center(
             child: OtpTimer(
               onResend: () {
-                debugPrint('Resending OTP');
+                debugPrint(AuthStrings.resendingOtp);
               },
             ),
           ),
@@ -87,13 +91,13 @@ class _OtpPageState extends ConsumerState<OtpPage> {
                       color: Colors.white,
                     ),
                   )
-                : const Text('Verify OTP'),
+                : const Text(AuthStrings.verifyOtp),
           ),
           const SizedBox(height: 16),
           TextButton(
             onPressed: () => context.pop(),
             child: const Text(
-              'Cancel',
+              AppStrings.cancel,
               style: TextStyle(
                 color: AppColors.neutral900,
                 fontWeight: FontWeight.w500,

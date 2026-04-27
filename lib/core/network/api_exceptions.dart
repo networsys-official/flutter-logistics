@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:logistic_by_strom/core/constants/strings/error_strings.dart';
 
 /// Base class for all API exceptions
 abstract class ApiException implements Exception {
@@ -45,18 +46,18 @@ ApiException mapDioException(DioException error) {
   if (error.type == DioExceptionType.connectionTimeout ||
       error.type == DioExceptionType.receiveTimeout ||
       error.type == DioExceptionType.sendTimeout) {
-    return NetworkException('Connection timed out. Please check your network.');
+    return NetworkException(ErrorStrings.connectionTimeout);
   }
 
   if (error.type == DioExceptionType.connectionError) {
-    return NetworkException('No internet connection.');
+    return NetworkException(ErrorStrings.noInternet);
   }
 
   if (error.response != null) {
     final statusCode = error.response!.statusCode;
     final message = _extractMessage(error.response?.data) ??
         error.message ??
-        'An error occurred';
+        ErrorStrings.generalError;
 
     switch (statusCode) {
       case 400:
@@ -70,13 +71,13 @@ ApiException mapDioException(DioException error) {
       case 500:
       case 502:
       case 503:
-        return ServerException('Server error occurred.', statusCode: statusCode);
+        return ServerException(ErrorStrings.serverError, statusCode: statusCode);
       default:
         return ServerException(message, statusCode: statusCode);
     }
   }
 
-  return ServerException(error.message ?? 'Unknown error occurred.');
+  return ServerException(error.message ?? ErrorStrings.unknownError);
 }
 
 String? _extractMessage(dynamic data) {

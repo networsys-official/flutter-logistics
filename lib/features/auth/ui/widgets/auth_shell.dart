@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:logistic_by_strom/core/theme/app_colors.dart';
+
 import 'package:logistic_by_strom/core/theme/app_spacing.dart';
 
 
@@ -16,7 +16,7 @@ class AuthShell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: appBar,
       body: SafeArea(
         top: appBar == null,
@@ -26,10 +26,10 @@ class AuthShell extends StatelessWidget {
             constraints: const BoxConstraints(maxWidth: 430),
             child: SingleChildScrollView(
               padding: const EdgeInsets.fromLTRB(
-                AppSpacing.space4,
-                AppSpacing.space6,
-                AppSpacing.space4,
-                AppSpacing.space5,
+                AppSpacing.lg,
+                AppSpacing.md,
+                AppSpacing.lg,
+                AppSpacing.md,
               ),
               child: child,
             ),

@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-
 import 'package:logistic_by_strom/core/constants/app_images.dart';
 import 'package:logistic_by_strom/core/router/app_routes.dart';
-import 'package:logistic_by_strom/core/theme/app_colors.dart';
+
+import 'package:logistic_by_strom/core/theme/app_spacing.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -37,11 +37,11 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 36),
+            padding: AppSpacing.paddingHorizontalMd,
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 280),
               child: const _BrandMark(),
