@@ -4,6 +4,7 @@ import 'package:logistic_by_strom/core/constants/strings/account_strings.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 import 'package:logistic_by_strom/features/accounts/data/models/user_profile.dart';
 import 'package:logistic_by_strom/features/accounts/ui/view_models/accounts_view_model.dart';
+import 'package:logistic_by_strom/features/auth/providers/auth_provider.dart';
 
 class AccountPage extends ConsumerWidget {
   const AccountPage({super.key});
@@ -95,7 +96,7 @@ class AccountPage extends ConsumerWidget {
             onTap: () {},
           ),
           const SizedBox(height: 32),
-          _buildLogoutButton(context),
+          _buildLogoutButton(context, ref),
           const SizedBox(height: 80), // Extra space for bottom nav & FAB
         ],
       ),
@@ -217,11 +218,11 @@ class AccountPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildLogoutButton(BuildContext context) {
+  Widget _buildLogoutButton(BuildContext context, WidgetRef ref) {
     return SizedBox(
       width: double.infinity,
       child: OutlinedButton.icon(
-        onPressed: () => _showLogoutDialog(context),
+        onPressed: () => _showLogoutDialog(context, ref),
         icon: const Icon(Icons.logout, color: AppColors.error),
         label: const Text(
           AccountStrings.logout,
@@ -236,7 +237,7 @@ class AccountPage extends ConsumerWidget {
     );
   }
 
-  void _showLogoutDialog(BuildContext context) {
+  void _showLogoutDialog(BuildContext context, WidgetRef ref) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -249,7 +250,7 @@ class AccountPage extends ConsumerWidget {
           ),
           TextButton(
             onPressed: () {
-              // Handle logout logic
+              ref.read(authProvider.notifier).logout();
               Navigator.pop(context);
             },
             child: const Text(

@@ -1,14 +1,16 @@
 import 'package:logistic_by_strom/core/network/api_client.dart';
 import 'package:logistic_by_strom/core/network/api_endpoints.dart';
 import 'package:logistic_by_strom/core/network/api_exceptions.dart';
-import 'package:logistic_by_strom/shared/data/models/auth_state.dart';
+import 'package:logistic_by_strom/features/auth/data/models/auth_state.dart';
 import 'package:logistic_by_strom/features/auth/data/models/registration_response.dart';
+import 'package:logistic_by_strom/features/auth/data/repositories/auth_repository.dart';
 
-class AuthRepository {
-  AuthRepository(this._apiClient);
+class AuthRepositoryImpl implements AuthRepository {
+  AuthRepositoryImpl(this._apiClient);
 
   final ApiClient _apiClient;
 
+  @override
   Future<AuthState> login(String email, String password) async {
     await Future.delayed(const Duration(seconds: 1));
 
@@ -18,6 +20,7 @@ class AuthRepository {
     return AuthState(user: mockUser, token: mockToken);
   }
 
+  @override
   Future<RegistrationResponse> register({
     required String name,
     required String email,
@@ -52,6 +55,7 @@ class AuthRepository {
     return registrationResponse;
   }
 
+  @override
   Future<AuthState> verifyOtp({
     required String userId,
     required String otp,
@@ -67,11 +71,13 @@ class AuthRepository {
     return AuthState(user: mockUser, token: 'mock_verified_token');
   }
 
+  @override
   Future<void> logout() async {
     // Simulated API call
     await Future.delayed(const Duration(milliseconds: 500));
   }
 
+  @override
   Future<String?> refreshToken(String oldToken) async {
     // Refresh must come from the backend. Do not fabricate tokens client-side.
     return null;

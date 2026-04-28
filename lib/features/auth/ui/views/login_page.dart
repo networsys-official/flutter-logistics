@@ -8,7 +8,7 @@ import 'package:logistic_by_strom/core/theme/app_colors.dart';
 
 
 import 'package:logistic_by_strom/core/utils/validators.dart';
-import 'package:logistic_by_strom/features/auth/ui/view_models/auth_view_model.dart';
+import 'package:logistic_by_strom/features/auth/ui/view_models/login_view_model.dart';
 import 'package:logistic_by_strom/features/auth/ui/widgets/auth_logo_header.dart';
 import 'package:logistic_by_strom/features/auth/ui/widgets/auth_shell.dart';
 import 'package:logistic_by_strom/features/auth/ui/widgets/auth_text_field.dart';
@@ -36,8 +36,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   Future<void> _submit() async {
     if (_formKey.currentState?.validate() ?? false) {
-      // ✅ View just calls ViewModel — no logic here
-      await ref.read(authViewModelProvider.notifier).login(
+      await ref.read(loginViewModelProvider.notifier).login(
             _mobileController.text,
             _passwordController.text,
           );
@@ -47,20 +46,15 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final authState = ref.watch(authViewModelProvider);
+    final loginState = ref.watch(loginViewModelProvider);
 
-    // ✅ Navigation & errors via listener — not inside _submit()
-    ref.listen(authViewModelProvider, (previous, next) {
-      next.when(
-        data: (state) {
-          if (state.isLoggedIn) context.go(AppRoutes.home);
-        },
+    ref.listen(loginViewModelProvider, (previous, next) {
+      next.whenOrNull(
         error: (e, _) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('${ErrorStrings.loginFailed}$e')),
           );
         },
-        loading: () {},
       );
     });
 
@@ -118,8 +112,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             ),
             const SizedBox(height: 48),
             ElevatedButton(
-              onPressed: authState.isLoading ? null : _submit,
-              child: authState.isLoading
+              onPressed: loginState.isLoading ? null : _submit,
+              child: loginState.isLoading
                   ? const SizedBox(
                       height: 20,
                       width: 20,

@@ -5,9 +5,8 @@ import 'package:logistic_by_strom/core/constants/strings/app_strings.dart';
 import 'package:logistic_by_strom/core/constants/strings/auth_strings.dart';
 import 'package:logistic_by_strom/core/constants/strings/error_strings.dart';
 
-import 'package:logistic_by_strom/core/router/app_routes.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
-import 'package:logistic_by_strom/features/auth/ui/view_models/auth_view_model.dart';
+import 'package:logistic_by_strom/features/auth/ui/view_models/verify_otp_view_model.dart';
 import 'package:logistic_by_strom/features/auth/ui/widgets/auth_logo_header.dart';
 import 'package:logistic_by_strom/features/auth/ui/widgets/auth_shell.dart';
 import 'package:logistic_by_strom/features/auth/ui/widgets/otp_input.dart';
@@ -30,28 +29,22 @@ class _OtpPageState extends ConsumerState<OtpPage> {
   Future<void> _onVerify() async {
     if (_otpCode.length == 4) {
       await ref
-          .read(authViewModelProvider.notifier)
+          .read(verifyOtpViewModelProvider.notifier)
           .verifyOtp(userId: widget.userId, otp: _otpCode);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final authState = ref.watch(authViewModelProvider);
+    final verifyState = ref.watch(verifyOtpViewModelProvider);
 
-    ref.listen(authViewModelProvider, (previous, next) {
-      next.when(
-        data: (state) {
-          if (state.isLoggedIn) {
-            context.go(AppRoutes.home);
-          }
-        },
+    ref.listen(verifyOtpViewModelProvider, (previous, next) {
+      next.whenOrNull(
         error: (e, _) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('${ErrorStrings.otpVerificationFailed}$e')),
           );
         },
-        loading: () {},
       );
     });
 
@@ -79,10 +72,10 @@ class _OtpPageState extends ConsumerState<OtpPage> {
           ),
           const SizedBox(height: 64),
           ElevatedButton(
-            onPressed: _otpCode.length == 4 && !authState.isLoading
+            onPressed: _otpCode.length == 4 && !verifyState.isLoading
                 ? _onVerify
                 : null,
-            child: authState.isLoading
+            child: verifyState.isLoading
                 ? const SizedBox(
                     height: 20,
                     width: 20,

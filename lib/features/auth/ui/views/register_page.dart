@@ -11,8 +11,7 @@ import 'package:logistic_by_strom/core/theme/app_spacing.dart';
 import 'package:logistic_by_strom/core/utils/validators.dart';
 import 'package:logistic_by_strom/features/auth/data/delivery_zones.dart';
 import 'package:logistic_by_strom/features/auth/data/models/delivery_zone.dart';
-import 'package:logistic_by_strom/features/auth/data/models/registration_response.dart';
-import 'package:logistic_by_strom/features/auth/ui/view_models/auth_view_model.dart';
+import 'package:logistic_by_strom/features/auth/ui/view_models/register_view_model.dart';
 import 'package:logistic_by_strom/features/auth/ui/widgets/auth_logo_header.dart';
 import 'package:logistic_by_strom/features/auth/ui/widgets/auth_shell.dart';
 import 'package:logistic_by_strom/features/auth/ui/widgets/auth_text_field.dart';
@@ -40,7 +39,6 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
   int _currentStep = 0;
   final int _selectedCountryId = 1;
   DeliveryZone _selectedDeliveryZone = deliveryZones.first;
-  bool _isRegistering = false;
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
   bool _acceptedTerms = true;
@@ -83,23 +81,19 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
       return;
     }
 
-    setState(() => _isRegistering = true);
+    final response = await ref
+        .read(registerViewModelProvider.notifier)
+        .register(
+          name: _fullName,
+          email: _emailController.text,
+          phone: _mobileController.text,
+          address: _fullAddress,
+          password: _passwordController.text,
+          countryId: _selectedCountryId,
+          locationId: _selectedDeliveryZone.id,
+        );
 
-    try {
-      final RegistrationResponse response = await ref
-          .read(authViewModelProvider.notifier)
-          .register(
-            name: _fullName,
-            email: _emailController.text,
-            phone: _mobileController.text,
-            address: _fullAddress,
-            password: _passwordController.text,
-            countryId: _selectedCountryId,
-            locationId: _selectedDeliveryZone.id,
-          );
-
-      if (!mounted) return;
-
+    if (response != null && mounted) {
       final message =
           response.message ??
           AuthStrings.registrationSuccess;
@@ -114,15 +108,6 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
           'phone': _mobileController.text.trim(),
         },
       );
-    } catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('${ErrorStrings.registrationFailed}$e')));
-    } finally {
-      if (mounted) {
-        setState(() => _isRegistering = false);
-      }
     }
   }
 
@@ -154,6 +139,17 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final registerState = ref.watch(registerViewModelProvider);
+
+    ref.listen(registerViewModelProvider, (previous, next) {
+      next.whenOrNull(
+        error: (e, _) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('${ErrorStrings.registrationFailed}$e')),
+          );
+        },
+      );
+    });
 
     return AuthShell(
       // appBar: AppBar(
@@ -231,8 +227,8 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
               ),
             if (_currentStep == 1) ...[
               ElevatedButton(
-                onPressed: _isRegistering ? null : _submit,
-                child: _isRegistering
+                onPressed: registerState.isLoading ? null : _submit,
+                child: registerState.isLoading
                     ? const SizedBox(
                         height: AppSpacing.lg,
                         width: AppSpacing.lg,

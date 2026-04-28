@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:logistic_by_strom/core/router/app_routes.dart';
-import 'package:logistic_by_strom/features/auth/ui/view_models/auth_view_model.dart';
+import 'package:logistic_by_strom/features/auth/providers/auth_provider.dart';
 import 'package:logistic_by_strom/features/auth/ui/views/login_page.dart';
 import 'package:logistic_by_strom/features/auth/ui/views/register_page.dart';
 import 'package:logistic_by_strom/features/auth/ui/views/otp_page.dart';
@@ -18,7 +18,7 @@ part 'app_router.g.dart';
 
 @riverpod
 GoRouter appRouter(Ref ref) {
-  final authState = ref.watch(authViewModelProvider);
+  final authState = ref.watch(authProvider);
   final rootNavigatorKey = GlobalKey<NavigatorState>();
 
   return GoRouter(
