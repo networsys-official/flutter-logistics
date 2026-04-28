@@ -4,6 +4,7 @@ import 'package:logistic_by_strom/core/network/api_client.dart';
 import 'package:logistic_by_strom/core/services/storage_service.dart';
 import 'package:logistic_by_strom/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:logistic_by_strom/features/auth/data/repositories/auth_repository.dart';
+import 'package:logistic_by_strom/features/auth/data/models/user_model.dart';
 import 'package:logistic_by_strom/features/auth/data/models/auth_state.dart';
 
 part 'auth_provider.g.dart';
@@ -23,7 +24,7 @@ class AuthNotifier extends _$AuthNotifier {
 
     if (token != null && userJson != null) {
       try {
-        final user = AuthUser.fromJson(jsonDecode(userJson));
+        final user = UserModel.fromJson(jsonDecode(userJson));
         return AuthState(user: user, token: token);
       } catch (_) {
         await _clearStorage();

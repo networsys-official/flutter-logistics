@@ -34,7 +34,7 @@ Object? _readMessage(Map json, String key) {
 }
 
 @freezed
-abstract class RegistrationResponse with _$RegistrationResponse {
+sealed class RegistrationResponse with _$RegistrationResponse {
   const factory RegistrationResponse({
     @JsonKey(readValue: _readUserId) required String userId,
     @JsonKey(readValue: _readMessage) String? message,

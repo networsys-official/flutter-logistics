@@ -23,7 +23,8 @@ class AuthStrings {
   static const String otpVerification = 'OTP Verification';
   static const String otpSubtitle = 'Enter the OTP sent to your registered account';
   static const String verifyOtp = 'Verify OTP';
-  static const String resendingOtp = 'Resending OTP';
+  static const String resendingOtp = 'Resending OTP...';
+  static const String otpResentSuccess = 'OTP has been sent to your email';
 
   // Field Labels & Hints
   static const String mobileNumber = 'Mobile Number';

@@ -1,21 +1,18 @@
 import 'package:logistic_by_strom/features/auth/data/models/auth_state.dart';
 import 'package:logistic_by_strom/features/auth/data/models/registration_response.dart';
+import 'package:logistic_by_strom/features/auth/data/models/login_request.dart';
+import 'package:logistic_by_strom/features/auth/data/models/register_request.dart';
 
 abstract interface class AuthRepository {
-  Future<AuthState> login(String email, String password);
+  Future<AuthState> login(LoginRequest request);
   
-  Future<RegistrationResponse> register({
-    required String name,
-    required String email,
-    required String phone,
-    required String address,
-    required String password,
-    required int countryId,
-    required int locationId,
-  });
+  Future<RegistrationResponse> register(RegisterRequest request);
+
+  Future<void> sendOtp({required String identifier, required String type});
 
   Future<AuthState> verifyOtp({
-    required String userId,
+    required String identifier,
+    required String type,
     required String otp,
   });
 

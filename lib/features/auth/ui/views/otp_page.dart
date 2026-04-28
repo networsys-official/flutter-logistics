@@ -13,11 +13,14 @@ import 'package:logistic_by_strom/features/auth/ui/widgets/otp_input.dart';
 import 'package:logistic_by_strom/features/auth/ui/widgets/otp_timer.dart';
 
 class OtpPage extends ConsumerStatefulWidget {
-  const OtpPage({required this.userId, this.email, this.phone, super.key});
+  const OtpPage({
+    required this.identifier,
+    required this.type,
+    super.key,
+  });
 
-  final String userId;
-  final String? email;
-  final String? phone;
+  final String identifier;
+  final String type;
 
   @override
   ConsumerState<OtpPage> createState() => _OtpPageState();
@@ -28,9 +31,11 @@ class _OtpPageState extends ConsumerState<OtpPage> {
 
   Future<void> _onVerify() async {
     if (_otpCode.length == 4) {
-      await ref
-          .read(verifyOtpViewModelProvider.notifier)
-          .verifyOtp(userId: widget.userId, otp: _otpCode);
+      await ref.read(verifyOtpViewModelProvider.notifier).verifyOtp(
+            identifier: widget.identifier,
+            type: widget.type,
+            otp: _otpCode,
+          );
     }
   }
 
@@ -40,6 +45,12 @@ class _OtpPageState extends ConsumerState<OtpPage> {
 
     ref.listen(verifyOtpViewModelProvider, (previous, next) {
       next.whenOrNull(
+        data: (_) {
+
+          if (previous?.isLoading ?? false) {
+
+          }
+        },
         error: (e, _) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('${ErrorStrings.otpVerificationFailed}$e')),
@@ -65,8 +76,17 @@ class _OtpPageState extends ConsumerState<OtpPage> {
           const SizedBox(height: 32),
           Center(
             child: OtpTimer(
-              onResend: () {
-                debugPrint(AuthStrings.resendingOtp);
+              onResend: () async {
+                final messenger = ScaffoldMessenger.of(context);
+                await ref.read(verifyOtpViewModelProvider.notifier).resendOtp(
+                      identifier: widget.identifier,
+                      type: widget.type,
+                    );
+                if (mounted) {
+                  messenger.showSnackBar(
+                    const SnackBar(content: Text(AuthStrings.otpResentSuccess)),
+                  );
+                }
               },
             ),
           ),

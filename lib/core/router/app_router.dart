@@ -16,16 +16,22 @@ import 'package:logistic_by_strom/shared/widgets/app_shell_scaffold.dart';
 
 part 'app_router.g.dart';
 
-@riverpod
+final _rootNavigatorKey = GlobalKey<NavigatorState>();
+
+@Riverpod(keepAlive: true)
 GoRouter appRouter(Ref ref) {
-  final authState = ref.watch(authProvider);
-  final rootNavigatorKey = GlobalKey<NavigatorState>();
+  final authStateNotifier = ValueNotifier<bool>(false);
+
+  ref.listen(authProvider, (_, next) {
+    authStateNotifier.value = !authStateNotifier.value;
+  });
 
   return GoRouter(
     initialLocation: AppRoutes.splash,
-    navigatorKey: rootNavigatorKey,
-    // Redirect logic based on Auth State
+    navigatorKey: _rootNavigatorKey,
+    refreshListenable: authStateNotifier,
     redirect: (context, state) {
+      final authState = ref.read(authProvider);
       final isLoading = authState.isLoading;
       final isLoggedIn = authState.value?.isLoggedIn ?? false;
       
@@ -35,15 +41,15 @@ GoRouter appRouter(Ref ref) {
       final isSplash = state.uri.path == AppRoutes.splash;
       final isOnboarding = state.uri.path == AppRoutes.onboarding;
 
-      if (isLoading || isSplash) return null;
+      if (isLoading) return null;
 
       if (!isLoggedIn) {
-        // If not logged in and not on an auth page, go to login
         return isLoggingIn || isOnboarding ? null : AppRoutes.login;
       }
 
-      // If logged in and trying to go to login, go home
-      if (isLoggedIn && isLoggingIn) return AppRoutes.home;
+      if (isLoggedIn && (isLoggingIn || isSplash || isOnboarding)) {
+        return AppRoutes.home;
+      }
 
       return null;
     },
@@ -69,9 +75,8 @@ GoRouter appRouter(Ref ref) {
         builder: (context, state) {
           final extra = state.extra as Map<String, dynamic>? ?? const {};
           return OtpPage(
-            userId: extra['userId'] as String,
-            email: extra['email'] as String?,
-            phone: extra['phone'] as String?,
+            identifier: extra['identifier'] as String,
+            type: extra['type'] as String,
           );
         },
       ),

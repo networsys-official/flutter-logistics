@@ -103,9 +103,8 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
       context.push(
         AppRoutes.otp,
         extra: {
-          'userId': response.userId,
-          'email': _emailController.text.trim(),
-          'phone': _mobileController.text.trim(),
+          'identifier': _emailController.text.trim(),
+          'type': 'email',
         },
       );
     }
@@ -152,20 +151,6 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     });
 
     return AuthShell(
-      // appBar: AppBar(
-      //   backgroundColor: AppColors.white,
-      //   scrolledUnderElevation: 0,
-      //   leading: IconButton(
-      //     onPressed: () {
-      //       if (_currentStep == 1) {
-      //         setState(() => _currentStep = 0);
-      //         return;
-      //       }
-      //       context.go(AppRoutes.login);
-      //     },
-      //     icon: const Icon(Icons.arrow_back_ios_new_rounded),
-      //   ),
-      // ),
       child: Form(
         key: _formKey,
         child: Column(

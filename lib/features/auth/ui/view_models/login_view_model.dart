@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:logistic_by_strom/features/auth/providers/auth_provider.dart';
+import 'package:logistic_by_strom/features/auth/data/models/login_request.dart';
 
 part 'login_view_model.g.dart';
 
@@ -13,7 +14,9 @@ class LoginViewModel extends _$LoginViewModel {
     
     state = await AsyncValue.guard(() async {
       final repository = ref.read(authRepositoryProvider);
-      final authData = await repository.login(email, password);
+      final authData = await repository.login(
+        LoginRequest(email: email, password: password),
+      );
       
       // Update global session
       await ref.read(authProvider.notifier).updateSession(authData);

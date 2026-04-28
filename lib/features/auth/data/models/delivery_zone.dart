@@ -4,7 +4,7 @@ part 'delivery_zone.freezed.dart';
 part 'delivery_zone.g.dart';
 
 @freezed
-abstract class DeliveryZone with _$DeliveryZone {
+sealed class DeliveryZone with _$DeliveryZone {
   const factory DeliveryZone({required int id, required String label}) =
       _DeliveryZone;
 
