@@ -23,8 +23,10 @@ class VerifyOtpViewModel extends _$VerifyOtpViewModel {
         otp: otp,
       );
       
-      // Update global session
-      await ref.read(authProvider.notifier).updateSession(authData);
+      // Update global session ONLY for registration/login verification
+      if (type != 'forgot_password') {
+        await ref.read(authProvider.notifier).updateSession(authData);
+      }
     });
   }
 

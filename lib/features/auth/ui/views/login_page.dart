@@ -23,13 +23,13 @@ class LoginPage extends ConsumerStatefulWidget {
 
 class _LoginPageState extends ConsumerState<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  final _mobileController = TextEditingController();
+  final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
 
   @override
   void dispose() {
-    _mobileController.dispose();
+    _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
@@ -37,7 +37,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   Future<void> _submit() async {
     if (_formKey.currentState?.validate() ?? false) {
       await ref.read(loginViewModelProvider.notifier).login(
-            _mobileController.text,
+            _emailController.text,
             _passwordController.text,
           );
     }
@@ -67,12 +67,12 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             const AuthLogoHeader(title: AuthStrings.loginTitle),
             const SizedBox(height: 42),
             AuthTextField(
-              label: AuthStrings.mobileNumber,
-              hintText: AuthStrings.mobileNumberHint,
-              controller: _mobileController,
-              keyboardType: TextInputType.phone,
+              label: AuthStrings.emailAddress,
+              hintText: AuthStrings.emailAddressHint,
+              controller: _emailController,
+              keyboardType: TextInputType.emailAddress,
               textInputAction: TextInputAction.next,
-              validator: Validators.mobile,
+              validator: Validators.email,
             ),
             const SizedBox(height: 22),
             AuthTextField(
@@ -97,7 +97,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             Align(
               alignment: Alignment.centerRight,
               child: TextButton(
-                onPressed: () {},
+                onPressed: () => context.push(AppRoutes.forgotPassword),
                 style: TextButton.styleFrom(
                   foregroundColor: AppColors.neutral900,
                   padding: EdgeInsets.zero,

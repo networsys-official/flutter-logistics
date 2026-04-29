@@ -18,5 +18,13 @@ abstract interface class AuthRepository {
 
   Future<void> logout();
 
+  Future<void> forgotPassword(String email);
+
+  Future<void> resetPassword({
+    required String email,
+    required String token,
+    required String newPassword,
+  });
+
   Future<String?> refreshToken(String oldToken);
 }

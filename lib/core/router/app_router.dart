@@ -7,6 +7,8 @@ import 'package:logistic_by_strom/features/auth/providers/auth_provider.dart';
 import 'package:logistic_by_strom/features/auth/ui/views/login_page.dart';
 import 'package:logistic_by_strom/features/auth/ui/views/register_page.dart';
 import 'package:logistic_by_strom/features/auth/ui/views/otp_page.dart';
+import 'package:logistic_by_strom/features/auth/ui/views/forgot_password_page.dart';
+import 'package:logistic_by_strom/features/auth/ui/views/reset_password_page.dart';
 import 'package:logistic_by_strom/features/home/ui/views/home_page.dart';
 import 'package:logistic_by_strom/features/onboarding/ui/views/onboarding_page.dart';
 import 'package:logistic_by_strom/features/onboarding/ui/views/splash_page.dart';
@@ -37,7 +39,9 @@ GoRouter appRouter(Ref ref) {
       
       final isLoggingIn = state.uri.path == AppRoutes.login || 
                           state.uri.path == AppRoutes.register ||
-                          state.uri.path == AppRoutes.otp;
+                          state.uri.path == AppRoutes.otp ||
+                          state.uri.path == AppRoutes.forgotPassword ||
+                          state.uri.path == AppRoutes.resetPassword;
       final isSplash = state.uri.path == AppRoutes.splash;
       final isOnboarding = state.uri.path == AppRoutes.onboarding;
 
@@ -77,6 +81,23 @@ GoRouter appRouter(Ref ref) {
           return OtpPage(
             identifier: extra['identifier'] as String,
             type: extra['type'] as String,
+          );
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.forgotPassword,
+        builder: (context, state) => const ForgotPasswordPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.resetPassword,
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>? ?? const {};
+          final email = state.uri.queryParameters['email'] ?? extra['email'] as String? ?? '';
+          final token = state.uri.queryParameters['token'] ?? extra['token'] as String? ?? '';
+          
+          return ResetPasswordPage(
+            email: email,
+            token: token,
           );
         },
       ),

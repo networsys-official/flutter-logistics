@@ -55,7 +55,7 @@ class ApiClient {
     }
 
     if (!kIsWeb && Platform.isAndroid) {
-      return 'http://82.29.162.169/api/v1';
+      return 'http://82.29.162.169:8080/api/v1';
     }
 
     return 'http://localhost/api/v1';

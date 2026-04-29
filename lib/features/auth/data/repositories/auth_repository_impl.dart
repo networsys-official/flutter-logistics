@@ -98,6 +98,32 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<void> forgotPassword(String email) async {
+    await _apiClient.post(
+      ApiEndpoints.forgetPassword,
+      data: {
+        'email': email.trim()
+      },
+    );
+  }
+
+  @override
+  Future<void> resetPassword({
+    required String email,
+    required String token,
+    required String newPassword,
+  }) async {
+    await _apiClient.post(
+      ApiEndpoints.restPassword,
+      data: {
+        'email': email.trim(),
+        'token': token,
+        'password': newPassword,
+      },
+    );
+  }
+
+  @override
   Future<String?> refreshToken(String oldToken) async {
     // Refresh must come from the backend. Do not fabricate tokens client-side.
     return null;

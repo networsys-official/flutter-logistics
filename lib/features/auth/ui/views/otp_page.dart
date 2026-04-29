@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:logistic_by_strom/core/constants/strings/app_strings.dart';
 import 'package:logistic_by_strom/core/constants/strings/auth_strings.dart';
 import 'package:logistic_by_strom/core/constants/strings/error_strings.dart';
+import 'package:logistic_by_strom/core/router/app_routes.dart';
 
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 import 'package:logistic_by_strom/features/auth/ui/view_models/verify_otp_view_model.dart';
@@ -46,9 +47,14 @@ class _OtpPageState extends ConsumerState<OtpPage> {
     ref.listen(verifyOtpViewModelProvider, (previous, next) {
       next.whenOrNull(
         data: (_) {
-
-          if (previous?.isLoading ?? false) {
-
+          if (widget.type == 'forgot_password') {
+            context.push(
+              AppRoutes.resetPassword,
+              extra: {
+                'email': widget.identifier,
+                'otp': _otpCode,
+              },
+            );
           }
         },
         error: (e, _) {

@@ -48,4 +48,16 @@ class AuthStrings {
 
   // Messages
   static const String registrationSuccess = 'Registration successful. Continue with OTP verification.';
+
+  // Forgot Password
+  static const String forgotPasswordTitle = 'FORGOT PASSWORD';
+  static const String forgotPasswordSubtitle = 'Enter your email address to receive a password reset OTP';
+  static const String sendOtp = 'Send Reset Link';
+  static const String resetLinkSent = 'A password reset link has been sent to your email address.';
+  static const String resetPasswordTitle = 'RESET PASSWORD';
+  static const String resetPasswordSubtitle = 'Enter your new password below';
+  static const String newPassword = 'New Password';
+  static const String newPasswordHint = 'Enter new password';
+  static const String updatePassword = 'Update Password';
+  static const String passwordResetSuccess = 'Password has been reset successfully. Please login with your new password.';
 }
