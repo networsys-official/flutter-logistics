@@ -1,7 +1,7 @@
 class ApiEndpoints {
   static const String configuredBaseUrl = String.fromEnvironment(
-    'http://82.29.162.169:8080/api/v1',
-    defaultValue: '',
+    'BASE_URL',
+    defaultValue: 'http://82.29.162.169:8080/api/v1',
   );
 
   // Auth endpoints

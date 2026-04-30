@@ -14,6 +14,7 @@ import 'package:logistic_by_strom/features/onboarding/ui/views/onboarding_page.d
 import 'package:logistic_by_strom/features/onboarding/ui/views/splash_page.dart';
 import 'package:logistic_by_strom/features/accounts/ui/views/account_page.dart';
 import 'package:logistic_by_strom/features/shipments/ui/views/shipments_page.dart';
+import 'package:logistic_by_strom/features/calculator/ui/views/calculator_page.dart';
 import 'package:logistic_by_strom/shared/widgets/app_shell_scaffold.dart';
 
 part 'app_router.g.dart';
@@ -120,6 +121,10 @@ GoRouter appRouter(Ref ref) {
 
           return ResetPasswordPage(email: email, token: token);
         },
+      ),
+      GoRoute(
+        path: AppRoutes.calculator,
+        builder: (context, state) => const CalculatorPage(),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {

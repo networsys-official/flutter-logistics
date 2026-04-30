@@ -5,7 +5,7 @@ const List<OnboardingSlide> onboardingSlides = [
   OnboardingSlide(
     title: 'Track every shipment from one place',
     description:
-        'Manage trucks, containers, and active deliveries with a clear live operational view.',
+        'Manage trucks, containers, and active deliveries with a clear live operational views.',
     imagePath: AppImages.container,
   ),
   OnboardingSlide(

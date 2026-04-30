@@ -1,0 +1,132 @@
+import 'package:flutter/material.dart';
+import 'package:logistic_by_strom/core/theme/app_spacing.dart';
+
+class CalculatorInputGrid extends StatelessWidget {
+  const CalculatorInputGrid({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Item Dimensions',
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        const SizedBox(height: AppSpacing.md),
+        const Row(
+          children: [
+            Expanded(child: _InputField(label: 'Length', hint: 'Length')),
+            SizedBox(width: AppSpacing.md),
+            Expanded(child: _InputField(label: 'Width', hint: 'width')),
+          ],
+        ),
+        const SizedBox(height: AppSpacing.md),
+        const Row(
+          children: [
+            Expanded(child: _InputField(label: 'Height', hint: 'Height')),
+            SizedBox(width: AppSpacing.md),
+            Expanded(child: _InputField(label: 'Weight', hint: 'Weight')),
+          ],
+        ),
+        const SizedBox(height: AppSpacing.md),
+        const _InputField(label: 'Price', hint: 'Price'),
+        const SizedBox(height: AppSpacing.md),
+        const _DropdownField(
+          label: 'Item Type',
+          hint: 'Select Item Type',
+          items: ['I Phopne', 'Laptop', 'Electronics', 'Furniture', 'Clothing'],
+        ),
+        const SizedBox(height: AppSpacing.lg),
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () {},
+            child: const Text('Calculate'),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _InputField extends StatelessWidget {
+  final String label;
+  final String hint;
+
+  const _InputField({required this.label, required this.hint});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: AppSpacing.xs),
+        TextField(
+          decoration: InputDecoration(
+            hintText: hint,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _DropdownField extends StatefulWidget {
+  final String label;
+  final String hint;
+  final List<String> items;
+
+  const _DropdownField({
+    required this.label,
+    required this.hint,
+    required this.items,
+  });
+
+  @override
+  State<_DropdownField> createState() => _DropdownFieldState();
+}
+
+class _DropdownFieldState extends State<_DropdownField> {
+  String? selectedValue;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          widget.label,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: AppSpacing.xs),
+        DropdownButtonFormField<String>(
+          value: selectedValue,
+          decoration: InputDecoration(
+            hintText: widget.hint,
+          ),
+          items: widget.items.map((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
+            );
+          }).toList(),
+          onChanged: (newValue) {
+            setState(() {
+              selectedValue = newValue;
+            });
+          },
+          icon: const Icon(Icons.keyboard_arrow_down),
+        ),
+      ],
+    );
+  }
+}

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:logistic_by_strom/core/router/app_routes.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 import 'package:logistic_by_strom/core/constants/strings/home_strings.dart';
 
@@ -80,7 +82,12 @@ class _ActionItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        if (data.label == HomeStrings.calculator ||
+            data.label == HomeStrings.invoice) {
+          context.push(AppRoutes.calculator);
+        }
+      },
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

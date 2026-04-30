@@ -13,6 +13,7 @@ class AppRoutes {
   static const String support = '/support';
   static const String account = '/account';
   static const String settings = '/settings';
+  static const String calculator = '/calculator';
 
   // Order must match StatefulShellRoute branches in AppRouter
   static const List<String> bottomNavLocations = [

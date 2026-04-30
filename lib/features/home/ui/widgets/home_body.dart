@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:logistic_by_strom/core/constants/strings/home_strings.dart';
 import 'package:logistic_by_strom/features/home/ui/widgets/home_action_grid.dart';
 import 'package:logistic_by_strom/features/home/ui/widgets/home_banner_carousel.dart';
+import 'package:logistic_by_strom/features/home/ui/widgets/home_calculator_section.dart';
 import 'package:logistic_by_strom/features/home/ui/widgets/home_section_header.dart';
 import 'package:logistic_by_strom/features/home/ui/widgets/shipment_card.dart';
 
@@ -21,6 +22,11 @@ class HomeBody extends StatelessWidget {
 
         // Promotional banner carousel
         const HomeBannerCarousel(),
+
+        const SizedBox(height: 24),
+
+        // Calculator section
+        const HomeCalculatorSection(),
 
         const SizedBox(height: 24),
 
