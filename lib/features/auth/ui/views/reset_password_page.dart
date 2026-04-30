@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:logistic_by_strom/core/constants/strings/auth_strings.dart';
 import 'package:logistic_by_strom/core/constants/strings/error_strings.dart';
 import 'package:logistic_by_strom/core/router/app_routes.dart';
+import 'package:logistic_by_strom/core/utils/error_message.dart';
 import 'package:logistic_by_strom/core/utils/validators.dart';
 import 'package:logistic_by_strom/features/auth/ui/view_models/forgot_password_view_model.dart';
 import 'package:logistic_by_strom/features/auth/ui/widgets/auth_logo_header.dart';
@@ -61,12 +62,17 @@ class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final state = ref.watch(forgotPasswordViewModelProvider);
+    final error = state.error;
 
     ref.listen(forgotPasswordViewModelProvider, (previous, next) {
       next.whenOrNull(
         error: (e, _) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('${ErrorStrings.loginFailed}$e')),
+            SnackBar(
+              content: Text(
+                errorMessageFrom(e, fallback: ErrorStrings.somethingWentWrong),
+              ),
+            ),
           );
         },
       );
@@ -93,8 +99,10 @@ class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
               obscureText: _obscurePassword,
               textInputAction: TextInputAction.next,
               validator: Validators.password,
+              errorText: fieldErrorFrom(error, 'password'),
               suffixIcon: IconButton(
-                onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
+                onPressed: () =>
+                    setState(() => _obscurePassword = !_obscurePassword),
                 icon: Icon(
                   _obscurePassword
                       ? Icons.visibility_off_outlined
@@ -111,9 +119,11 @@ class _ResetPasswordPageState extends ConsumerState<ResetPasswordPage> {
               textInputAction: TextInputAction.done,
               validator: (value) =>
                   Validators.confirmPassword(value, _passwordController.text),
+              errorText: fieldErrorFrom(error, 'password_confirmation'),
               suffixIcon: IconButton(
-                onPressed: () =>
-                    setState(() => _obscureConfirmPassword = !_obscureConfirmPassword),
+                onPressed: () => setState(
+                  () => _obscureConfirmPassword = !_obscureConfirmPassword,
+                ),
                 icon: Icon(
                   _obscureConfirmPassword
                       ? Icons.visibility_off_outlined

@@ -8,6 +8,7 @@ import 'package:logistic_by_strom/core/router/app_routes.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 import 'package:logistic_by_strom/core/theme/app_spacing.dart';
 
+import 'package:logistic_by_strom/core/utils/error_message.dart';
 import 'package:logistic_by_strom/core/utils/validators.dart';
 import 'package:logistic_by_strom/features/auth/data/delivery_zones.dart';
 import 'package:logistic_by_strom/features/auth/data/models/delivery_zone.dart';
@@ -72,11 +73,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
 
     if (!_acceptedTerms) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            AuthStrings.acceptTermsError,
-          ),
-        ),
+        const SnackBar(content: Text(AuthStrings.acceptTermsError)),
       );
       return;
     }
@@ -94,18 +91,13 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
         );
 
     if (response != null && mounted) {
-      final message =
-          response.message ??
-          AuthStrings.registrationSuccess;
+      final message = response.message ?? AuthStrings.registrationSuccess;
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(message)));
       context.push(
         AppRoutes.otp,
-        extra: {
-          'identifier': _emailController.text.trim(),
-          'type': 'email',
-        },
+        extra: {'identifier': _emailController.text.trim(), 'type': 'email'},
       );
     }
   }
@@ -139,12 +131,17 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final registerState = ref.watch(registerViewModelProvider);
+    final registerError = registerState.error;
 
     ref.listen(registerViewModelProvider, (previous, next) {
       next.whenOrNull(
         error: (e, _) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('${ErrorStrings.registrationFailed}$e')),
+            SnackBar(
+              content: Text(
+                errorMessageFrom(e, fallback: ErrorStrings.somethingWentWrong),
+              ),
+            ),
           );
         },
       );
@@ -182,6 +179,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                 selectedCountryId: _selectedCountryId,
                 selectedDeliveryZone: _selectedDeliveryZone,
                 streetAddressController: _streetAddressController,
+                error: registerError,
                 onDeliveryZoneChanged: (value) {
                   if (value == null) return;
                   setState(() => _selectedDeliveryZone = value);
@@ -202,6 +200,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                 ),
                 onTermsChanged: (v) =>
                     setState(() => _acceptedTerms = v ?? false),
+                error: registerError,
                 textTheme: textTheme,
               ),
             const SizedBox(height: AppSpacing.md),
@@ -234,7 +233,10 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(AuthStrings.alreadyHaveAccount, style: textTheme.bodyMedium),
+                Text(
+                  AuthStrings.alreadyHaveAccount,
+                  style: textTheme.bodyMedium,
+                ),
                 GestureDetector(
                   onTap: () => context.go(AppRoutes.login),
                   child: Text(
@@ -262,6 +264,7 @@ class _StepOne extends StatelessWidget {
     required this.selectedCountryId,
     required this.selectedDeliveryZone,
     required this.streetAddressController,
+    required this.error,
     required this.onDeliveryZoneChanged,
   });
 
@@ -271,6 +274,7 @@ class _StepOne extends StatelessWidget {
   final int selectedCountryId;
   final DeliveryZone selectedDeliveryZone;
   final TextEditingController streetAddressController;
+  final Object? error;
   final ValueChanged<DeliveryZone?> onDeliveryZoneChanged;
 
   @override
@@ -283,7 +287,8 @@ class _StepOne extends StatelessWidget {
           hintText: AuthStrings.firstNameHint,
           controller: firstNameController,
           textInputAction: TextInputAction.next,
-          validator: (value) => Validators.required(value, AuthStrings.firstName),
+          validator: (value) =>
+              Validators.required(value, AuthStrings.firstName),
         ),
         const SizedBox(height: AppSpacing.lg),
         AuthTextField(
@@ -301,6 +306,7 @@ class _StepOne extends StatelessWidget {
           keyboardType: TextInputType.emailAddress,
           textInputAction: TextInputAction.next,
           validator: Validators.email,
+          errorText: fieldErrorFrom(error, 'email'),
         ),
         const SizedBox(height: AppSpacing.lg),
         AppDropdownField<int>(
@@ -327,7 +333,9 @@ class _StepOne extends StatelessWidget {
           hintText: AuthStrings.streetAddressHint,
           controller: streetAddressController,
           textInputAction: TextInputAction.next,
-          validator: (value) => Validators.required(value, AuthStrings.streetAddress),
+          validator: (value) =>
+              Validators.required(value, AuthStrings.streetAddress),
+          errorText: fieldErrorFrom(error, 'address_line_1'),
         ),
       ],
     );
@@ -345,6 +353,7 @@ class _StepTwo extends StatelessWidget {
     required this.onObscurePasswordToggle,
     required this.onObscureConfirmPasswordToggle,
     required this.onTermsChanged,
+    required this.error,
     required this.textTheme,
   });
 
@@ -357,6 +366,7 @@ class _StepTwo extends StatelessWidget {
   final VoidCallback onObscurePasswordToggle;
   final VoidCallback onObscureConfirmPasswordToggle;
   final ValueChanged<bool?> onTermsChanged;
+  final Object? error;
   final TextTheme textTheme;
 
   @override
@@ -371,6 +381,7 @@ class _StepTwo extends StatelessWidget {
           keyboardType: TextInputType.phone,
           textInputAction: TextInputAction.next,
           validator: Validators.mobile,
+          errorText: fieldErrorFrom(error, 'phone'),
         ),
         const SizedBox(height: AppSpacing.lg),
         AuthTextField(
@@ -380,6 +391,7 @@ class _StepTwo extends StatelessWidget {
           obscureText: obscurePassword,
           textInputAction: TextInputAction.next,
           validator: Validators.password,
+          errorText: fieldErrorFrom(error, 'password'),
           suffixIcon: IconButton(
             onPressed: onObscurePasswordToggle,
             icon: Icon(

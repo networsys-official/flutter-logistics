@@ -5,6 +5,7 @@ import 'package:logistic_by_strom/core/constants/strings/app_strings.dart';
 import 'package:logistic_by_strom/core/constants/strings/auth_strings.dart';
 import 'package:logistic_by_strom/core/constants/strings/error_strings.dart';
 import 'package:logistic_by_strom/core/router/app_routes.dart';
+import 'package:logistic_by_strom/core/utils/error_message.dart';
 
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 import 'package:logistic_by_strom/features/auth/ui/view_models/verify_otp_view_model.dart';
@@ -14,11 +15,7 @@ import 'package:logistic_by_strom/features/auth/ui/widgets/otp_input.dart';
 import 'package:logistic_by_strom/features/auth/ui/widgets/otp_timer.dart';
 
 class OtpPage extends ConsumerStatefulWidget {
-  const OtpPage({
-    required this.identifier,
-    required this.type,
-    super.key,
-  });
+  const OtpPage({required this.identifier, required this.type, super.key});
 
   final String identifier;
   final String type;
@@ -32,7 +29,9 @@ class _OtpPageState extends ConsumerState<OtpPage> {
 
   Future<void> _onVerify() async {
     if (_otpCode.length == 4) {
-      await ref.read(verifyOtpViewModelProvider.notifier).verifyOtp(
+      await ref
+          .read(verifyOtpViewModelProvider.notifier)
+          .verifyOtp(
             identifier: widget.identifier,
             type: widget.type,
             otp: _otpCode,
@@ -50,16 +49,17 @@ class _OtpPageState extends ConsumerState<OtpPage> {
           if (widget.type == 'forgot_password') {
             context.push(
               AppRoutes.resetPassword,
-              extra: {
-                'email': widget.identifier,
-                'otp': _otpCode,
-              },
+              extra: {'email': widget.identifier, 'otp': _otpCode},
             );
           }
         },
         error: (e, _) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('${ErrorStrings.otpVerificationFailed}$e')),
+            SnackBar(
+              content: Text(
+                errorMessageFrom(e, fallback: ErrorStrings.somethingWentWrong),
+              ),
+            ),
           );
         },
       );
@@ -84,7 +84,9 @@ class _OtpPageState extends ConsumerState<OtpPage> {
             child: OtpTimer(
               onResend: () async {
                 final messenger = ScaffoldMessenger.of(context);
-                await ref.read(verifyOtpViewModelProvider.notifier).resendOtp(
+                await ref
+                    .read(verifyOtpViewModelProvider.notifier)
+                    .resendOtp(
                       identifier: widget.identifier,
                       type: widget.type,
                     );

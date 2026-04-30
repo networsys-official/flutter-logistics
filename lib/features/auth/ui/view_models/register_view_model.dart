@@ -20,24 +20,31 @@ class RegisterViewModel extends _$RegisterViewModel {
     required int locationId,
   }) async {
     state = const AsyncValue.loading();
-    
+
+    final repository = ref.read(authRepositoryProvider);
+    final result = await repository.register(
+      RegisterRequest(
+        name: name,
+        email: email,
+        phone: phone,
+        address: address,
+        password: password,
+        countryId: countryId,
+        locationId: locationId,
+      ),
+    );
+
     RegistrationResponse? response;
-    state = await AsyncValue.guard(() async {
-      final repository = ref.read(authRepositoryProvider);
-      response = await repository.register(
-        RegisterRequest(
-          name: name,
-          email: email,
-          phone: phone,
-          address: address,
-          password: password,
-          countryId: countryId,
-          locationId: locationId,
-        ),
-      );
-      return response;
-    });
-    
+    result.match(
+      (failure) {
+        state = AsyncValue.error(failure, StackTrace.current);
+      },
+      (registrationResponse) {
+        response = registrationResponse;
+        state = AsyncValue.data(registrationResponse);
+      },
+    );
+
     return response;
   }
 }

@@ -1,3 +1,4 @@
+import 'package:logistic_by_strom/core/errors/error_mapper.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:logistic_by_strom/features/auth/providers/auth_provider.dart';
 
@@ -14,20 +15,33 @@ class VerifyOtpViewModel extends _$VerifyOtpViewModel {
     required String otp,
   }) async {
     state = const AsyncValue.loading();
-    
-    state = await AsyncValue.guard(() async {
-      final repository = ref.read(authRepositoryProvider);
-      final authData = await repository.verifyOtp(
-        identifier: identifier,
-        type: type,
-        otp: otp,
-      );
-      
-      // Update global session ONLY for registration/login verification
-      if (type != 'forgot_password') {
-        await ref.read(authProvider.notifier).updateSession(authData);
-      }
-    });
+
+    final repository = ref.read(authRepositoryProvider);
+    final result = await repository.verifyOtp(
+      identifier: identifier,
+      type: type,
+      otp: otp,
+    );
+
+    await result.match(
+      (failure) async {
+        state = AsyncValue.error(failure, StackTrace.current);
+      },
+      (authData) async {
+        try {
+          // Update global session ONLY for registration/login verification
+          if (type != 'forgot_password') {
+            await ref.read(authProvider.notifier).updateSession(authData);
+          }
+          state = const AsyncValue.data(null);
+        } catch (error, stackTrace) {
+          state = AsyncValue.error(
+            ErrorMapper.map(error, stackTrace),
+            stackTrace,
+          );
+        }
+      },
+    );
   }
 
   Future<void> resendOtp({
@@ -35,9 +49,16 @@ class VerifyOtpViewModel extends _$VerifyOtpViewModel {
     required String type,
   }) async {
     state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() async {
-      final repository = ref.read(authRepositoryProvider);
-      await repository.sendOtp(identifier: identifier, type: type);
-    });
+    final repository = ref.read(authRepositoryProvider);
+    final result = await repository.sendOtp(identifier: identifier, type: type);
+
+    result.match(
+      (failure) {
+        state = AsyncValue.error(failure, StackTrace.current);
+      },
+      (_) {
+        state = const AsyncValue.data(null);
+      },
+    );
   }
 }

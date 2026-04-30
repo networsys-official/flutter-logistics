@@ -10,14 +10,21 @@ class ForgotPasswordViewModel extends _$ForgotPasswordViewModel {
 
   Future<bool> forgotPassword(String email) async {
     state = const AsyncValue.loading();
-    bool success = false;
-    
-    state = await AsyncValue.guard(() async {
-      final repository = ref.read(authRepositoryProvider);
-      await repository.forgotPassword(email);
-      success = true;
-    });
-    
+
+    final repository = ref.read(authRepositoryProvider);
+    final result = await repository.forgotPassword(email);
+
+    var success = false;
+    result.match(
+      (failure) {
+        state = AsyncValue.error(failure, StackTrace.current);
+      },
+      (_) {
+        success = true;
+        state = const AsyncValue.data(null);
+      },
+    );
+
     return success;
   }
 
@@ -27,17 +34,24 @@ class ForgotPasswordViewModel extends _$ForgotPasswordViewModel {
     required String newPassword,
   }) async {
     state = const AsyncValue.loading();
-    bool success = false;
+    var success = false;
 
-    state = await AsyncValue.guard(() async {
-      final repository = ref.read(authRepositoryProvider);
-      await repository.resetPassword(
-        email: email,
-        token: token,
-        newPassword: newPassword,
-      );
-      success = true;
-    });
+    final repository = ref.read(authRepositoryProvider);
+    final result = await repository.resetPassword(
+      email: email,
+      token: token,
+      newPassword: newPassword,
+    );
+
+    result.match(
+      (failure) {
+        state = AsyncValue.error(failure, StackTrace.current);
+      },
+      (_) {
+        success = true;
+        state = const AsyncValue.data(null);
+      },
+    );
 
     return success;
   }

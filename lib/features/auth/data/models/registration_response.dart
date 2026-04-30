@@ -6,13 +6,21 @@ part 'registration_response.g.dart';
 Object? _readUserId(Map json, String key) {
   final data = json['data'];
   if (data is Map) {
-    final nestedUserId = data['user_id'];
+    final nestedUserId = data['user_id'] ?? data['id'];
     if (nestedUserId != null) {
       return nestedUserId.toString();
     }
+
+    final user = data['user'];
+    if (user is Map) {
+      final userId = user['id'] ?? user['user_id'] ?? user['customer_id'];
+      if (userId != null) {
+        return userId.toString();
+      }
+    }
   }
 
-  final directUserId = json['user_id'];
+  final directUserId = json['user_id'] ?? json['id'];
   return directUserId?.toString() ?? '';
 }
 

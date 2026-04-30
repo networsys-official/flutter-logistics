@@ -12,6 +12,7 @@ class AuthTextField extends StatelessWidget {
     this.obscureText = false,
     this.suffixIcon,
     this.validator,
+    this.errorText,
   });
 
   final String label;
@@ -22,6 +23,7 @@ class AuthTextField extends StatelessWidget {
   final bool obscureText;
   final Widget? suffixIcon;
   final String? Function(String?)? validator;
+  final String? errorText;
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +42,7 @@ class AuthTextField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: label,
         hintText: hintText,
+        errorText: errorText,
         suffixIcon: suffixIcon,
         alignLabelWithHint: true,
         floatingLabelBehavior: FloatingLabelBehavior.auto,
@@ -51,7 +54,10 @@ class AuthTextField extends StatelessWidget {
           color: AppColors.primary,
           fontWeight: FontWeight.w700,
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 20,
+        ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: AppColors.inputBorder, width: 1),

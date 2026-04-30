@@ -1,3 +1,4 @@
+import 'package:logistic_by_strom/core/errors/error_mapper.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:logistic_by_strom/features/auth/providers/auth_provider.dart';
 import 'package:logistic_by_strom/features/auth/data/models/login_request.dart';
@@ -11,15 +12,27 @@ class LoginViewModel extends _$LoginViewModel {
 
   Future<void> login(String email, String password) async {
     state = const AsyncValue.loading();
-    
-    state = await AsyncValue.guard(() async {
-      final repository = ref.read(authRepositoryProvider);
-      final authData = await repository.login(
-        LoginRequest(email: email, password: password),
-      );
-      
-      // Update global session
-      await ref.read(authProvider.notifier).updateSession(authData);
-    });
+
+    final repository = ref.read(authRepositoryProvider);
+    final result = await repository.login(
+      LoginRequest(email: email, password: password),
+    );
+
+    await result.match(
+      (failure) async {
+        state = AsyncValue.error(failure, StackTrace.current);
+      },
+      (authData) async {
+        try {
+          await ref.read(authProvider.notifier).updateSession(authData);
+          state = const AsyncValue.data(null);
+        } catch (error, stackTrace) {
+          state = AsyncValue.error(
+            ErrorMapper.map(error, stackTrace),
+            stackTrace,
+          );
+        }
+      },
+    );
   }
 }

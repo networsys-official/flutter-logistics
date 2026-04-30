@@ -5,7 +5,7 @@ import 'package:logistic_by_strom/core/constants/strings/auth_strings.dart';
 import 'package:logistic_by_strom/core/constants/strings/error_strings.dart';
 import 'package:logistic_by_strom/core/router/app_routes.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
-
+import 'package:logistic_by_strom/core/utils/error_message.dart';
 
 import 'package:logistic_by_strom/core/utils/validators.dart';
 import 'package:logistic_by_strom/features/auth/ui/view_models/login_view_model.dart';
@@ -36,10 +36,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   Future<void> _submit() async {
     if (_formKey.currentState?.validate() ?? false) {
-      await ref.read(loginViewModelProvider.notifier).login(
-            _emailController.text,
-            _passwordController.text,
-          );
+      await ref
+          .read(loginViewModelProvider.notifier)
+          .login(_emailController.text, _passwordController.text);
     }
   }
 
@@ -47,12 +46,17 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final loginState = ref.watch(loginViewModelProvider);
+    final loginError = loginState.error;
 
     ref.listen(loginViewModelProvider, (previous, next) {
       next.whenOrNull(
         error: (e, _) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('${ErrorStrings.loginFailed}$e')),
+            SnackBar(
+              content: Text(
+                errorMessageFrom(e, fallback: ErrorStrings.somethingWentWrong),
+              ),
+            ),
           );
         },
       );
@@ -73,6 +77,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               keyboardType: TextInputType.emailAddress,
               textInputAction: TextInputAction.next,
               validator: Validators.email,
+              errorText: fieldErrorFrom(loginError, 'email'),
             ),
             const SizedBox(height: 22),
             AuthTextField(
@@ -82,6 +87,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               obscureText: _obscurePassword,
               textInputAction: TextInputAction.done,
               validator: Validators.password,
+              errorText: fieldErrorFrom(loginError, 'password'),
               suffixIcon: IconButton(
                 onPressed: () {
                   setState(() => _obscurePassword = !_obscurePassword);

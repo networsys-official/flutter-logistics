@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:logistic_by_strom/core/constants/strings/auth_strings.dart';
 import 'package:logistic_by_strom/core/constants/strings/error_strings.dart';
 
+import 'package:logistic_by_strom/core/utils/error_message.dart';
 import 'package:logistic_by_strom/core/utils/validators.dart';
 import 'package:logistic_by_strom/features/auth/ui/view_models/forgot_password_view_model.dart';
 import 'package:logistic_by_strom/features/auth/ui/widgets/auth_logo_header.dart';
@@ -50,12 +51,17 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final state = ref.watch(forgotPasswordViewModelProvider);
+    final error = state.error;
 
     ref.listen(forgotPasswordViewModelProvider, (previous, next) {
       next.whenOrNull(
         error: (e, _) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('${ErrorStrings.loginFailed}$e')),
+            SnackBar(
+              content: Text(
+                errorMessageFrom(e, fallback: ErrorStrings.somethingWentWrong),
+              ),
+            ),
           );
         },
       );
@@ -82,6 +88,7 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
               keyboardType: TextInputType.emailAddress,
               textInputAction: TextInputAction.done,
               validator: Validators.email,
+              errorText: fieldErrorFrom(error, 'email'),
             ),
             const SizedBox(height: 48),
             ElevatedButton(

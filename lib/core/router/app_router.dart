@@ -34,24 +34,41 @@ GoRouter appRouter(Ref ref) {
     refreshListenable: authStateNotifier,
     redirect: (context, state) {
       final authState = ref.read(authProvider);
-      final isLoading = authState.isLoading;
-      final isLoggedIn = authState.value?.isLoggedIn ?? false;
-      
-      final isLoggingIn = state.uri.path == AppRoutes.login || 
-                          state.uri.path == AppRoutes.register ||
-                          state.uri.path == AppRoutes.otp ||
-                          state.uri.path == AppRoutes.forgotPassword ||
-                          state.uri.path == AppRoutes.resetPassword;
-      final isSplash = state.uri.path == AppRoutes.splash;
-      final isOnboarding = state.uri.path == AppRoutes.onboarding;
 
-      if (isLoading) return null;
+      final isAuthChecking = authState.isLoading;
+      final isUserLoggedIn = authState.value?.isLoggedIn ?? false;
+      final currentPath = state.uri.path;
 
-      if (!isLoggedIn) {
-        return isLoggingIn || isOnboarding ? null : AppRoutes.login;
+      final authRoutes = [
+        AppRoutes.login,
+        AppRoutes.register,
+        AppRoutes.otp,
+        AppRoutes.forgotPassword,
+        AppRoutes.resetPassword,
+      ];
+
+      final publicRoutes = [...authRoutes, AppRoutes.onboarding];
+
+      final guestRestrictedRoutes = [
+        ...authRoutes,
+        AppRoutes.splash,
+        AppRoutes.onboarding,
+      ];
+
+      final isPublicRoute = publicRoutes.contains(currentPath);
+      final isGuestRestrictedRoute = guestRestrictedRoutes.contains(
+        currentPath,
+      );
+
+      if (isAuthChecking) {
+        return null;
       }
 
-      if (isLoggedIn && (isLoggingIn || isSplash || isOnboarding)) {
+      if (!isUserLoggedIn) {
+        return isPublicRoute ? null : AppRoutes.login;
+      }
+
+      if (isGuestRestrictedRoute) {
         return AppRoutes.home;
       }
 
@@ -92,13 +109,16 @@ GoRouter appRouter(Ref ref) {
         path: AppRoutes.resetPassword,
         builder: (context, state) {
           final extra = state.extra as Map<String, dynamic>? ?? const {};
-          final email = state.uri.queryParameters['email'] ?? extra['email'] as String? ?? '';
-          final token = state.uri.queryParameters['token'] ?? extra['token'] as String? ?? '';
-          
-          return ResetPasswordPage(
-            email: email,
-            token: token,
-          );
+          final email =
+              state.uri.queryParameters['email'] ??
+              extra['email'] as String? ??
+              '';
+          final token =
+              state.uri.queryParameters['token'] ??
+              extra['token'] as String? ??
+              '';
+
+          return ResetPasswordPage(email: email, token: token);
         },
       ),
       StatefulShellRoute.indexedStack(
@@ -126,9 +146,8 @@ GoRouter appRouter(Ref ref) {
             routes: [
               GoRoute(
                 path: AppRoutes.support,
-                builder: (context, state) => const Scaffold(
-                  body: Center(child: Text('Support Page')),
-                ),
+                builder: (context, state) =>
+                    const Scaffold(body: Center(child: Text('Support Page'))),
               ),
             ],
           ),
