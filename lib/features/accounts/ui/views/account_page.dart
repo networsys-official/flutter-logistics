@@ -27,18 +27,18 @@ class AccountPage extends ConsumerWidget {
   }
 
   Widget _buildContent(BuildContext context, WidgetRef ref, UserProfile? profile) {
-    return SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
-      child: Column(
-        children: [
-          _buildHeader(context, profile),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+    return Column(
+      children: [
+        _buildAppBar(context),
+        Expanded(
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: AppSpacing.lg),
-                _buildStatusBanner(),
+                _buildProfileCard(context, profile),
                 const SizedBox(height: AppSpacing.xl),
                 _buildSectionHeader('Account Settings'),
                 _buildMenuContainer([
@@ -46,40 +46,47 @@ class AccountPage extends ConsumerWidget {
                     icon: HugeIcons.strokeRoundedUser,
                     title: 'Account Information',
                     onTap: () => context.push(AppRoutes.editProfile),
+                    color: AppColors.secondary,
+                    bgColor: const Color(0xFFD6EEF4),
                   ),
                   _MenuAction(
                     icon: HugeIcons.strokeRoundedKey01,
                     title: 'Change Password',
                     onTap: () {},
-                  ),
-                  _MenuAction(
-                    icon: HugeIcons.strokeRoundedSmartPhone01,
-                    title: 'Device',
-                    onTap: () {},
+                    color: AppColors.primary,
+                    bgColor: const Color(0xFFE8F5E9),
                   ),
                   _MenuAction(
                     icon: HugeIcons.strokeRoundedBank,
                     title: 'Connect to Banks',
                     onTap: () {},
+                    color: AppColors.accent,
+                    bgColor: const Color(0xFFFFF0D9),
                   ),
                 ]),
                 const SizedBox(height: AppSpacing.xl),
-                _buildSectionHeader('Settings'),
+                _buildSectionHeader('General'),
                 _buildMenuContainer([
                   _MenuAction(
                     icon: HugeIcons.strokeRoundedSettings01,
                     title: 'Settings',
                     onTap: () {},
+                    color: AppColors.info,
+                    bgColor: const Color(0xFFFFF8E1),
                   ),
                   _MenuAction(
                     icon: HugeIcons.strokeRoundedHelpCircle,
                     title: 'Help & Support',
                     onTap: () => context.push(AppRoutes.support),
+                    color: AppColors.secondary,
+                    bgColor: const Color(0xFFD6EEF4),
                   ),
                   _MenuAction(
                     icon: HugeIcons.strokeRoundedInformationCircle,
                     title: 'About',
                     onTap: () {},
+                    color: AppColors.neutral700,
+                    bgColor: AppColors.neutral200.withValues(alpha: 0.3),
                   ),
                 ]),
                 const SizedBox(height: AppSpacing.xl),
@@ -88,29 +95,70 @@ class AccountPage extends ConsumerWidget {
               ],
             ),
           ),
-        ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAppBar(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        color: AppColors.neutral100,
+      ),
+      child: SafeArea(
+        bottom: false,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
+          child: Row(
+            children: [
+              Text(
+                'Account',
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: AppColors.neutral900,
+                      fontWeight: FontWeight.w800,
+                    ),
+              ),
+              const Spacer(),
+              _buildNotificationIcon(),
+            ],
+          ),
+        ),
       ),
     );
   }
 
-  Widget _buildHeader(BuildContext context, UserProfile? profile) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(
-        AppSpacing.md,
-        60,
-        AppSpacing.md,
-        AppSpacing.xl,
-      ),
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Color(0xFFE8F5E9), // Light green tint
-            AppColors.neutral100,
-          ],
+  Widget _buildNotificationIcon() {
+    return InkWell(
+      onTap: () {},
+      borderRadius: BorderRadius.circular(24),
+      child: const Padding(
+        padding: EdgeInsets.all(8.0),
+        child: Badge(
+          label: Text('2'),
+          backgroundColor: AppColors.error,
+          child: HugeIcon(
+            icon: HugeIcons.strokeRoundedNotification01,
+            color: AppColors.neutral900,
+            size: 24,
+          ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildProfileCard(BuildContext context, UserProfile? profile) {
+    return Container(
+      padding: const EdgeInsets.all(AppSpacing.md),
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.neutral900.withValues(alpha: 0.04),
+            blurRadius: 20,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Row(
         children: [
@@ -118,16 +166,16 @@ class AccountPage extends ConsumerWidget {
             padding: const EdgeInsets.all(3),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(color: AppColors.primary.withValues(alpha: 0.1)),
+              border: Border.all(color: AppColors.neutral200),
             ),
             child: CircleAvatar(
-              radius: 32,
+              radius: 30,
               backgroundColor: AppColors.secondaryContainer,
               backgroundImage: profile?.profileImageUrl != null
                   ? NetworkImage(profile!.profileImageUrl!)
                   : null,
               child: profile?.profileImageUrl == null
-                  ? const Icon(Icons.person, size: 35, color: AppColors.secondary)
+                  ? const Icon(Icons.person, size: 30, color: AppColors.secondary)
                   : null,
             ),
           ),
@@ -139,15 +187,15 @@ class AccountPage extends ConsumerWidget {
                 Text(
                   profile?.name ?? 'Guest User',
                   style: const TextStyle(
-                    fontSize: 18,
+                    fontSize: 16,
                     fontWeight: FontWeight.w800,
                     color: AppColors.neutral900,
                   ),
                 ),
                 Text(
-                  profile?.email ?? '',
+                  profile?.email ?? 'No email provided',
                   style: const TextStyle(
-                    fontSize: 13,
+                    fontSize: 12,
                     color: AppColors.neutral500,
                     fontWeight: FontWeight.w500,
                   ),
@@ -155,95 +203,10 @@ class AccountPage extends ConsumerWidget {
               ],
             ),
           ),
-          Material(
-            color: AppColors.white,
-            borderRadius: BorderRadius.circular(20),
-            child: InkWell(
-              onTap: () => context.push(AppRoutes.editProfile),
-              borderRadius: BorderRadius.circular(20),
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                decoration: BoxDecoration(
-                  border: Border.all(color: AppColors.neutral200),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: const Text(
-                  'Edit',
-                  style: TextStyle(
-                    color: AppColors.neutral900,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 13,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStatusBanner() {
-    return Container(
-      padding: const EdgeInsets.all(AppSpacing.md),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [
-            Color(0xFF9C27B0), // Purple gradient like image but adapted
-            Color(0xFF673AB7),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xFF673AB7).withValues(alpha: 0.3),
-            blurRadius: 15,
-            offset: const Offset(0, 8),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: AppColors.white.withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: const HugeIcon(
-              icon: HugeIcons.strokeRoundedStar,
-              color: AppColors.white,
-              size: 24,
-            ),
-          ),
-          const SizedBox(width: AppSpacing.md),
-          const Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Premium Account',
-                  style: TextStyle(
-                    color: AppColors.white,
-                    fontWeight: FontWeight.w800,
-                    fontSize: 15,
-                  ),
-                ),
-                Text(
-                  'Enjoy your premium features',
-                  style: TextStyle(
-                    color: AppColors.white,
-                    fontSize: 11,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const HugeIcon(
-            icon: HugeIcons.strokeRoundedArrowRight01,
-            color: AppColors.white,
-            size: 20,
+          IconButton(
+            onPressed: () => context.push(AppRoutes.editProfile),
+            icon: const Icon(Icons.edit_outlined, size: 20),
+            color: AppColors.neutral700,
           ),
         ],
       ),
@@ -256,9 +219,10 @@ class AccountPage extends ConsumerWidget {
       child: Text(
         title,
         style: const TextStyle(
-          fontSize: 13,
-          fontWeight: FontWeight.w600,
+          fontSize: 12,
+          fontWeight: FontWeight.w700,
           color: AppColors.neutral500,
+          letterSpacing: 0.5,
         ),
       ),
     );
@@ -268,8 +232,14 @@ class AccountPage extends ConsumerWidget {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.white,
-        borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
-        border: Border.all(color: AppColors.neutral200.withValues(alpha: 0.5)),
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.neutral900.withValues(alpha: 0.04),
+            blurRadius: 20,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         children: List.generate(actions.length, (index) {
@@ -277,7 +247,18 @@ class AccountPage extends ConsumerWidget {
           return Column(
             children: [
               ListTile(
-                leading: HugeIcon(icon: action.icon, color: AppColors.neutral900, size: 22),
+                leading: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: action.bgColor,
+                    shape: BoxShape.circle,
+                  ),
+                  child: HugeIcon(
+                    icon: action.icon,
+                    color: action.color,
+                    size: 20,
+                  ),
+                ),
                 title: Text(
                   action.title,
                   style: const TextStyle(
@@ -286,19 +267,18 @@ class AccountPage extends ConsumerWidget {
                     color: AppColors.neutral900,
                   ),
                 ),
-                trailing: const HugeIcon(
-                  icon: HugeIcons.strokeRoundedArrowRight01,
+                trailing: const Icon(
+                  Icons.arrow_forward_ios,
                   color: AppColors.neutral200,
-                  size: 20,
+                  size: 14,
                 ),
                 onTap: action.onTap,
-                contentPadding: const EdgeInsets.symmetric(horizontal: 20),
-                visualDensity: VisualDensity.compact,
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
               ),
               if (index != actions.length - 1)
                 Divider(
                   height: 1,
-                  indent: 56,
+                  indent: 64,
                   endIndent: 20,
                   color: AppColors.neutral200.withValues(alpha: 0.5),
                 ),
@@ -310,13 +290,25 @@ class AccountPage extends ConsumerWidget {
   }
 
   Widget _buildLogoutButton(BuildContext context, WidgetRef ref) {
-    return SizedBox(
+    return Container(
       width: double.infinity,
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.error.withValues(alpha: 0.05),
+            blurRadius: 20,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
       child: TextButton(
         onPressed: () => _showLogoutDialog(context, ref),
         style: TextButton.styleFrom(
           foregroundColor: AppColors.error,
-          padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         ),
         child: const Text(
           'Logout',
@@ -333,7 +325,7 @@ class AccountPage extends ConsumerWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         title: const Text('Logout', style: TextStyle(fontWeight: FontWeight.w800)),
         content: const Text('Are you sure you want to logout?'),
         actions: [
@@ -361,10 +353,14 @@ class _MenuAction {
   final dynamic icon;
   final String title;
   final VoidCallback onTap;
+  final Color color;
+  final Color bgColor;
 
   const _MenuAction({
     required this.icon,
     required this.title,
     required this.onTap,
+    required this.color,
+    required this.bgColor,
   });
 }
