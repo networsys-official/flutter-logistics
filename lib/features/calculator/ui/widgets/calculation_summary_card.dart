@@ -11,41 +11,56 @@ class CalculationSummaryCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Calculate Details',
-          style: Theme.of(context).textTheme.titleMedium,
+          'Calculation Details',
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w800,
+                color: AppColors.neutral900,
+              ),
         ),
         const SizedBox(height: AppSpacing.md),
         Container(
-          padding: const EdgeInsets.all(AppSpacing.lg),
+          padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
             color: AppColors.white,
-            borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
-            border: Border.all(color: AppColors.neutral200),
+            borderRadius: BorderRadius.circular(24),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.neutral900.withValues(alpha: 0.04),
+                blurRadius: 20,
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
           child: Column(
             children: [
-              const _SummaryRow(label: 'Length', value: '\$598'),
+              const _SummaryRow(label: 'Length', value: '10 cm'),
               const SizedBox(height: AppSpacing.md),
-              const _SummaryRow(label: 'Width', value: '40'),
+              const _SummaryRow(label: 'Width', value: '40 cm'),
               const SizedBox(height: AppSpacing.md),
-              const _SummaryRow(label: 'Height', value: '4'),
+              const _SummaryRow(label: 'Height', value: '4 cm'),
               const SizedBox(height: AppSpacing.md),
-              const _SummaryRow(label: 'Weight', value: '20'),
+              const _SummaryRow(label: 'Weight', value: '20 kg'),
               const SizedBox(height: AppSpacing.md),
-              const _SummaryRow(label: 'Item Type', value: 'I Phopne'),
+              const _SummaryRow(label: 'Item Type', value: 'Electronics'),
               const SizedBox(height: AppSpacing.lg),
               _buildDashedLine(),
-              const SizedBox(height: AppSpacing.md),
+              const SizedBox(height: AppSpacing.lg),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Total',
-                    style: Theme.of(context).textTheme.titleMedium,
+                    'Total Amount',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.neutral900,
+                        ),
                   ),
                   Text(
-                    '\$899',
-                    style: Theme.of(context).textTheme.titleMedium,
+                    '\$899.00',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.primary,
+                        ),
                   ),
                 ],
               ),

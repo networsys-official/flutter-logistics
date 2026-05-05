@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'package:logistic_by_strom/core/constants/app_images.dart';
 import 'package:logistic_by_strom/core/router/app_routes.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 import 'package:logistic_by_strom/core/theme/app_spacing.dart';
@@ -44,7 +45,7 @@ class AccountPage extends ConsumerWidget {
                 _buildMenuContainer([
                   _MenuAction(
                     icon: HugeIcons.strokeRoundedUser,
-                    title: 'Account Information',
+                    title: 'Shipment Address',
                     onTap: () => context.push(AppRoutes.editProfile),
                     color: AppColors.secondary,
                     bgColor: const Color(0xFFD6EEF4),
@@ -52,16 +53,9 @@ class AccountPage extends ConsumerWidget {
                   _MenuAction(
                     icon: HugeIcons.strokeRoundedKey01,
                     title: 'Change Password',
-                    onTap: () {},
+                    onTap: () => context.push(AppRoutes.changePassword),
                     color: AppColors.primary,
                     bgColor: const Color(0xFFE8F5E9),
-                  ),
-                  _MenuAction(
-                    icon: HugeIcons.strokeRoundedBank,
-                    title: 'Connect to Banks',
-                    onTap: () {},
-                    color: AppColors.accent,
-                    bgColor: const Color(0xFFFFF0D9),
                   ),
                 ]),
                 const SizedBox(height: AppSpacing.xl),
@@ -148,38 +142,33 @@ class AccountPage extends ConsumerWidget {
 
   Widget _buildProfileCard(BuildContext context, UserProfile? profile) {
     return Container(
-      padding: const EdgeInsets.all(AppSpacing.md),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: AppColors.white,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(28),
         boxShadow: [
           BoxShadow(
-            color: AppColors.neutral900.withValues(alpha: 0.04),
-            blurRadius: 20,
-            offset: const Offset(0, 4),
+            color: AppColors.neutral900.withValues(alpha: 0.06),
+            blurRadius: 24,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(3),
+            padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(color: AppColors.neutral200),
             ),
-            child: CircleAvatar(
-              radius: 30,
+            child: const CircleAvatar(
+              radius: 42,
               backgroundColor: AppColors.secondaryContainer,
-              backgroundImage: profile?.profileImageUrl != null
-                  ? NetworkImage(profile!.profileImageUrl!)
-                  : null,
-              child: profile?.profileImageUrl == null
-                  ? const Icon(Icons.person, size: 30, color: AppColors.secondary)
-                  : null,
+              backgroundImage: AssetImage(AppImages.userProfile),
             ),
           ),
-          const SizedBox(width: AppSpacing.md),
+          const SizedBox(width: AppSpacing.lg),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -187,15 +176,16 @@ class AccountPage extends ConsumerWidget {
                 Text(
                   profile?.name ?? 'Guest User',
                   style: const TextStyle(
-                    fontSize: 16,
+                    fontSize: 20,
                     fontWeight: FontWeight.w800,
                     color: AppColors.neutral900,
                   ),
                 ),
+                const SizedBox(height: 4),
                 Text(
                   profile?.email ?? 'No email provided',
                   style: const TextStyle(
-                    fontSize: 12,
+                    fontSize: 14,
                     color: AppColors.neutral500,
                     fontWeight: FontWeight.w500,
                   ),
@@ -205,7 +195,7 @@ class AccountPage extends ConsumerWidget {
           ),
           IconButton(
             onPressed: () => context.push(AppRoutes.editProfile),
-            icon: const Icon(Icons.edit_outlined, size: 20),
+            icon: const Icon(Icons.edit_outlined, size: 24),
             color: AppColors.neutral700,
           ),
         ],

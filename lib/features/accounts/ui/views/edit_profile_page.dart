@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hugeicons/hugeicons.dart';
+import 'package:logistic_by_strom/core/constants/app_images.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 import 'package:logistic_by_strom/core/theme/app_spacing.dart';
 import 'package:logistic_by_strom/features/accounts/ui/view_models/accounts_view_model.dart';
@@ -41,140 +43,158 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    final profile = ref.watch(accountsViewModelProvider).value;
-
     return Scaffold(
       backgroundColor: AppColors.neutral100,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.neutral900),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Text(
-          'Edit profile',
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w800,
-                color: AppColors.neutral900,
-              ),
-        ),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-        child: Column(
-          children: [
-            const SizedBox(height: AppSpacing.lg),
-            // Avatar with Edit Icon
-            Center(
-              child: Stack(
+      body: Column(
+        children: [
+          _buildAppBar(context),
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              physics: const BouncingScrollPhysics(),
+              child: Column(
                 children: [
-                  Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: AppColors.primary.withValues(alpha: 0.1),
-                        width: 1,
-                      ),
-                    ),
-                    child: CircleAvatar(
-                      radius: 65,
-                      backgroundColor: AppColors.secondaryContainer,
-                      backgroundImage: profile?.profileImageUrl != null
-                          ? NetworkImage(profile!.profileImageUrl!)
-                          : null,
-                      child: profile?.profileImageUrl == null
-                          ? const Icon(Icons.person,
-                              size: 70, color: AppColors.secondary)
-                          : null,
+                  const SizedBox(height: AppSpacing.lg),
+                  // Avatar with Edit Icon
+                  Center(
+                    child: Stack(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: AppColors.neutral200,
+                              width: 1,
+                            ),
+                          ),
+                          child: const CircleAvatar(
+                            radius: 65,
+                            backgroundColor: AppColors.secondaryContainer,
+                            backgroundImage: AssetImage(AppImages.userProfile),
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 5,
+                          right: 5,
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: const BoxDecoration(
+                              color: AppColors.primary,
+                              shape: BoxShape.circle,
+                            ),
+                            child: const HugeIcon(
+                              icon: HugeIcons.strokeRoundedCamera01,
+                              color: AppColors.white,
+                              size: 20,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  Positioned(
-                    bottom: 5,
-                    right: 5,
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: const BoxDecoration(
-                        color: AppColors.primary,
-                        shape: BoxShape.circle,
+                  const SizedBox(height: AppSpacing.xl),
+
+                  // Name Fields in a Row
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _buildInputField(
+                          label: 'First Name',
+                          controller: _firstNameController,
+                          hint: 'First name',
+                        ),
                       ),
-                      child: const Icon(
-                        Icons.camera_alt_rounded,
-                        color: AppColors.white,
-                        size: 20,
+                      const SizedBox(width: AppSpacing.md),
+                      Expanded(
+                        child: _buildInputField(
+                          label: 'Last Name',
+                          controller: _lastNameController,
+                          hint: 'Last name',
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: AppSpacing.lg),
+
+                  // Email Field
+                  _buildInputField(
+                    label: 'Email',
+                    controller: _emailController,
+                    hint: 'Email',
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+                  const SizedBox(height: AppSpacing.lg),
+
+                  // Phone Field
+                  _buildInputField(
+                    label: 'Phone Number',
+                    controller: _phoneController,
+                    hint: 'Phone Number',
+                    keyboardType: TextInputType.phone,
+                  ),
+
+                  const SizedBox(height: 60),
+
+                  // Update Button
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        // Implement update logic
+                        Navigator.pop(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        foregroundColor: AppColors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 18),
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                      ),
+                      child: const Text(
+                        'Update Profile',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
                       ),
                     ),
                   ),
+                  const SizedBox(height: AppSpacing.xl),
                 ],
               ),
             ),
-            const SizedBox(height: AppSpacing.xxl),
+          ),
+        ],
+      ),
+    );
+  }
 
-            // Name Fields in a Row
-            Row(
-              children: [
-                Expanded(
-                  child: _buildInputField(
-                    label: 'First name',
-                    controller: _firstNameController,
-                    hint: 'First name',
-                  ),
-                ),
-                const SizedBox(width: AppSpacing.md),
-                Expanded(
-                  child: _buildInputField(
-                    label: 'Last name',
-                    controller: _lastNameController,
-                    hint: 'Last name',
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: AppSpacing.lg),
-            
-            // Email Field
-            _buildInputField(
-              label: 'Email',
-              controller: _emailController,
-              hint: 'Email',
-              keyboardType: TextInputType.emailAddress,
-            ),
-            const SizedBox(height: AppSpacing.lg),
-            
-            // Phone Field
-            _buildInputField(
-              label: 'Phone Number',
-              controller: _phoneController,
-              hint: 'Phone Number',
-              keyboardType: TextInputType.phone,
-            ),
-            
-            const SizedBox(height: AppSpacing.xxl * 2),
-            
-            // Update Button
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  // Implement update logic
-                  Navigator.pop(context);
-                },
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 18),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
-                  ),
-                ),
-                child: const Text(
-                  'Update',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
-                ),
+  Widget _buildAppBar(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        color: AppColors.neutral100,
+      ),
+      child: SafeArea(
+        bottom: false,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
+          child: Row(
+            children: [
+              IconButton(
+                onPressed: () => Navigator.of(context).pop(),
+                icon: const Icon(Icons.arrow_back_ios_new, size: 20),
+                color: AppColors.neutral900,
               ),
-            ),
-            const SizedBox(height: AppSpacing.xl),
-          ],
+              const SizedBox(width: 8),
+              Text(
+                'Edit Profile',
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: AppColors.neutral900,
+                      fontWeight: FontWeight.w800,
+                    ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -189,31 +209,44 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w600,
-            color: AppColors.neutral500,
+        Padding(
+          padding: const EdgeInsets.only(left: 4, bottom: 8),
+          child: Text(
+            label,
+            style: const TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w700,
+              color: AppColors.neutral500,
+            ),
           ),
         ),
-        const SizedBox(height: AppSpacing.xs),
         TextField(
           controller: controller,
           keyboardType: keyboardType,
-          style: const TextStyle(fontWeight: FontWeight.w600),
+          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
           decoration: InputDecoration(
             hintText: hint,
             filled: true,
             fillColor: AppColors.white,
             contentPadding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 16,
+              horizontal: 20,
+              vertical: 18,
+            ),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+              borderSide: BorderSide.none,
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+              borderRadius: BorderRadius.circular(20),
               borderSide: BorderSide(
                 color: AppColors.neutral200.withValues(alpha: 0.5),
+              ),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+              borderSide: const BorderSide(
+                color: AppColors.primary,
+                width: 1.5,
               ),
             ),
           ),

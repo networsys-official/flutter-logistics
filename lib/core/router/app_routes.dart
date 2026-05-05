@@ -15,6 +15,7 @@ class AppRoutes {
   static const String settings = '/settings';
   static const String calculator = '/calculator';
   static const String editProfile = '/edit-profile';
+  static const String changePassword = '/change-password';
 
   // Order must match StatefulShellRoute branches in AppRouter
   static const List<String> bottomNavLocations = [

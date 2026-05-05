@@ -14,6 +14,7 @@ import 'package:logistic_by_strom/features/onboarding/ui/views/onboarding_page.d
 import 'package:logistic_by_strom/features/onboarding/ui/views/splash_page.dart';
 import 'package:logistic_by_strom/features/accounts/ui/views/account_page.dart';
 import 'package:logistic_by_strom/features/accounts/ui/views/edit_profile_page.dart';
+import 'package:logistic_by_strom/features/accounts/ui/views/change_password_page.dart';
 import 'package:logistic_by_strom/features/shipments/ui/views/shipments_page.dart';
 import 'package:logistic_by_strom/features/support/ui/views/support_page.dart';
 import 'package:logistic_by_strom/features/calculator/ui/views/calculator_page.dart';
@@ -131,6 +132,10 @@ GoRouter appRouter(Ref ref) {
       GoRoute(
         path: AppRoutes.editProfile,
         builder: (context, state) => const EditProfilePage(),
+      ),
+      GoRoute(
+        path: AppRoutes.changePassword,
+        builder: (context, state) => const ChangePasswordPage(),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
