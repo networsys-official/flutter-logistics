@@ -23,8 +23,7 @@ migrate_working_dir/
 # Local Codex / agent state
 .agents/
 skills-lock.json
-.gemini/
-gemini/
+.gemini/settings.json
 settings.json
 
 # Flutter/Dart/Pub related
