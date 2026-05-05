@@ -19,9 +19,13 @@ migrate_working_dir/
 .idea/
 .vscode/
 
+
 # Local Codex / agent state
 .agents/
 skills-lock.json
+.gemini/
+gemini/
+settings.json
 
 # Flutter/Dart/Pub related
 **/doc/api/

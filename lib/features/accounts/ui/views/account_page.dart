@@ -69,11 +69,36 @@ class AccountPage extends ConsumerWidget {
                     bgColor: const Color(0xFFFFF8E1),
                   ),
                   _MenuAction(
-                    icon: HugeIcons.strokeRoundedHelpCircle,
+                    icon: HugeIcons.strokeRoundedCustomerService,
                     title: 'Help & Support',
                     onTap: () => context.push(AppRoutes.support),
                     color: AppColors.secondary,
                     bgColor: const Color(0xFFD6EEF4),
+                  ),
+                  _MenuAction(
+                    icon: HugeIcons.strokeRoundedHelpCircle,
+                    title: 'FAQ',
+                    onTap: () => context.push(AppRoutes.faq),
+                    color: AppColors.primary,
+                    bgColor: const Color(0xFFE8F5E9),
+                  ),
+                ]),
+                const SizedBox(height: AppSpacing.xl),
+                _buildSectionHeader('Legal'),
+                _buildMenuContainer([
+                  _MenuAction(
+                    icon: HugeIcons.strokeRoundedShield01,
+                    title: 'Privacy Policy',
+                    onTap: () => context.push(AppRoutes.privacyPolicy),
+                    color: AppColors.secondary,
+                    bgColor: const Color(0xFFD6EEF4),
+                  ),
+                  _MenuAction(
+                    icon: HugeIcons.strokeRoundedNote01,
+                    title: 'Terms & Conditions',
+                    onTap: () => context.push(AppRoutes.termsAndConditions),
+                    color: AppColors.accent,
+                    bgColor: const Color(0xFFFFF0D9),
                   ),
                   _MenuAction(
                     icon: HugeIcons.strokeRoundedInformationCircle,

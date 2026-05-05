@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hugeicons/hugeicons.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 import 'package:logistic_by_strom/core/theme/app_spacing.dart';
 
@@ -161,7 +160,7 @@ class _DropdownFieldState extends State<_DropdownField> {
           ),
         ),
         DropdownButtonFormField<String>(
-          value: selectedValue,
+          initialValue: selectedValue,
           style: const TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 15,
