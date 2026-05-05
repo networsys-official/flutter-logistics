@@ -13,7 +13,9 @@ import 'package:logistic_by_strom/features/home/ui/views/home_page.dart';
 import 'package:logistic_by_strom/features/onboarding/ui/views/onboarding_page.dart';
 import 'package:logistic_by_strom/features/onboarding/ui/views/splash_page.dart';
 import 'package:logistic_by_strom/features/accounts/ui/views/account_page.dart';
+import 'package:logistic_by_strom/features/accounts/ui/views/edit_profile_page.dart';
 import 'package:logistic_by_strom/features/shipments/ui/views/shipments_page.dart';
+import 'package:logistic_by_strom/features/support/ui/views/support_page.dart';
 import 'package:logistic_by_strom/features/calculator/ui/views/calculator_page.dart';
 import 'package:logistic_by_strom/shared/widgets/app_shell_scaffold.dart';
 
@@ -126,6 +128,10 @@ GoRouter appRouter(Ref ref) {
         path: AppRoutes.calculator,
         builder: (context, state) => const CalculatorPage(),
       ),
+      GoRoute(
+        path: AppRoutes.editProfile,
+        builder: (context, state) => const EditProfilePage(),
+      ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           return AppShellScaffold(navigationShell: navigationShell);
@@ -151,8 +157,7 @@ GoRouter appRouter(Ref ref) {
             routes: [
               GoRoute(
                 path: AppRoutes.support,
-                builder: (context, state) =>
-                    const Scaffold(body: Center(child: Text('Support Page'))),
+                builder: (context, state) => const SupportPage(),
               ),
             ],
           ),

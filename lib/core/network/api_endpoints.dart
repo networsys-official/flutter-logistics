@@ -13,4 +13,7 @@ class ApiEndpoints {
   static const String restPassword = '/auth/reset-password';
   static const String logout = '/auth/logout';
   static const String refreshToken = '/auth/refresh';
+
+  // Calculator endpoints
+  static const String calculate = '/calculator/calculate';
 }

@@ -9,6 +9,7 @@ import 'package:logistic_by_strom/features/auth/data/models/registration_respons
 import 'package:logistic_by_strom/features/auth/data/models/user_model.dart';
 import 'package:logistic_by_strom/features/auth/data/models/login_request.dart';
 import 'package:logistic_by_strom/features/auth/data/models/register_request.dart';
+import 'package:logistic_by_strom/core/utils/map_utils.dart';
 import 'package:logistic_by_strom/features/auth/data/repositories/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
@@ -46,7 +47,7 @@ class AuthRepositoryImpl implements AuthRepository {
         },
       );
 
-      final data = _asMap(response.data);
+      final data = MapUtils.asMap(response.data);
 
       final registrationResponse = RegistrationResponse.fromJson(data);
 
@@ -88,8 +89,8 @@ class AuthRepositoryImpl implements AuthRepository {
         data: {'identifier': identifier.trim(), 'type': type, 'otp': otp},
       );
 
-      final data = _asMap(response.data);
-      final user = UserModel.fromJson(_asMap(data['user']));
+      final data = MapUtils.asMap(response.data);
+      final user = UserModel.fromJson(MapUtils.asMap(data['user']));
       final token = data['access_token'] as String?;
 
       return right(AuthState(user: user, token: token));
@@ -145,11 +146,11 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   AuthState _authStateFromResponse(dynamic responseData, int? statusCode) {
-    final data = _asMap(responseData);
-    final payload = _asMap(data['data']).isNotEmpty
-        ? _asMap(data['data'])
+    final data = MapUtils.asMap(responseData);
+    final payload = MapUtils.asMap(data['data']).isNotEmpty
+        ? MapUtils.asMap(data['data'])
         : data;
-    final userData = _asMap(payload['user']);
+    final userData = MapUtils.asMap(payload['user']);
     final token = _readToken(payload);
 
     if (userData.isEmpty || token == null || token.isEmpty) {
@@ -170,15 +171,5 @@ class AuthRepositoryImpl implements AuthRepository {
         data['jwt'];
 
     return token is String && token.isNotEmpty ? token : null;
-  }
-
-  Map<String, dynamic> _asMap(dynamic value) {
-    if (value is Map<String, dynamic>) {
-      return value;
-    }
-    if (value is Map) {
-      return value.map((key, item) => MapEntry(key.toString(), item));
-    }
-    return const <String, dynamic>{};
   }
 }

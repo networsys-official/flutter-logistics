@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:logistic_by_strom/core/constants/strings/home_strings.dart';
 import 'package:logistic_by_strom/features/home/ui/widgets/home_action_grid.dart';
 import 'package:logistic_by_strom/features/home/ui/widgets/home_banner_carousel.dart';
-import 'package:logistic_by_strom/features/home/ui/widgets/home_calculator_section.dart';
 import 'package:logistic_by_strom/features/home/ui/widgets/home_section_header.dart';
 import 'package:logistic_by_strom/features/home/ui/widgets/shipment_card.dart';
 
@@ -12,7 +11,7 @@ class HomeBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 20,),
       physics: const BouncingScrollPhysics(),
       children: [
         // Quick-action grid
@@ -24,9 +23,6 @@ class HomeBody extends StatelessWidget {
         const HomeBannerCarousel(),
 
         const SizedBox(height: 24),
-
-        // Calculator section
-        const HomeCalculatorSection(),
 
         const SizedBox(height: 24),
 
@@ -43,19 +39,19 @@ class HomeBody extends StatelessWidget {
           showTimeline: true,
         ),
 
-        const SizedBox(height: 8),
-
-        // Recent shipments section
-        HomeSectionHeader(
-          title: HomeStrings.recentShipments,
-          onViewAll: () {},
-        ),
-        const ShipmentCard(
-          title: 'Recent',
-          id: '#BAH99228834XL',
-          status: HomeStrings.delivered,
-          date: '28 March',
-        ),
+        // const SizedBox(height: 8),
+        //
+        // // Recent shipments section
+        // HomeSectionHeader(
+        //   title: HomeStrings.recentShipments,
+        //   onViewAll: () {},
+        // ),
+        // const ShipmentCard(
+        //   title: 'Recent',
+        //   id: '#BAH99228834XL',
+        //   status: HomeStrings.delivered,
+        //   date: '28 March',
+        // ),
 
         // Extra bottom padding so FAB doesn't obscure content
         const SizedBox(height: 110),

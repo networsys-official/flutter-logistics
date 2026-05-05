@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:logistic_by_strom/core/constants/app_images.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 
@@ -135,44 +136,7 @@ class _BannerSlide extends StatelessWidget {
             ),
           ),
           // Logo badge (top right)
-          Positioned(
-            top: 14,
-            right: 14,
-            child: Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(5),
-                  decoration: const BoxDecoration(
-                    color: AppColors.white,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(Icons.public, color: AppColors.primary, size: 12),
-                ),
-                const SizedBox(width: 5),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Logistic',
-                      style: TextStyle(
-                        color: data.accentColor,
-                        fontWeight: FontWeight.w800,
-                        fontSize: 10,
-                      ),
-                    ),
-                    Text(
-                      'Systems',
-                      style: TextStyle(
-                        color: data.accentColor.withValues(alpha: 0.7),
-                        fontSize: 8,
-                        height: 1,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
+
           // Truck / illustration area
           Positioned(
             left: 0,
@@ -183,8 +147,8 @@ class _BannerSlide extends StatelessWidget {
               child: Image.asset(
                 AppImages.cargoShip,
                 fit: BoxFit.contain,
-                errorBuilder: (context, error, stack) => const Icon(
-                  Icons.local_shipping_rounded,
+                errorBuilder: (context, error, stack) => const HugeIcon(
+                  icon: HugeIcons.strokeRoundedDeliveryTruck01,
                   size: 80,
                   color: AppColors.primary,
                 ),

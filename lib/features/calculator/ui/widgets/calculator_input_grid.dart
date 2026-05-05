@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:logistic_by_strom/core/theme/app_spacing.dart';
 
 class CalculatorInputGrid extends StatelessWidget {
@@ -35,8 +36,10 @@ class CalculatorInputGrid extends StatelessWidget {
         const _DropdownField(
           label: 'Item Type',
           hint: 'Select Item Type',
-          items: ['I Phopne', 'Laptop', 'Electronics', 'Furniture', 'Clothing'],
+          items: ['I Phone', 'Laptop', 'Electronics', 'Furniture', 'Clothing'],
         ),
+        const SizedBox(height: AppSpacing.lg),
+        const _ShippingOptions(),
         const SizedBox(height: AppSpacing.lg),
         SizedBox(
           width: double.infinity,
@@ -49,6 +52,93 @@ class CalculatorInputGrid extends StatelessWidget {
     );
   }
 }
+
+// ─── SHIPPING OPTIONS (Fixed: uses RadioGroup) ───────────────────
+
+class _ShippingOptions extends StatefulWidget {
+  const _ShippingOptions();
+
+  @override
+  State<_ShippingOptions> createState() => _ShippingOptionsState();
+}
+
+class _ShippingOptionsState extends State<_ShippingOptions> {
+  String? selectedOption = 'Standard';
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Shipping Method',
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: AppSpacing.xs),
+
+
+        RadioGroup<String>(
+          groupValue: selectedOption,
+          onChanged: (val) => setState(() => selectedOption = val),
+          child: Row(
+            children: [
+              _RadioOption(
+                label: 'Standard',
+                value: 'Standard',
+                onTap: () => setState(() => selectedOption = 'Standard'),
+              ),
+              const SizedBox(width: AppSpacing.lg),
+              _RadioOption(
+                label: 'Priority',
+                value: 'Priority',
+                onTap: () => setState(() => selectedOption = 'Priority'),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+
+class _RadioOption extends StatelessWidget {
+  final String label;
+  final String value;
+  final VoidCallback onTap;
+
+  const _RadioOption({
+    required this.label,
+    required this.value,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            width: 24,
+            height: 24,
+            child: Radio<String>(
+              value: value,
+
+              visualDensity: VisualDensity.compact,
+            ),
+          ),
+          const SizedBox(width: AppSpacing.sm),
+          Text(label, style: Theme.of(context).textTheme.bodyMedium),
+        ],
+      ),
+    );
+  }
+}
+
 
 class _InputField extends StatelessWidget {
   final String label;
@@ -77,6 +167,7 @@ class _InputField extends StatelessWidget {
     );
   }
 }
+
 
 class _DropdownField extends StatefulWidget {
   final String label;
@@ -109,7 +200,7 @@ class _DropdownFieldState extends State<_DropdownField> {
         ),
         const SizedBox(height: AppSpacing.xs),
         DropdownButtonFormField<String>(
-          value: selectedValue,
+          initialValue: selectedValue,
           decoration: InputDecoration(
             hintText: widget.hint,
           ),
@@ -124,7 +215,11 @@ class _DropdownFieldState extends State<_DropdownField> {
               selectedValue = newValue;
             });
           },
-          icon: const Icon(Icons.keyboard_arrow_down),
+          icon: const HugeIcon(
+            icon: HugeIcons.strokeRoundedArrowDown01,
+            color: Colors.black,
+            size: 20,
+          ),
         ),
       ],
     );

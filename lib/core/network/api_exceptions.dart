@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:logistic_by_strom/core/constants/strings/error_strings.dart';
 import 'package:logistic_by_strom/core/utils/app_logger.dart';
+import 'package:logistic_by_strom/core/utils/map_utils.dart';
 
 /// Base class for all API exceptions
 abstract class ApiException implements Exception {
@@ -144,8 +145,8 @@ String? _extractMessage(dynamic data) {
 }
 
 Map<String, List<String>> _extractFieldErrors(dynamic data) {
-  final map = _asMap(data);
-  final errors = _asMap(map['errors']);
+  final map = MapUtils.asMap(data);
+  final errors = MapUtils.asMap(map['errors']);
   if (errors.isEmpty) return const {};
 
   return errors.map((field, value) {
@@ -158,12 +159,4 @@ Map<String, List<String>> _extractFieldErrors(dynamic data) {
 
     return MapEntry(field, [value.toString()]);
   });
-}
-
-Map<String, dynamic> _asMap(dynamic value) {
-  if (value is Map<String, dynamic>) return value;
-  if (value is Map) {
-    return value.map((key, item) => MapEntry(key.toString(), item));
-  }
-  return const {};
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:logistic_by_strom/core/router/app_routes.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 import 'package:logistic_by_strom/core/theme/app_spacing.dart';
@@ -26,8 +27,8 @@ class HomeCalculatorSection extends StatelessWidget {
                 color: AppColors.secondary,
                 shape: BoxShape.circle,
               ),
-              child: const Icon(
-                Icons.calculate_outlined,
+              child: const HugeIcon(
+                icon: HugeIcons.strokeRoundedCalculator,
                 color: AppColors.white,
                 size: 24,
               ),
@@ -53,8 +54,8 @@ class HomeCalculatorSection extends StatelessWidget {
                 ],
               ),
             ),
-            const Icon(
-              Icons.arrow_forward_ios,
+            const HugeIcon(
+              icon: HugeIcons.strokeRoundedArrowRight01,
               color: AppColors.secondary,
               size: 16,
             ),

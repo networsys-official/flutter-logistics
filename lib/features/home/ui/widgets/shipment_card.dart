@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 
 class ShipmentCard extends StatelessWidget {
@@ -59,8 +60,8 @@ class ShipmentCard extends StatelessWidget {
                   ],
                 ),
               ),
-              const Icon(
-                Icons.arrow_forward_ios_rounded,
+              const HugeIcon(
+                icon: HugeIcons.strokeRoundedArrowRight01,
                 size: 16,
                 color: AppColors.neutral500,
               ),
@@ -85,8 +86,8 @@ class ShipmentCard extends StatelessWidget {
         shape: BoxShape.circle,
         border: Border.all(color: AppColors.neutral200),
       ),
-      child: const Icon(
-        Icons.inventory_2_outlined,
+      child: const HugeIcon(
+        icon: HugeIcons.strokeRoundedPackage,
         color: AppColors.primary,
         size: 20,
       ),

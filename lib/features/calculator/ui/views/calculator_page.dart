@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 import 'package:logistic_by_strom/core/theme/app_spacing.dart';
 import 'package:logistic_by_strom/features/calculator/ui/widgets/calculation_summary_card.dart';
@@ -14,7 +15,11 @@ class CalculatorPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColors.primary,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.white),
+          icon: const HugeIcon(
+            icon: HugeIcons.strokeRoundedArrowLeft01,
+            color: AppColors.white,
+            size: 24,
+          ),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: const Text('Invoice'),

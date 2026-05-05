@@ -13,7 +13,7 @@ class AccountsRepository {
       email: 'john.doe@example.com',
       phone: '+1 234 567 8900',
       address: '123 Main St, Springfield, IL',
-      profileImageUrl: 'https://api.dicebear.com/7.x/avataaars/svg?seed=John',
+      profileImageUrl: '',
     );
   }
 }

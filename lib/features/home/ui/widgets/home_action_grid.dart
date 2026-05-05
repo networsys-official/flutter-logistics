@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:logistic_by_strom/core/router/app_routes.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 import 'package:logistic_by_strom/core/constants/strings/home_strings.dart';
@@ -10,25 +11,25 @@ class HomeActionGrid extends StatelessWidget {
 
   static const List<_ActionData> _actions = [
     _ActionData(
-      icon: Icons.receipt_long_rounded,
+      icon: HugeIcons.strokeRoundedInvoice01,
       label: HomeStrings.invoice,
       color: AppColors.error,
       bgColor: Color(0xFFFBECEC),
     ),
     _ActionData(
-      icon: Icons.timer_outlined,
+      icon: HugeIcons.strokeRoundedClock01,
       label: HomeStrings.standBy,
       color: AppColors.secondary,
       bgColor: Color(0xFFD6EEF4),
     ),
     _ActionData(
-      icon: Icons.cancel_outlined,
+      icon: HugeIcons.strokeRoundedCancel01,
       label: HomeStrings.cancelled,
       color: AppColors.warning,
       bgColor: Color(0xFFFFF0D9),
     ),
     _ActionData(
-      icon: Icons.calculate_outlined,
+      icon: HugeIcons.strokeRoundedCalculator,
       label: HomeStrings.calculator,
       color: AppColors.info,
       bgColor: Color(0xFFFFF8E1),
@@ -61,7 +62,7 @@ class HomeActionGrid extends StatelessWidget {
 }
 
 class _ActionData {
-  final IconData icon;
+  final dynamic icon;
   final String label;
   final Color color;
   final Color bgColor;
@@ -92,13 +93,16 @@ class _ActionItem extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            width: 52,
-            height: 52,
+            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               color: data.bgColor,
-              borderRadius: BorderRadius.circular(14),
+              shape: BoxShape.circle,
             ),
-            child: Icon(data.icon, color: data.color, size: 26),
+            child: HugeIcon(
+              icon: data.icon,
+              color: data.color,
+              size: 28,
+            ),
           ),
           const SizedBox(height: 8),
           Text(
