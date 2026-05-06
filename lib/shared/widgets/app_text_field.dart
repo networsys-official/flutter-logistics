@@ -1,25 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 
-class AppDropdownField<T> extends StatelessWidget {
+class AppTextField extends StatelessWidget {
   final String label;
   final String hint;
-  final T? value;
-  final List<T>? items;
-  final List<DropdownMenuItem<T>>? dropdownItems;
-  final ValueChanged<T?>? onChanged;
-  final String Function(T)? itemLabelBuilder;
+  final TextEditingController? controller;
+  final TextInputType keyboardType;
+  final bool obscureText;
+  final Widget? suffixIcon;
+  final bool readOnly;
+  final VoidCallback? onTap;
+  final int maxLines;
 
-  const AppDropdownField({
+  const AppTextField({
     super.key,
     required this.label,
     required this.hint,
-    this.value,
-    this.items,
-    this.dropdownItems,
-    this.onChanged,
-    this.itemLabelBuilder,
-  }) : assert(items != null || dropdownItems != null, 'Either items or dropdownItems must be provided');
+    this.controller,
+    this.keyboardType = TextInputType.text,
+    this.obscureText = false,
+    this.suffixIcon,
+    this.readOnly = false,
+    this.onTap,
+    this.maxLines = 1,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -37,15 +41,22 @@ class AppDropdownField<T> extends StatelessWidget {
             ),
           ),
         ),
-        DropdownButtonFormField<T>(
-          initialValue: value,
-          style: const TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 15,
-            color: AppColors.neutral900,
-          ),
+        TextField(
+          controller: controller,
+          keyboardType: keyboardType,
+          obscureText: obscureText,
+          readOnly: readOnly,
+          onTap: onTap,
+          maxLines: maxLines,
+          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
           decoration: InputDecoration(
             hintText: hint,
+            suffixIcon: suffixIcon != null
+                ? Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: suffixIcon,
+                  )
+                : null,
             filled: true,
             fillColor: AppColors.white,
             contentPadding: const EdgeInsets.symmetric(
@@ -62,19 +73,13 @@ class AppDropdownField<T> extends StatelessWidget {
                 color: AppColors.neutral200.withValues(alpha: 0.5),
               ),
             ),
-          ),
-          items: dropdownItems ??
-              items?.map((T item) {
-                return DropdownMenuItem<T>(
-                  value: item,
-                  child: Text(itemLabelBuilder?.call(item) ?? item.toString()),
-                );
-              }).toList(),
-          onChanged: onChanged,
-          icon: const Icon(
-            Icons.keyboard_arrow_down_rounded,
-            color: AppColors.neutral500,
-            size: 24,
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+              borderSide: const BorderSide(
+                color: AppColors.primary,
+                width: 1.5,
+              ),
+            ),
           ),
         ),
       ],

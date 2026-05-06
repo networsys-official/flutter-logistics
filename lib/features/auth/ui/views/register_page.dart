@@ -311,7 +311,7 @@ class _StepOne extends StatelessWidget {
         const SizedBox(height: AppSpacing.lg),
         AppDropdownField<int>(
           label: AuthStrings.country,
-          hintText: AuthStrings.countryHint,
+          hint: AuthStrings.countryHint,
           items: _countries.map((country) => country.id).toList(),
           value: selectedCountryId,
           itemLabelBuilder: (id) =>
@@ -321,7 +321,7 @@ class _StepOne extends StatelessWidget {
         const SizedBox(height: AppSpacing.lg),
         AppDropdownField<DeliveryZone>(
           label: AuthStrings.deliveryZone,
-          hintText: AuthStrings.deliveryZoneHint,
+          hint: AuthStrings.deliveryZoneHint,
           items: deliveryZones,
           value: selectedDeliveryZone,
           itemLabelBuilder: (zone) => zone.label,

@@ -20,6 +20,7 @@ import 'package:logistic_by_strom/features/accounts/ui/views/privacy_policy_page
 import 'package:logistic_by_strom/features/accounts/ui/views/faq_page.dart';
 import 'package:logistic_by_strom/features/shipments/ui/views/shipments_page.dart';
 import 'package:logistic_by_strom/features/shipments/ui/views/add_shipment_page.dart';
+import 'package:logistic_by_strom/features/shipments/ui/views/shipment_detail_page.dart';
 import 'package:logistic_by_strom/features/support/ui/views/support_page.dart';
 import 'package:logistic_by_strom/features/calculator/ui/views/calculator_page.dart';
 import 'package:logistic_by_strom/shared/widgets/app_shell_scaffold.dart';
@@ -136,6 +137,10 @@ GoRouter appRouter(Ref ref) {
       GoRoute(
         path: AppRoutes.addShipment,
         builder: (context, state) => const AddShipmentPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.shipmentDetail,
+        builder: (context, state) => const ShipmentDetailPage(),
       ),
       GoRoute(
         path: AppRoutes.editProfile,

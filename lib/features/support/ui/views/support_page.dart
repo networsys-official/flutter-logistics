@@ -3,6 +3,7 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:logistic_by_strom/core/constants/app_images.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 import 'package:logistic_by_strom/core/theme/app_spacing.dart';
+import 'package:logistic_by_strom/shared/widgets/app_app_bar.dart';
 
 class SupportPage extends StatelessWidget {
   const SupportPage({super.key});
@@ -13,7 +14,10 @@ class SupportPage extends StatelessWidget {
       backgroundColor: AppColors.neutral100,
       body: Column(
         children: [
-          _buildAppBar(context),
+          const AppAppBar(
+            title: 'Support',
+            showBackButton: false,
+          ),
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -28,16 +32,17 @@ class SupportPage extends StatelessWidget {
                     height: 180,
                     decoration: BoxDecoration(
                       color: AppColors.secondaryContainer,
-                      borderRadius: BorderRadius.circular(24),
+                      borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
                     ),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(24),
+                      borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
                       child: Image.asset(
                         AppImages.container,
                         fit: BoxFit.contain,
                       ),
                     ),
-                  ),                  const SizedBox(height: AppSpacing.xl),
+                  ),
+                  const SizedBox(height: AppSpacing.xl),
 
                   // Title Section
                   Text(
@@ -89,52 +94,6 @@ class SupportPage extends StatelessWidget {
       ),
     );
   }
-
-  Widget _buildAppBar(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        color: AppColors.neutral100,
-      ),
-      child: SafeArea(
-        bottom: false,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
-          child: Row(
-            children: [
-              Text(
-                'Support',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: AppColors.neutral900,
-                      fontWeight: FontWeight.w800,
-                    ),
-              ),
-              const Spacer(),
-              _buildNotificationIcon(),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNotificationIcon() {
-    return InkWell(
-      onTap: () {},
-      borderRadius: BorderRadius.circular(24),
-      child: const Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Badge(
-          label: Text('2'),
-          backgroundColor: AppColors.error,
-          child: HugeIcon(
-            icon: HugeIcons.strokeRoundedNotification01,
-            color: AppColors.neutral900,
-            size: 24,
-          ),
-        ),
-      ),
-    );
-  }
 }
 
 class _ContactCard extends StatelessWidget {
@@ -159,13 +118,7 @@ class _ContactCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.neutral900.withValues(alpha: 0.04),
-            blurRadius: 20,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        boxShadow: AppSpacing.shadowSm,
       ),
       child: Row(
         children: [

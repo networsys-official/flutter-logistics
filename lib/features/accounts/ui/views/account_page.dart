@@ -9,6 +9,7 @@ import 'package:logistic_by_strom/core/theme/app_spacing.dart';
 import 'package:logistic_by_strom/features/accounts/data/models/user_profile.dart';
 import 'package:logistic_by_strom/features/accounts/ui/view_models/accounts_view_model.dart';
 import 'package:logistic_by_strom/features/auth/providers/auth_provider.dart';
+import 'package:logistic_by_strom/shared/widgets/app_app_bar.dart';
 
 class AccountPage extends ConsumerWidget {
   const AccountPage({super.key});
@@ -30,7 +31,10 @@ class AccountPage extends ConsumerWidget {
   Widget _buildContent(BuildContext context, WidgetRef ref, UserProfile? profile) {
     return Column(
       children: [
-        _buildAppBar(context),
+        const AppAppBar(
+          title: 'My Shipment Information',
+          showBackButton: false,
+        ),
         Expanded(
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
@@ -119,65 +123,13 @@ class AccountPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildAppBar(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        color: AppColors.neutral100,
-      ),
-      child: SafeArea(
-        bottom: false,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
-          child: Row(
-            children: [
-              Text(
-                'Account',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: AppColors.neutral900,
-                      fontWeight: FontWeight.w800,
-                    ),
-              ),
-              const Spacer(),
-              _buildNotificationIcon(),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNotificationIcon() {
-    return InkWell(
-      onTap: () {},
-      borderRadius: BorderRadius.circular(24),
-      child: const Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Badge(
-          label: Text('2'),
-          backgroundColor: AppColors.error,
-          child: HugeIcon(
-            icon: HugeIcons.strokeRoundedNotification01,
-            color: AppColors.neutral900,
-            size: 24,
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _buildProfileCard(BuildContext context, UserProfile? profile) {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: AppColors.white,
-        borderRadius: BorderRadius.circular(28),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.neutral900.withValues(alpha: 0.06),
-            blurRadius: 24,
-            offset: const Offset(0, 8),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(AppSpacing.radiusXxl),
+        boxShadow: AppSpacing.shadowMd,
       ),
       child: Row(
         children: [
@@ -247,14 +199,8 @@ class AccountPage extends ConsumerWidget {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.white,
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.neutral900.withValues(alpha: 0.04),
-            blurRadius: 20,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
+        boxShadow: AppSpacing.shadowSm,
       ),
       child: Column(
         children: List.generate(actions.length, (index) {
@@ -309,21 +255,15 @@ class AccountPage extends ConsumerWidget {
       width: double.infinity,
       decoration: BoxDecoration(
         color: AppColors.white,
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.error.withValues(alpha: 0.05),
-            blurRadius: 20,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
+        boxShadow: AppSpacing.shadowSm,
       ),
       child: TextButton(
         onPressed: () => _showLogoutDialog(context, ref),
         style: TextButton.styleFrom(
           foregroundColor: AppColors.error,
           padding: const EdgeInsets.symmetric(vertical: 16),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppSpacing.radiusXl)),
         ),
         child: const Text(
           'Logout',
@@ -340,7 +280,7 @@ class AccountPage extends ConsumerWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppSpacing.radiusXl)),
         title: const Text('Logout', style: TextStyle(fontWeight: FontWeight.w800)),
         content: const Text('Are you sure you want to logout?'),
         actions: [

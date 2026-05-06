@@ -22,14 +22,8 @@ class CalculationSummaryCard extends StatelessWidget {
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
             color: AppColors.white,
-            borderRadius: BorderRadius.circular(24),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.neutral900.withValues(alpha: 0.04),
-                blurRadius: 20,
-                offset: const Offset(0, 4),
-              ),
-            ],
+            borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
+            boxShadow: AppSpacing.shadowSm,
           ),
           child: Column(
             children: [
@@ -109,15 +103,18 @@ class _SummaryRow extends StatelessWidget {
       children: [
         Text(
           label,
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
             color: AppColors.neutral500,
           ),
         ),
         Text(
           value,
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
             color: AppColors.neutral900,
-            fontWeight: FontWeight.w600,
           ),
         ),
       ],
