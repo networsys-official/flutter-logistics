@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hugeicons/hugeicons.dart';
+import 'package:logistic_by_strom/core/router/app_routes.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 import 'package:logistic_by_strom/shared/widgets/app_bottom_nav.dart';
 
@@ -15,12 +17,10 @@ class AppShellScaffold extends StatelessWidget {
       body: navigationShell,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Action for the center FAB
-        },
+        onPressed: () => context.push(AppRoutes.addShipment),
         backgroundColor: AppColors.primary,
         shape: const CircleBorder(),
-        child: const Icon(Icons.add, color: AppColors.white),
+        child: const HugeIcon(color: AppColors.white, icon: HugeIcons.strokeRoundedPackageAdd01,),
       ),
       bottomNavigationBar: AppBottomNav(
         currentIndex: navigationShell.currentIndex,
@@ -30,7 +30,6 @@ class AppShellScaffold extends StatelessWidget {
   }
 
   void _onTap(BuildContext context, int index) {
-
     navigationShell.goBranch(
       index,
       initialLocation: index == navigationShell.currentIndex,

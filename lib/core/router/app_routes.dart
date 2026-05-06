@@ -15,6 +15,7 @@ class AppRoutes {
   static const String settings = '/settings';
   static const String calculator = '/calculator';
   static const String editProfile = '/edit-profile';
+  static const String addShipment = '/add-shipment';
   static const String changePassword = '/change-password';
   static const String termsAndConditions = '/terms-and-conditions';
   static const String privacyPolicy = '/privacy-policy';

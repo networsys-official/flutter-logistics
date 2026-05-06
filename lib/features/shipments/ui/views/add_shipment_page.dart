@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
+import 'package:logistic_by_strom/core/theme/app_spacing.dart';
+import 'package:logistic_by_strom/features/shipments/ui/widgets/add_shipment_form.dart';
 
-class ShipmentsPage extends StatelessWidget {
-  const ShipmentsPage({super.key});
+class AddShipmentPage extends StatelessWidget {
+  const AddShipmentPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,33 +16,14 @@ class ShipmentsPage extends StatelessWidget {
         children: [
           _buildAppBar(context),
           const Expanded(
-            child: Center(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              physics: BouncingScrollPhysics(),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  HugeIcon(
-                    icon: HugeIcons.strokeRoundedDeliveryTruck01,
-                    color: AppColors.neutral200,
-                    size: 80,
-                  ),
-                  SizedBox(height: 16),
-                  Text(
-                    'No active shipments',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.neutral900,
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    'Your active shipments will appear here',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: AppColors.neutral500,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
+                  SizedBox(height: AppSpacing.lg),
+                  AddShipmentForm(),
+                  SizedBox(height: 100),
                 ],
               ),
             ),
@@ -57,11 +41,17 @@ class ShipmentsPage extends StatelessWidget {
       child: SafeArea(
         bottom: false,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
           child: Row(
             children: [
+              IconButton(
+                onPressed: () => context.pop(),
+                icon: const Icon(Icons.arrow_back_ios_new, size: 20),
+                color: AppColors.neutral900,
+              ),
+              const SizedBox(width: 8),
               Text(
-                'Shipments',
+                'Incoming Package',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       color: AppColors.neutral900,
                       fontWeight: FontWeight.w800,
