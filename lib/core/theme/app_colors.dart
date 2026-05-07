@@ -46,4 +46,13 @@ class AppColors {
   static const Color inputBorder = Color(0xFFC8CDD2);
   /// Hint text color for input fields.
   static const Color inputHint = Color(0xFFADB3B8);
+
+  // --- Background Variants (Light Tints) ---
+  static const Color successContainer = Color(0xFFE8F5E9);
+  static const Color infoContainer = Color(0xFFD6EEF4);
+  static const Color warningContainer = Color(0xFFFFF0D9);
+  static const Color errorContainer = Color(0xFFFBECEC);
+  static const Color accentContainer = Color(0xFFFFF3C7);
+  static const Color highlightContainer = Color(0xFFEFF8E6);
+  static const Color goldContainer = Color(0xFFFFF8E1);
 }

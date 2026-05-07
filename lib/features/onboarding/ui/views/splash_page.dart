@@ -1,28 +1,39 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:logistic_by_strom/core/constants/app_images.dart';
 import 'package:logistic_by_strom/core/router/app_routes.dart';
+import 'package:logistic_by_strom/core/services/storage_service.dart';
 
 import 'package:logistic_by_strom/core/theme/app_spacing.dart';
 
-class SplashPage extends StatefulWidget {
+class SplashPage extends ConsumerStatefulWidget {
   const SplashPage({super.key});
 
   @override
-  State<SplashPage> createState() => _SplashPageState();
+  ConsumerState<SplashPage> createState() => _SplashPageState();
 }
 
-class _SplashPageState extends State<SplashPage> {
+class _SplashPageState extends ConsumerState<SplashPage> {
   Timer? _timer;
 
   @override
   void initState() {
     super.initState();
-    _timer = Timer(const Duration(milliseconds: 2000), () {
-      if (mounted) {
+    _timer = Timer(const Duration(milliseconds: 2000), () async {
+      if (!mounted) return;
+
+      final storage = ref.read(storageServiceProvider.notifier);
+      final hasSeenOnboarding = await storage.getHasSeenOnboarding();
+
+      if (!mounted) return;
+
+      if (hasSeenOnboarding) {
+        context.go(AppRoutes.login);
+      } else {
         context.go(AppRoutes.onboarding);
       }
     });

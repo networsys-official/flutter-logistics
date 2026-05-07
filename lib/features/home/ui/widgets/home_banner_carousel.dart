@@ -20,19 +20,19 @@ class _HomeBannerCarouselState extends State<HomeBannerCarousel> {
     _BannerData(
       headline: 'SERVICES',
       subtitle: 'Reliable global shipping solutions',
-      bgColor: Color(0xFFFFF3C7),
+      bgColor: AppColors.accentContainer,
       accentColor: AppColors.primary,
     ),
     _BannerData(
       headline: 'TRACKING',
       subtitle: 'Real-time shipment visibility',
-      bgColor: Color(0xFFD6EEF4),
+      bgColor: AppColors.infoContainer,
       accentColor: AppColors.secondary,
     ),
     _BannerData(
       headline: 'SUPPORT',
       subtitle: '24/7 dedicated logistics support',
-      bgColor: Color(0xFFEFF8E6),
+      bgColor: AppColors.highlightContainer,
       accentColor: AppColors.primaryDark,
     ),
   ];

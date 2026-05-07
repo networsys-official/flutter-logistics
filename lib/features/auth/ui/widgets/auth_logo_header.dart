@@ -19,14 +19,14 @@ class AuthLogoHeader extends StatelessWidget {
     return Column(
       children: [
         ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 150),
-          child: Image.asset(AppImages.logo, fit: BoxFit.contain),
+          constraints: const BoxConstraints(maxWidth: 250),
+          child: Image.asset(AppImages.logo, fit: BoxFit.scaleDown),
         ),
         const SizedBox(height: 30),
         Text(
           title,
           style: textTheme.headlineMedium?.copyWith(
-            fontSize: 20,
+            fontSize: 24,
             fontWeight: FontWeight.w800,
             letterSpacing: 0.2,
           ),

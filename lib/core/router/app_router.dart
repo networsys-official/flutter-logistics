@@ -56,11 +56,10 @@ GoRouter appRouter(Ref ref) {
         AppRoutes.resetPassword,
       ];
 
-      final publicRoutes = [...authRoutes, AppRoutes.onboarding];
+      final publicRoutes = [...authRoutes, AppRoutes.onboarding,AppRoutes.splash];
 
       final guestRestrictedRoutes = [
         ...authRoutes,
-        AppRoutes.splash,
         AppRoutes.onboarding,
       ];
 

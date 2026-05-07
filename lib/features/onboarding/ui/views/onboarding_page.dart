@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logistic_by_strom/core/constants/strings/app_strings.dart';
 import 'package:logistic_by_strom/core/router/app_routes.dart';
+import 'package:logistic_by_strom/core/services/storage_service.dart';
 
 import 'package:logistic_by_strom/core/theme/app_spacing.dart';
 
@@ -35,7 +36,9 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     super.dispose();
   }
 
-  void _goToDashboard() {
+  void _goToDashboard() async{
+    await ref.read(storageServiceProvider.notifier).setHasSeenOnboarding();
+    if (!mounted) return;
     context.go(AppRoutes.register);
   }
 

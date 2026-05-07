@@ -35,4 +35,14 @@ class StorageService extends _$StorageService {
   Future<void> deleteUser() async {
     await _storage.delete(key: 'auth_user');
   }
+
+
+  Future<void> setHasSeenOnboarding() async {
+    await _storage.write(key: 'has_seen_onboarding', value: 'true');
+  }
+
+  Future<bool> getHasSeenOnboarding() async {
+    final value = await _storage.read(key: 'has_seen_onboarding');
+    return value == 'true';
+  }
 }

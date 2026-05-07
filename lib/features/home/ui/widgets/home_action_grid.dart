@@ -14,25 +14,25 @@ class HomeActionGrid extends StatelessWidget {
       icon: HugeIcons.strokeRoundedInvoice01,
       label: HomeStrings.invoice,
       color: AppColors.error,
-      bgColor: Color(0xFFFBECEC),
+      bgColor: AppColors.errorContainer,
     ),
     _ActionData(
       icon: HugeIcons.strokeRoundedClock01,
       label: HomeStrings.standBy,
       color: AppColors.secondary,
-      bgColor: Color(0xFFD6EEF4),
+      bgColor: AppColors.infoContainer,
     ),
     _ActionData(
       icon: HugeIcons.strokeRoundedCancel01,
       label: HomeStrings.cancelled,
       color: AppColors.warning,
-      bgColor: Color(0xFFFFF0D9),
+      bgColor: AppColors.warningContainer,
     ),
     _ActionData(
       icon: HugeIcons.strokeRoundedCalculator,
       label: HomeStrings.calculator,
       color: AppColors.info,
-      bgColor: Color(0xFFFFF8E1),
+      bgColor: AppColors.goldContainer,
     ),
   ];
 
