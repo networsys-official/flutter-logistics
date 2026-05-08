@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:logistic_by_strom/core/constants/app_images.dart';
+import 'package:logistic_by_strom/core/network/api_endpoints.dart';
 import 'package:logistic_by_strom/core/router/app_routes.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 import 'package:logistic_by_strom/core/theme/app_spacing.dart';
@@ -28,11 +29,12 @@ class AccountPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildContent(BuildContext context, WidgetRef ref, UserProfile? profile) {
+  Widget _buildContent(
+      BuildContext context, WidgetRef ref, UserProfile? profile) {
     return Column(
       children: [
         const AppAppBar(
-          title: 'My Shipment Information',
+          title: 'Account',
           showBackButton: false,
         ),
         Expanded(
@@ -124,6 +126,22 @@ class AccountPage extends ConsumerWidget {
   }
 
   Widget _buildProfileCard(BuildContext context, UserProfile? profile) {
+    final imageUrl = profile?.profileImageUrl;
+    ImageProvider imageProvider;
+
+    if (imageUrl != null && imageUrl.isNotEmpty) {
+      if (imageUrl.startsWith('http')) {
+        imageProvider = NetworkImage(imageUrl);
+      } else {
+        // Prepend host if relative path
+        final baseUrl =
+            ApiEndpoints.configuredBaseUrl.replaceFirst('/api/v1', '');
+        imageProvider = NetworkImage('$baseUrl$imageUrl');
+      }
+    } else {
+      imageProvider = const AssetImage(AppImages.userProfile);
+    }
+
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
@@ -139,10 +157,10 @@ class AccountPage extends ConsumerWidget {
               shape: BoxShape.circle,
               border: Border.all(color: AppColors.neutral200),
             ),
-            child: const CircleAvatar(
+            child: CircleAvatar(
               radius: 42,
               backgroundColor: AppColors.secondaryContainer,
-              backgroundImage: AssetImage(AppImages.userProfile),
+              backgroundImage: imageProvider,
             ),
           ),
           const SizedBox(width: AppSpacing.lg),
@@ -234,7 +252,8 @@ class AccountPage extends ConsumerWidget {
                   size: 14,
                 ),
                 onTap: action.onTap,
-                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
               ),
               if (index != actions.length - 1)
                 Divider(
@@ -263,7 +282,8 @@ class AccountPage extends ConsumerWidget {
         style: TextButton.styleFrom(
           foregroundColor: AppColors.error,
           padding: const EdgeInsets.symmetric(vertical: 16),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppSpacing.radiusXl)),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(AppSpacing.radiusXl)),
         ),
         child: const Text(
           'Logout',
@@ -280,8 +300,10 @@ class AccountPage extends ConsumerWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppSpacing.radiusXl)),
-        title: const Text('Logout', style: TextStyle(fontWeight: FontWeight.w800)),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppSpacing.radiusXl)),
+        title:
+            const Text('Logout', style: TextStyle(fontWeight: FontWeight.w800)),
         content: const Text('Are you sure you want to logout?'),
         actions: [
           TextButton(

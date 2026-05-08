@@ -1,18 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:logistic_by_strom/features/accounts/ui/views/account_page.dart';
-import 'package:logistic_by_strom/features/accounts/ui/view_models/accounts_view_model.dart';
-import 'package:logistic_by_strom/features/accounts/data/models/user_profile.dart';
-import 'package:logistic_by_strom/features/accounts/data/repositories/accounts_repository.dart';
-import 'package:hugeicons/hugeicons.dart';
+import 'package:fpdart/fpdart.dart';
+import 'package:logistic_by_strom/core/typedefs/result.dart';
 
 class MockAccountsRepository implements AccountsRepository {
   final UserProfile profile;
   MockAccountsRepository(this.profile);
 
   @override
-  Future<UserProfile> getProfile() async => profile;
+  ResultFuture<UserProfile> getProfile() async {
+    return Right(profile);
+  }
+
+  @override
+  ResultFuture<UserProfile> updateProfile({
+    required String name,
+    required String phone,
+    String? gender,
+    String? dob,
+    String? language,
+    String? imagePath,
+  }) async {
+    return Right(profile);
+  }
 }
 
 void main() {
