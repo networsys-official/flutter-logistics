@@ -1,7 +1,7 @@
 class ApiEndpoints {
   static const String configuredBaseUrl = String.fromEnvironment(
     'BASE_URL',
-    defaultValue: 'http://82.29.162.169:8080/api/v1',
+    defaultValue: '', //http://82.29.162.169:8080/api/v1
   );
 
   // Auth endpoints
@@ -17,6 +17,9 @@ class ApiEndpoints {
   // User/Account endpoints
   static const String updateProfile = '/profile';
   static const String showProfile = '/profile';
+  static const String userAddresses = '/user-addresses';
+  static const String countries = '/countries';
+  static String locations(int countryId) => '/countries/$countryId/locations';
 
   // Calculator endpoints
   static const String calculate = '/calculator/calculate';

@@ -52,7 +52,7 @@ class AccountPage extends ConsumerWidget {
                   _MenuAction(
                     icon: HugeIcons.strokeRoundedUser,
                     title: 'Shipment Address',
-                    onTap: () => context.push(AppRoutes.editProfile),
+                    onTap: () => context.push(AppRoutes.shipmentAddress),
                     color: AppColors.secondary,
                     bgColor: const Color(0xFFD6EEF4),
                   ),

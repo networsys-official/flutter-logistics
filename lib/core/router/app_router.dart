@@ -13,8 +13,11 @@ import 'package:logistic_by_strom/features/auth/ui/views/reset_password_page.dar
 import 'package:logistic_by_strom/features/home/ui/views/home_page.dart';
 import 'package:logistic_by_strom/features/onboarding/ui/views/onboarding_page.dart';
 import 'package:logistic_by_strom/features/onboarding/ui/views/splash_page.dart';
+import 'package:logistic_by_strom/features/accounts/data/models/user_address.dart';
 import 'package:logistic_by_strom/features/accounts/ui/views/account_page.dart';
 import 'package:logistic_by_strom/features/accounts/ui/views/edit_profile_page.dart';
+import 'package:logistic_by_strom/features/accounts/ui/views/shipment_address_page.dart';
+import 'package:logistic_by_strom/features/accounts/ui/views/add_edit_address_page.dart';
 import 'package:logistic_by_strom/features/accounts/ui/views/change_password_page.dart';
 import 'package:logistic_by_strom/features/accounts/ui/views/terms_and_conditions_page.dart';
 import 'package:logistic_by_strom/features/accounts/ui/views/privacy_policy_page.dart';
@@ -157,6 +160,17 @@ GoRouter appRouter(Ref ref) {
       GoRoute(
         path: AppRoutes.editProfile,
         builder: (context, state) => const EditProfilePage(),
+      ),
+      GoRoute(
+        path: AppRoutes.shipmentAddress,
+        builder: (context, state) => const ShipmentAddressPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.addAddress,
+        builder: (context, state) {
+          final address = state.extra as UserAddress?;
+          return AddEditAddressPage(address: address);
+        },
       ),
       GoRoute(
         path: AppRoutes.changePassword,
