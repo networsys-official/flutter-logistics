@@ -9,7 +9,11 @@ class ErrorMapper {
   const ErrorMapper._();
 
   static AppFailure map(Object error, StackTrace stackTrace) {
-    AppLogger.error('Operation failed', error: error, stackTrace: stackTrace);
+    if (error is ApiException && (error.statusCode != null && error.statusCode! < 500)) {
+      AppLogger.warning('Operation failed: ${error.message}');
+    } else {
+      AppLogger.error('Operation failed', error: error, stackTrace: stackTrace);
+    }
 
     if (error is ApiException) {
       return _mapApiException(error);
@@ -47,7 +51,7 @@ class ErrorMapper {
     }
 
     return AppFailure(
-      message: _messageForStatusCode(error.statusCode),
+      message: error.userMessage.isNotEmpty ? error.userMessage : _messageForStatusCode(error.statusCode),
       code: _codeForStatusCode(error.statusCode),
       statusCode: error.statusCode,
     );

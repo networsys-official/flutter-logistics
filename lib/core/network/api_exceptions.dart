@@ -86,11 +86,16 @@ class ServerException extends ApiException {
 
 /// Helper method to map Dio exceptions to custom app exceptions
 ApiException mapDioException(DioException error) {
-  AppLogger.error(
-    'API request failed',
-    error: error,
-    stackTrace: error.stackTrace,
-  );
+  final statusCode = error.response?.statusCode;
+  if (statusCode == null || statusCode >= 500) {
+    AppLogger.error(
+      'API request failed',
+      error: error,
+      stackTrace: error.stackTrace,
+    );
+  } else {
+    AppLogger.warning('API request failed with status $statusCode: ${error.message}');
+  }
 
   if (error.type == DioExceptionType.connectionTimeout ||
       error.type == DioExceptionType.receiveTimeout ||
