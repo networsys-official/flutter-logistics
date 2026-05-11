@@ -4,13 +4,21 @@ import 'package:logistic_by_strom/core/network/api_client.dart';
 import 'package:logistic_by_strom/core/network/api_endpoints.dart';
 import 'package:logistic_by_strom/core/network/api_exceptions.dart';
 import 'package:logistic_by_strom/core/typedefs/result.dart';
-import 'package:logistic_by_strom/features/auth/data/models/auth_state.dart';
+import 'package:logistic_by_strom/core/models/auth_state.dart';
 import 'package:logistic_by_strom/features/auth/data/models/registration_response.dart';
-import 'package:logistic_by_strom/features/auth/data/models/user_model.dart';
+import 'package:logistic_by_strom/core/models/user_model.dart';
 import 'package:logistic_by_strom/features/auth/data/models/login_request.dart';
 import 'package:logistic_by_strom/features/auth/data/models/register_request.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:logistic_by_strom/core/utils/map_utils.dart';
 import 'package:logistic_by_strom/features/auth/data/repositories/auth_repository.dart';
+
+part 'auth_repository_impl.g.dart';
+
+@riverpod
+AuthRepository authRepository(Ref ref) {
+  return AuthRepositoryImpl(ref.watch(apiClientProvider));
+}
 
 class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl(this._apiClient);
@@ -89,11 +97,7 @@ class AuthRepositoryImpl implements AuthRepository {
         data: {'identifier': identifier.trim(), 'type': type, 'otp': otp},
       );
 
-      final data = MapUtils.asMap(response.data);
-      final user = UserModel.fromJson(MapUtils.asMap(data['user']));
-      final token = data['access_token'] as String?;
-
-      return right(AuthState(user: user, token: token));
+      return right(_authStateFromResponse(response.data, response.statusCode));
     } catch (error, stackTrace) {
       return left(ErrorMapper.map(error, stackTrace));
     }
@@ -103,10 +107,10 @@ class AuthRepositoryImpl implements AuthRepository {
   ResultVoid logout() async {
     try {
       await _apiClient.post(ApiEndpoints.logout);
+      return right(null);
     } catch (error, stackTrace) {
-      ErrorMapper.map(error, stackTrace);
+      return left(ErrorMapper.map(error, stackTrace));
     }
-    return right(null);
   }
 
   @override

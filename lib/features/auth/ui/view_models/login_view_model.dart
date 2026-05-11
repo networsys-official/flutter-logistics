@@ -1,6 +1,7 @@
 import 'package:logistic_by_strom/core/errors/error_mapper.dart';
+import 'package:logistic_by_strom/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:logistic_by_strom/features/auth/providers/auth_provider.dart';
+import 'package:logistic_by_strom/core/providers/auth_provider.dart';
 import 'package:logistic_by_strom/features/auth/data/models/login_request.dart';
 
 part 'login_view_model.g.dart';

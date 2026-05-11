@@ -18,33 +18,6 @@ class SplashPage extends ConsumerStatefulWidget {
 }
 
 class _SplashPageState extends ConsumerState<SplashPage> {
-  Timer? _timer;
-
-  @override
-  void initState() {
-    super.initState();
-    _timer = Timer(const Duration(milliseconds: 2000), () async {
-      if (!mounted) return;
-
-      final storage = ref.read(storageServiceProvider.notifier);
-      final hasSeenOnboarding = await storage.getHasSeenOnboarding();
-
-      if (!mounted) return;
-
-      if (hasSeenOnboarding) {
-        context.go(AppRoutes.login);
-      } else {
-        context.go(AppRoutes.onboarding);
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:logistic_by_strom/core/router/app_routes.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
-import 'package:logistic_by_strom/shared/widgets/app_bottom_nav.dart';
+import 'package:logistic_by_strom/core/widgets/app_bottom_nav.dart';
 
 class AppShellScaffold extends StatelessWidget {
   const AppShellScaffold({required this.navigationShell, super.key});

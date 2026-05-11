@@ -1,24 +1,19 @@
 import 'dart:convert';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:logistic_by_strom/core/network/api_client.dart';
+
 import 'package:logistic_by_strom/core/services/storage_service.dart';
 import 'package:logistic_by_strom/features/auth/data/repositories/auth_repository_impl.dart';
-import 'package:logistic_by_strom/features/auth/data/repositories/auth_repository.dart';
-import 'package:logistic_by_strom/features/auth/data/models/user_model.dart';
-import 'package:logistic_by_strom/features/auth/data/models/auth_state.dart';
+
+import 'package:logistic_by_strom/core/models/user_model.dart';
+import 'package:logistic_by_strom/core/models/auth_state.dart';
 
 part 'auth_provider.g.dart';
 
-@riverpod
-AuthRepository authRepository(Ref ref) {
-  return AuthRepositoryImpl(ref.watch(apiClientProvider));
-}
-
-@riverpod
+@Riverpod(keepAlive: true)
 class AuthNotifier extends _$AuthNotifier {
   @override
   FutureOr<AuthState> build() async {
-    final storage = ref.read(storageServiceProvider.notifier);
+    final storage = ref.watch(storageServiceProvider.notifier);
     final token = await storage.getToken();
     final userJson = await storage.getUser();
 

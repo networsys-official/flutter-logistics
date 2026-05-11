@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:logistic_by_strom/core/typedefs/result.dart';
+import 'package:logistic_by_strom/features/accounts/data/models/user_profile.dart';
+import 'package:logistic_by_strom/features/accounts/data/repositories/accounts_repository.dart';
+import 'package:logistic_by_strom/features/accounts/ui/view_models/accounts_view_model.dart';
+import 'package:logistic_by_strom/features/accounts/ui/views/account_page.dart';
 
 class MockAccountsRepository implements AccountsRepository {
   final UserProfile profile;
@@ -27,8 +32,9 @@ class MockAccountsRepository implements AccountsRepository {
 }
 
 void main() {
-  testWidgets('AccountPage renders correctly with modernized design', (WidgetTester tester) async {
-    final userProfile = UserProfile(
+  testWidgets('AccountPage renders correctly with modernized design',
+      (WidgetTester tester) async {
+    const userProfile = UserProfile(
       id: '1',
       name: 'John Doe',
       email: 'john@example.com',
@@ -37,7 +43,8 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
-          accountsRepositoryProvider.overrideWithValue(MockAccountsRepository(userProfile)),
+          accountsRepositoryProvider
+              .overrideWithValue(MockAccountsRepository(userProfile)),
         ],
         child: const MaterialApp(
           home: AccountPage(),

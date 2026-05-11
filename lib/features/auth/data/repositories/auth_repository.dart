@@ -1,5 +1,5 @@
 import 'package:logistic_by_strom/core/typedefs/result.dart';
-import 'package:logistic_by_strom/features/auth/data/models/auth_state.dart';
+import 'package:logistic_by_strom/core/models/auth_state.dart';
 import 'package:logistic_by_strom/features/auth/data/models/registration_response.dart';
 import 'package:logistic_by_strom/features/auth/data/models/login_request.dart';
 import 'package:logistic_by_strom/features/auth/data/models/register_request.dart';

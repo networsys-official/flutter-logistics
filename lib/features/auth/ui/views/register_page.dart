@@ -16,7 +16,7 @@ import 'package:logistic_by_strom/features/auth/ui/view_models/register_view_mod
 import 'package:logistic_by_strom/features/auth/ui/widgets/auth_logo_header.dart';
 import 'package:logistic_by_strom/features/auth/ui/widgets/auth_shell.dart';
 import 'package:logistic_by_strom/features/auth/ui/widgets/auth_text_field.dart';
-import 'package:logistic_by_strom/shared/widgets/app_dropdown_field.dart';
+import 'package:logistic_by_strom/core/widgets/app_dropdown_field.dart';
 
 const _countries = [(id: 1, name: 'Bahamas')];
 

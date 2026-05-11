@@ -4,7 +4,7 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:logistic_by_strom/core/router/app_routes.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 import 'package:logistic_by_strom/core/theme/app_spacing.dart';
-import 'package:logistic_by_strom/shared/widgets/app_app_bar.dart';
+import 'package:logistic_by_strom/core/widgets/app_app_bar.dart';
 
 class ShipmentsPage extends StatelessWidget {
   const ShipmentsPage({super.key});

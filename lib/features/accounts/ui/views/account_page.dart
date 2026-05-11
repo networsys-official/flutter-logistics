@@ -9,8 +9,8 @@ import 'package:logistic_by_strom/core/theme/app_colors.dart';
 import 'package:logistic_by_strom/core/theme/app_spacing.dart';
 import 'package:logistic_by_strom/features/accounts/data/models/user_profile.dart';
 import 'package:logistic_by_strom/features/accounts/ui/view_models/accounts_view_model.dart';
-import 'package:logistic_by_strom/features/auth/providers/auth_provider.dart';
-import 'package:logistic_by_strom/shared/widgets/app_app_bar.dart';
+import 'package:logistic_by_strom/core/providers/auth_provider.dart';
+import 'package:logistic_by_strom/core/widgets/app_app_bar.dart';
 
 class AccountPage extends ConsumerWidget {
   const AccountPage({super.key});

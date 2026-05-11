@@ -3,7 +3,7 @@ import 'package:logistic_by_strom/core/theme/app_colors.dart';
 import 'package:logistic_by_strom/core/theme/app_spacing.dart';
 import 'package:logistic_by_strom/features/calculator/ui/widgets/calculation_summary_card.dart';
 import 'package:logistic_by_strom/features/calculator/ui/widgets/calculator_input_grid.dart';
-import 'package:logistic_by_strom/shared/widgets/app_app_bar.dart';
+import 'package:logistic_by_strom/core/widgets/app_app_bar.dart';
 
 class CalculatorPage extends StatelessWidget {
   const CalculatorPage({super.key});

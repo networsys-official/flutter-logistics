@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 import 'package:logistic_by_strom/core/theme/app_spacing.dart';
 import 'package:logistic_by_strom/features/shipments/ui/widgets/add_shipment_form.dart';
-import 'package:logistic_by_strom/shared/widgets/app_app_bar.dart';
+import 'package:logistic_by_strom/core/widgets/app_app_bar.dart';
 
 class AddShipmentPage extends StatelessWidget {
   const AddShipmentPage({super.key});

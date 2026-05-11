@@ -1,5 +1,5 @@
+import 'package:logistic_by_strom/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:logistic_by_strom/features/auth/providers/auth_provider.dart';
 
 part 'forgot_password_view_model.g.dart';
 

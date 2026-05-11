@@ -7,10 +7,10 @@ import 'package:logistic_by_strom/core/theme/app_spacing.dart';
 import 'package:logistic_by_strom/core/utils/image_utils.dart';
 import 'package:logistic_by_strom/features/accounts/ui/view_models/accounts_view_model.dart';
 import 'package:logistic_by_strom/features/accounts/ui/widgets/avatar_section_widgets.dart';
-import 'package:logistic_by_strom/shared/widgets/app_app_bar.dart';
-import 'package:logistic_by_strom/shared/widgets/app_button.dart';
-import 'package:logistic_by_strom/shared/widgets/app_dropdown_field.dart';
-import 'package:logistic_by_strom/shared/widgets/app_text_field.dart';
+import 'package:logistic_by_strom/core/widgets/app_app_bar.dart';
+import 'package:logistic_by_strom/core/widgets/app_button.dart';
+import 'package:logistic_by_strom/core/widgets/app_dropdown_field.dart';
+import 'package:logistic_by_strom/core/widgets/app_text_field.dart';
 
 import '../widgets/image_source_bottom_sheet.dart';
 

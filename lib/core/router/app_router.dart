@@ -3,7 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:logistic_by_strom/core/router/app_routes.dart';
-import 'package:logistic_by_strom/features/auth/providers/auth_provider.dart';
+import 'package:logistic_by_strom/core/providers/auth_provider.dart';
+import 'package:logistic_by_strom/core/providers/onboarding_provider.dart';
 import 'package:logistic_by_strom/features/auth/ui/views/login_page.dart';
 import 'package:logistic_by_strom/features/auth/ui/views/register_page.dart';
 import 'package:logistic_by_strom/features/auth/ui/views/otp_page.dart';
@@ -23,7 +24,7 @@ import 'package:logistic_by_strom/features/shipments/ui/views/add_shipment_page.
 import 'package:logistic_by_strom/features/shipments/ui/views/shipment_detail_page.dart';
 import 'package:logistic_by_strom/features/support/ui/views/support_page.dart';
 import 'package:logistic_by_strom/features/calculator/ui/views/calculator_page.dart';
-import 'package:logistic_by_strom/shared/widgets/app_shell_scaffold.dart';
+import 'package:logistic_by_strom/core/widgets/app_shell_scaffold.dart';
 
 part 'app_router.g.dart';
 
@@ -31,21 +32,28 @@ final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
 @Riverpod(keepAlive: true)
 GoRouter appRouter(Ref ref) {
-  final authStateNotifier = ValueNotifier<bool>(false);
+  final routerStateNotifier = ValueNotifier<int>(0);
 
   ref.listen(authProvider, (_, next) {
-    authStateNotifier.value = !authStateNotifier.value;
+    routerStateNotifier.value++;
+  });
+  
+  ref.listen(onboardingNotifierProvider, (_, next) {
+    routerStateNotifier.value++;
   });
 
   return GoRouter(
     initialLocation: AppRoutes.splash,
     navigatorKey: _rootNavigatorKey,
-    refreshListenable: authStateNotifier,
+    refreshListenable: routerStateNotifier,
     redirect: (context, state) {
       final authState = ref.read(authProvider);
+      final onboardingState = ref.read(onboardingNotifierProvider);
 
-      final isAuthChecking = authState.isLoading;
+      final isAuthChecking = authState.isLoading || onboardingState.isLoading;
       final isUserLoggedIn = authState.value?.isLoggedIn ?? false;
+      final hasSeenOnboarding = onboardingState.value ?? false;
+      
       final currentPath = state.uri.path;
 
       final authRoutes = [
@@ -70,6 +78,11 @@ GoRouter appRouter(Ref ref) {
 
       if (isAuthChecking) {
         return null;
+      }
+
+      if (currentPath == AppRoutes.splash) {
+        if (isUserLoggedIn) return AppRoutes.home;
+        return hasSeenOnboarding ? AppRoutes.login : AppRoutes.onboarding;
       }
 
       if (!isUserLoggedIn) {

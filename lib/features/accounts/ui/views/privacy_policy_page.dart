@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 import 'package:logistic_by_strom/core/theme/app_spacing.dart';
-import 'package:logistic_by_strom/shared/widgets/app_app_bar.dart';
+import 'package:logistic_by_strom/core/widgets/app_app_bar.dart';
 
 class PrivacyPolicyPage extends StatelessWidget {
   const PrivacyPolicyPage({super.key});

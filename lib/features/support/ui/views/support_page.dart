@@ -3,7 +3,7 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:logistic_by_strom/core/constants/app_images.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 import 'package:logistic_by_strom/core/theme/app_spacing.dart';
-import 'package:logistic_by_strom/shared/widgets/app_app_bar.dart';
+import 'package:logistic_by_strom/core/widgets/app_app_bar.dart';
 
 class SupportPage extends StatelessWidget {
   const SupportPage({super.key});

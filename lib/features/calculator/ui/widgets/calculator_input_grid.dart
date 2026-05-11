@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 import 'package:logistic_by_strom/core/theme/app_spacing.dart';
-import 'package:logistic_by_strom/shared/widgets/app_button.dart';
-import 'package:logistic_by_strom/shared/widgets/app_dropdown_field.dart';
-import 'package:logistic_by_strom/shared/widgets/app_text_field.dart';
+import 'package:logistic_by_strom/core/widgets/app_button.dart';
+import 'package:logistic_by_strom/core/widgets/app_dropdown_field.dart';
+import 'package:logistic_by_strom/core/widgets/app_text_field.dart';
 
 class CalculatorInputGrid extends StatelessWidget {
   const CalculatorInputGrid({super.key});
