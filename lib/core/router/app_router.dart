@@ -38,7 +38,7 @@ GoRouter appRouter(Ref ref) {
     routerStateNotifier.value++;
   });
   
-  ref.listen(onboardingNotifierProvider, (_, next) {
+  ref.listen(onboardingProvider, (_, next) {
     routerStateNotifier.value++;
   });
 
@@ -48,7 +48,7 @@ GoRouter appRouter(Ref ref) {
     refreshListenable: routerStateNotifier,
     redirect: (context, state) {
       final authState = ref.read(authProvider);
-      final onboardingState = ref.read(onboardingNotifierProvider);
+      final onboardingState = ref.read(onboardingProvider);
 
       final isAuthChecking = authState.isLoading || onboardingState.isLoading;
       final isUserLoggedIn = authState.value?.isLoggedIn ?? false;
