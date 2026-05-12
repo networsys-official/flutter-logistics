@@ -9,6 +9,7 @@ class AppDropdownField<T> extends StatelessWidget {
   final List<DropdownMenuItem<T>>? dropdownItems;
   final ValueChanged<T?>? onChanged;
   final String Function(T)? itemLabelBuilder;
+  final String? Function(T?)? validator;
 
   const AppDropdownField({
     super.key,
@@ -19,7 +20,9 @@ class AppDropdownField<T> extends StatelessWidget {
     this.dropdownItems,
     this.onChanged,
     this.itemLabelBuilder,
-  }) : assert(items != null || dropdownItems != null, 'Either items or dropdownItems must be provided');
+    this.validator,
+  }) : assert(items != null || dropdownItems != null,
+            'Either items or dropdownItems must be provided');
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +65,20 @@ class AppDropdownField<T> extends StatelessWidget {
                 color: AppColors.neutral200.withValues(alpha: 0.5),
               ),
             ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+              borderSide: const BorderSide(
+                color: AppColors.error,
+                width: 1.5,
+              ),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+              borderSide: const BorderSide(
+                color: AppColors.error,
+                width: 1.5,
+              ),
+            ),
           ),
           items: dropdownItems ??
               items?.map((T item) {
@@ -71,6 +88,7 @@ class AppDropdownField<T> extends StatelessWidget {
                 );
               }).toList(),
           onChanged: onChanged,
+          validator: validator,
           icon: const Icon(
             Icons.keyboard_arrow_down_rounded,
             color: AppColors.neutral500,

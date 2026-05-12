@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:logistic_by_strom/core/network/api_client.dart';
-import 'package:logistic_by_strom/core/network/api_endpoints.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
-import 'package:logistic_by_strom/core/theme/app_spacing.dart';
+import 'package:logistic_by_strom/core/utils/error_message.dart';
 import 'package:logistic_by_strom/core/widgets/app_app_bar.dart';
 import 'package:logistic_by_strom/features/accounts/data/models/user_address.dart';
-import 'package:logistic_by_strom/features/accounts/ui/view_models/user_address_view_model.dart';
+import 'package:logistic_by_strom/features/accounts/ui/view_models/user_address_action_view_model.dart';
+import 'package:logistic_by_strom/features/accounts/ui/view_models/user_address_locations_view_model.dart';
+import 'package:logistic_by_strom/features/accounts/ui/widgets/address_form_widgets.dart';
 
 class AddEditAddressPage extends ConsumerStatefulWidget {
   final UserAddress? address;
@@ -20,20 +20,16 @@ class AddEditAddressPage extends ConsumerStatefulWidget {
 
 class _AddEditAddressPageState extends ConsumerState<AddEditAddressPage> {
   final _formKey = GlobalKey<FormState>();
-  late TextEditingController _nameController;
-  late TextEditingController _phoneController;
-  late TextEditingController _addressLine1Controller;
-  late TextEditingController _addressLine2Controller;
-  late TextEditingController _postalCodeController;
-  
+  late final TextEditingController _nameController;
+  late final TextEditingController _phoneController;
+  late final TextEditingController _addressLine1Controller;
+  late final TextEditingController _addressLine2Controller;
+  late final TextEditingController _postalCodeController;
+
   AddressType _selectedType = AddressType.home;
-  int? _selectedCountryId;
   int? _selectedLocationId;
   bool _isDefault = false;
-
-  List<dynamic> _countries = [];
-  List<dynamic> _locations = [];
-  bool _isLoadingMetaData = false;
+  bool _isReceivedByMe = true;
 
   @override
   void initState() {
@@ -46,42 +42,13 @@ class _AddEditAddressPageState extends ConsumerState<AddEditAddressPage> {
         TextEditingController(text: widget.address?.addressLine2);
     _postalCodeController =
         TextEditingController(text: widget.address?.postalCode);
-    
+
     if (widget.address != null) {
       _selectedType = widget.address!.type ?? AddressType.home;
-      _selectedCountryId = widget.address!.countryId;
       _selectedLocationId = widget.address!.locationId;
       _isDefault = widget.address!.isDefault;
-    }
-
-    _fetchCountries();
-  }
-
-  Future<void> _fetchCountries() async {
-    setState(() => _isLoadingMetaData = true);
-    try {
-      final response = await ref.read(apiClientProvider).get(ApiEndpoints.countries);
-      setState(() {
-        _countries = response.data['data'];
-        if (_selectedCountryId != null) {
-          _fetchLocations(_selectedCountryId!);
-        }
-      });
-    } catch (e) {
-      // Handle error
-    } finally {
-      setState(() => _isLoadingMetaData = false);
-    }
-  }
-
-  Future<void> _fetchLocations(int countryId) async {
-    try {
-      final response = await ref.read(apiClientProvider).get(ApiEndpoints.locations(countryId));
-      setState(() {
-        _locations = response.data['data'];
-      });
-    } catch (e) {
-      // Handle error
+      _isReceivedByMe =
+          widget.address!.contactName == null && widget.address!.phone == null;
     }
   }
 
@@ -95,8 +62,56 @@ class _AddEditAddressPageState extends ConsumerState<AddEditAddressPage> {
     super.dispose();
   }
 
+  Future<void> _submit() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    final address = UserAddress(
+      id: widget.address?.id ?? 0,
+      type: _selectedType,
+      contactName: _isReceivedByMe ? null : _nameController.text.trim(),
+      phone: _isReceivedByMe ? null : _phoneController.text.trim(),
+      locationId: _selectedLocationId,
+      addressLine1: _addressLine1Controller.text.trim(),
+      addressLine2: _addressLine2Controller.text.trim().isEmpty
+          ? null
+          : _addressLine2Controller.text.trim(),
+      postalCode: _postalCodeController.text.trim().isEmpty
+          ? null
+          : _postalCodeController.text.trim(),
+      isDefault: _isDefault,
+    );
+
+    final bool success;
+    if (widget.address == null) {
+      success = await ref
+          .read(userAddressActionProvider.notifier)
+          .addAddress(address);
+    } else {
+      success = await ref
+          .read(userAddressActionProvider.notifier)
+          .updateAddress(address);
+    }
+
+    if (success && mounted) {
+      context.pop();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final locationsAsync = ref.watch(userAddressLocationsProvider);
+    final actionState = ref.watch(userAddressActionProvider);
+
+    ref.listen(userAddressActionProvider, (previous, next) {
+      next.whenOrNull(
+        error: (error, stack) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(errorMessageFrom(error))),
+          );
+        },
+      );
+    });
+
     return Scaffold(
       backgroundColor: AppColors.neutral100,
       body: Column(
@@ -105,61 +120,32 @@ class _AddEditAddressPageState extends ConsumerState<AddEditAddressPage> {
             title: widget.address == null ? 'Add New Address' : 'Edit Address',
           ),
           Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(20),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildSectionTitle('Address Type'),
-                    _buildTypeSelector(),
-                    const SizedBox(height: 24),
-                    _buildSectionTitle('Contact Information'),
-                    _buildTextField(
-                      controller: _nameController,
-                      label: 'Contact Name',
-                      hint: 'Enter receiver name',
-                      validator: (v) => v?.isEmpty ?? true ? 'Required' : null,
-                    ),
-                    const SizedBox(height: 16),
-                    _buildTextField(
-                      controller: _phoneController,
-                      label: 'Phone Number',
-                      hint: 'Enter phone number',
-                      keyboardType: TextInputType.phone,
-                      validator: (v) => v?.isEmpty ?? true ? 'Required' : null,
-                    ),
-                    const SizedBox(height: 24),
-                    _buildSectionTitle('Address Details'),
-                    _buildCountryDropdown(),
-                    const SizedBox(height: 16),
-                    _buildLocationDropdown(),
-                    const SizedBox(height: 16),
-                    _buildTextField(
-                      controller: _addressLine1Controller,
-                      label: 'Address Line 1',
-                      hint: 'Street, House No, etc.',
-                      validator: (v) => v?.isEmpty ?? true ? 'Required' : null,
-                    ),
-                    const SizedBox(height: 16),
-                    _buildTextField(
-                      controller: _addressLine2Controller,
-                      label: 'Address Line 2 (Optional)',
-                      hint: 'Apartment, Suite, etc.',
-                    ),
-                    const SizedBox(height: 16),
-                    _buildTextField(
-                      controller: _postalCodeController,
-                      label: 'Postal Code',
-                      hint: 'Enter postal code',
-                    ),
-                    const SizedBox(height: 24),
-                    _buildDefaultSwitch(),
-                    const SizedBox(height: 40),
-                    _buildSubmitButton(),
-                  ],
-                ),
+            child: locationsAsync.when(
+              data: (locations) => _AddressForm(
+                formKey: _formKey,
+                address: widget.address,
+                locations: locations,
+                isSubmitting: actionState.isLoading,
+                selectedType: _selectedType,
+                isReceivedByMe: _isReceivedByMe,
+                nameController: _nameController,
+                phoneController: _phoneController,
+                addressLine1Controller: _addressLine1Controller,
+                addressLine2Controller: _addressLine2Controller,
+                postalCodeController: _postalCodeController,
+                selectedLocationId: _selectedLocationId,
+                isDefault: _isDefault,
+                onTypeChanged: (v) => setState(() => _selectedType = v),
+                onReceivedByMeChanged: (v) =>
+                    setState(() => _isReceivedByMe = v),
+                onLocationChanged: (v) =>
+                    setState(() => _selectedLocationId = v),
+                onDefaultChanged: (v) => setState(() => _isDefault = v),
+                onSubmit: _submit,
+              ),
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (error, stack) => Center(
+                child: Text(errorMessageFrom(error)),
               ),
             ),
           ),
@@ -167,256 +153,140 @@ class _AddEditAddressPageState extends ConsumerState<AddEditAddressPage> {
       ),
     );
   }
+}
 
-  Widget _buildSectionTitle(String title) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Text(
-        title,
-        style: const TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w700,
-          color: AppColors.neutral900,
-        ),
-      ),
-    );
-  }
+class _AddressForm extends StatelessWidget {
+  final GlobalKey<FormState> formKey;
+  final UserAddress? address;
+  final List<Map<String, dynamic>> locations;
+  final bool isSubmitting;
+  final AddressType selectedType;
+  final bool isReceivedByMe;
+  final TextEditingController nameController;
+  final TextEditingController phoneController;
+  final TextEditingController addressLine1Controller;
+  final TextEditingController addressLine2Controller;
+  final TextEditingController postalCodeController;
+  final int? selectedLocationId;
+  final bool isDefault;
+  final ValueChanged<AddressType> onTypeChanged;
+  final ValueChanged<bool> onReceivedByMeChanged;
+  final ValueChanged<int?> onLocationChanged;
+  final ValueChanged<bool> onDefaultChanged;
+  final VoidCallback onSubmit;
 
-  Widget _buildTypeSelector() {
-    return Row(
-      children: AddressType.values.map((type) {
-        final isSelected = _selectedType == type;
-        return Expanded(
-          child: GestureDetector(
-            onTap: () => setState(() => _selectedType = type),
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 4),
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              decoration: BoxDecoration(
-                color: isSelected ? AppColors.primary : AppColors.white,
-                borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-                border: Border.all(
-                  color: isSelected ? AppColors.primary : AppColors.neutral200,
-                ),
-              ),
-              child: Center(
-                child: Text(
-                  type.name.toUpperCase(),
+  const _AddressForm({
+    required this.formKey,
+    this.address,
+    required this.locations,
+    required this.isSubmitting,
+    required this.selectedType,
+    required this.isReceivedByMe,
+    required this.nameController,
+    required this.phoneController,
+    required this.addressLine1Controller,
+    required this.addressLine2Controller,
+    required this.postalCodeController,
+    required this.selectedLocationId,
+    required this.isDefault,
+    required this.onTypeChanged,
+    required this.onReceivedByMeChanged,
+    required this.onLocationChanged,
+    required this.onDefaultChanged,
+    required this.onSubmit,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(20),
+      child: Form(
+        key: formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const AddressSectionTitle(title: 'Address Type'),
+            AddressTypeSelector(
+              selectedType: selectedType,
+              onTypeChanged: onTypeChanged,
+            ),
+            const SizedBox(height: 24),
+            const AddressSectionTitle(title: 'Contact Information'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Received by me',
                   style: TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w800,
-                    color: isSelected ? AppColors.white : AppColors.neutral500,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.neutral700,
                   ),
                 ),
-              ),
-            ),
-          ),
-        );
-      }).toList(),
-    );
-  }
-
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String label,
-    required String hint,
-    TextInputType? keyboardType,
-    String? Function(String?)? validator,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
-            color: AppColors.neutral500,
-          ),
-        ),
-        const SizedBox(height: 8),
-        TextFormField(
-          controller: controller,
-          keyboardType: keyboardType,
-          validator: validator,
-          decoration: InputDecoration(
-            hintText: hint,
-            filled: true,
-            fillColor: AppColors.white,
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-              borderSide: const BorderSide(color: AppColors.neutral200),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-              borderSide: const BorderSide(color: AppColors.neutral200),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildCountryDropdown() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Country',
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
-            color: AppColors.neutral500,
-          ),
-        ),
-        const SizedBox(height: 8),
-        DropdownButtonFormField<int>(
-          value: _selectedCountryId,
-          items: _countries.map<DropdownMenuItem<int>>((c) {
-            return DropdownMenuItem<int>(
-              value: c['id'],
-              child: Text(c['name']),
-            );
-          }).toList(),
-          onChanged: (v) {
-            setState(() {
-              _selectedCountryId = v;
-              _selectedLocationId = null;
-              _locations = [];
-            });
-            if (v != null) _fetchLocations(v);
-          },
-          validator: (v) => v == null ? 'Required' : null,
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: AppColors.white,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-              borderSide: const BorderSide(color: AppColors.neutral200),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildLocationDropdown() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Location',
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
-            color: AppColors.neutral500,
-          ),
-        ),
-        const SizedBox(height: 8),
-        DropdownButtonFormField<int>(
-          value: _selectedLocationId,
-          items: _locations.map<DropdownMenuItem<int>>((l) {
-            return DropdownMenuItem<int>(
-              value: l['id'],
-              child: Text(l['name']),
-            );
-          }).toList(),
-          onChanged: (v) => setState(() => _selectedLocationId = v),
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: AppColors.white,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
-              borderSide: const BorderSide(color: AppColors.neutral200),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildDefaultSwitch() {
-    return Row(
-      children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Set as Default',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.neutral900,
+                Switch.adaptive(
+                  value: isReceivedByMe,
+                  activeThumbColor: AppColors.primary,
+                  onChanged: onReceivedByMeChanged,
                 ),
+              ],
+            ),
+            if (!isReceivedByMe) ...[
+              const SizedBox(height: 16),
+              AddressFormTextField(
+                controller: nameController,
+                label: 'Contact Name',
+                hint: 'Enter receiver name',
+                validator: (v) => v?.isEmpty ?? true ? 'Required' : null,
               ),
-              Text(
-                'This address will be used by default for shipments',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: AppColors.neutral500,
-                ),
+              const SizedBox(height: 16),
+              AddressFormTextField(
+                controller: phoneController,
+                label: 'Phone Number',
+                hint: 'Enter phone number',
+                keyboardType: TextInputType.phone,
+                validator: (v) => v?.isEmpty ?? true ? 'Required' : null,
               ),
             ],
-          ),
-        ),
-        Switch.adaptive(
-          value: _isDefault,
-          activeColor: AppColors.primary,
-          onChanged: (v) => setState(() => _isDefault = v),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSubmitButton() {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: _submit,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primary,
-          foregroundColor: AppColors.white,
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
-          ),
-          elevation: 0,
-        ),
-        child: Text(
-          widget.address == null ? 'Save Address' : 'Update Address',
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+            const SizedBox(height: 24),
+            const AddressSectionTitle(title: 'Address Details'),
+            AddressLocationDropdown(
+              selectedLocationId: selectedLocationId,
+              locations: locations,
+              onChanged: onLocationChanged,
+            ),
+            const SizedBox(height: 16),
+            AddressFormTextField(
+              controller: addressLine1Controller,
+              label: 'Address Line 1',
+              hint: 'Street, House No, etc.',
+              validator: (v) => v?.isEmpty ?? true ? 'Required' : null,
+            ),
+            const SizedBox(height: 16),
+            AddressFormTextField(
+              controller: addressLine2Controller,
+              label: 'Address Line 2 (Optional)',
+              hint: 'Apartment, Suite, etc.',
+            ),
+            const SizedBox(height: 16),
+            AddressFormTextField(
+              controller: postalCodeController,
+              label: 'Postal Code',
+              hint: 'Enter postal code',
+            ),
+            const SizedBox(height: 24),
+            AddressDefaultSwitch(
+              isDefault: isDefault,
+              onChanged: onDefaultChanged,
+            ),
+            const SizedBox(height: 40),
+            AddressSubmitButton(
+              isSubmitting: isSubmitting,
+              onPressed: onSubmit,
+              label: address == null ? 'Save Address' : 'Update Address',
+            ),
+          ],
         ),
       ),
     );
-  }
-
-  Future<void> _submit() async {
-    if (!_formKey.currentState!.validate()) return;
-
-    final address = UserAddress(
-      id: widget.address?.id ?? 0,
-      type: _selectedType,
-      contactName: _nameController.text,
-      phone: _phoneController.text,
-      countryId: _selectedCountryId!,
-      locationId: _selectedLocationId,
-      addressLine1: _addressLine1Controller.text,
-      addressLine2: _addressLine2Controller.text.isEmpty ? null : _addressLine2Controller.text,
-      postalCode: _postalCodeController.text.isEmpty ? null : _postalCodeController.text,
-      isDefault: _isDefault,
-    );
-
-    bool success;
-    if (widget.address == null) {
-      success = await ref.read(userAddressViewModelProvider.notifier).addAddress(address);
-    } else {
-      success = await ref.read(userAddressViewModelProvider.notifier).updateAddress(address);
-    }
-
-    if (success && mounted) {
-      context.pop();
-    }
   }
 }

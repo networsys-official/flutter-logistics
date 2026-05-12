@@ -11,6 +11,8 @@ class AppTextField extends StatelessWidget {
   final bool readOnly;
   final VoidCallback? onTap;
   final int maxLines;
+  final String? Function(String?)? validator;
+  final ValueChanged<String>? onChanged;
 
   const AppTextField({
     super.key,
@@ -23,6 +25,8 @@ class AppTextField extends StatelessWidget {
     this.readOnly = false,
     this.onTap,
     this.maxLines = 1,
+    this.validator,
+    this.onChanged,
   });
 
   @override
@@ -41,13 +45,15 @@ class AppTextField extends StatelessWidget {
             ),
           ),
         ),
-        TextField(
+        TextFormField(
           controller: controller,
           keyboardType: keyboardType,
           obscureText: obscureText,
           readOnly: readOnly,
           onTap: onTap,
           maxLines: maxLines,
+          validator: validator,
+          onChanged: onChanged,
           style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
           decoration: InputDecoration(
             hintText: hint,
@@ -77,6 +83,20 @@ class AppTextField extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
               borderSide: const BorderSide(
                 color: AppColors.primary,
+                width: 1.5,
+              ),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+              borderSide: const BorderSide(
+                color: AppColors.error,
+                width: 1.5,
+              ),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+              borderSide: const BorderSide(
+                color: AppColors.error,
                 width: 1.5,
               ),
             ),

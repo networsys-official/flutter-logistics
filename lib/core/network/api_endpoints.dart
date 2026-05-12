@@ -20,6 +20,7 @@ class ApiEndpoints {
   static const String userAddresses = '/user-addresses';
   static const String countries = '/countries';
   static String locations(int countryId) => '/countries/$countryId/locations';
+  static const String userAddressesLocations = '/user-addresses/locations';
 
   // Calculator endpoints
   static const String calculate = '/calculator/calculate';

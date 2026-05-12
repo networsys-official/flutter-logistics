@@ -6,4 +6,5 @@ abstract interface class UserAddressRepository {
   ResultFuture<UserAddress> createAddress(UserAddress address);
   ResultFuture<UserAddress> updateAddress(UserAddress address);
   ResultFuture<void> deleteAddress(int id);
+  ResultFuture<List<Map<String, dynamic>>> getLocations();
 }

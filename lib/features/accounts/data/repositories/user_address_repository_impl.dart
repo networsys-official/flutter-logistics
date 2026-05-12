@@ -94,4 +94,15 @@ class UserAddressRepositoryImpl implements UserAddressRepository {
       return Left(AppFailure(message: e.toString()));
     }
   }
+
+  @override
+  ResultFuture<List<Map<String, dynamic>>> getLocations() async {
+    try {
+      final response = await _apiClient.get(ApiEndpoints.userAddressesLocations);
+      final List data = response.data['data'];
+      return Right(data.cast<Map<String, dynamic>>());
+    } catch (e) {
+      return Left(AppFailure(message: e.toString()));
+    }
+  }
 }

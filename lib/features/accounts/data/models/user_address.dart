@@ -22,7 +22,7 @@ abstract class UserAddress with _$UserAddress {
     AddressType? type,
     @JsonKey(name: 'contact_name') String? contactName,
     String? phone,
-    @JsonKey(name: 'country_id') required int countryId,
+    @JsonKey(name: 'country_id') int? countryId,
     @JsonKey(name: 'country_name') String? countryName,
     @JsonKey(name: 'location_id') int? locationId,
     @JsonKey(name: 'location_name') String? locationName,
