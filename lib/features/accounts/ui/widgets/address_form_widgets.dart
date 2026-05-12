@@ -100,27 +100,26 @@ class AddressFormTextField extends StatelessWidget {
   }
 }
 
-class AddressLocationDropdown extends StatelessWidget {
-  final int? selectedLocationId;
-  final List<Map<String, dynamic>> locations;
+class AddressZoneDropdown extends StatelessWidget {
+  final int? selectedZoneId;
+  final List<Map<String, dynamic>> zones;
   final ValueChanged<int?> onChanged;
 
-  const AddressLocationDropdown({
+  const AddressZoneDropdown({
     super.key,
-    required this.selectedLocationId,
-    required this.locations,
+    required this.selectedZoneId,
+    required this.zones,
     required this.onChanged,
   });
 
   @override
   Widget build(BuildContext context) {
     return AppDropdownField<int>(
-      label: 'Location',
-      hint: 'Select Location',
-      value: selectedLocationId,
-      items: locations.map((l) => l['id'] as int).toList(),
-      itemLabelBuilder: (id) =>
-          locations.firstWhere((l) => l['id'] == id)['name'],
+      label: 'Zone',
+      hint: 'Select Zone',
+      value: selectedZoneId,
+      items: zones.map((z) => z['id'] as int).toList(),
+      itemLabelBuilder: (id) => zones.firstWhere((z) => z['id'] == id)['name'],
       onChanged: onChanged,
       validator: (v) => v == null ? 'Required' : null,
     );
@@ -155,10 +154,7 @@ class AddressDefaultSwitch extends StatelessWidget {
               ),
               const Text(
                 'This address will be used by default for shipments',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: AppColors.neutral500,
-                ),
+                style: TextStyle(fontSize: 12, color: AppColors.neutral500),
               ),
             ],
           ),

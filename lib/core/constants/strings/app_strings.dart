@@ -5,7 +5,7 @@ class AppStrings {
   static const String appTitle = 'Logistic by Strom';
   static const String logistic = 'Logistic';
   static const String systems = 'Systems';
-  
+
   // Common Buttons
   static const String next = 'NEXT';
   static const String back = 'BACK';

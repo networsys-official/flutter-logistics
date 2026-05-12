@@ -11,7 +11,8 @@ class OnboardingViewModel extends _$OnboardingViewModel {
 
   int get currentPage => state;
   bool get isLastPage => state == onboardingSlides.length - 1;
-  String get primaryActionLabel => isLastPage ? AppStrings.start : AppStrings.nextCapitalized;
+  String get primaryActionLabel =>
+      isLastPage ? AppStrings.start : AppStrings.nextCapitalized;
 
   void updatePage(int index) {
     if (state == index) {

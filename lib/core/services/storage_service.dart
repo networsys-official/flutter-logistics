@@ -36,7 +36,6 @@ class StorageService extends _$StorageService {
     await _storage.delete(key: 'auth_user');
   }
 
-
   Future<void> setHasSeenOnboarding() async {
     await _storage.write(key: 'has_seen_onboarding', value: 'true');
   }

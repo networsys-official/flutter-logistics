@@ -4,12 +4,10 @@ import 'package:logistic_by_strom/features/support/ui/views/support_page.dart';
 import 'package:hugeicons/hugeicons.dart';
 
 void main() {
-  testWidgets('SupportPage renders correctly with modernized design', (WidgetTester tester) async {
-    await tester.pumpWidget(
-      const MaterialApp(
-        home: SupportPage(),
-      ),
-    );
+  testWidgets('SupportPage renders correctly with modernized design', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(const MaterialApp(home: SupportPage()));
 
     // Verify AppBar title
     expect(find.text('Support'), findsOneWidget);
@@ -23,7 +21,12 @@ void main() {
 
     // Verify Title and Subtitle
     expect(find.text('How can we help you?'), findsOneWidget);
-    expect(find.text('Our team is available to assist you with any questions or concerns.'), findsOneWidget);
+    expect(
+      find.text(
+        'Our team is available to assist you with any questions or concerns.',
+      ),
+      findsOneWidget,
+    );
 
     // Verify Contact Cards
     expect(find.text('Phone No.'), findsOneWidget);

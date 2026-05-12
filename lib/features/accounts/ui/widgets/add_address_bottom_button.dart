@@ -31,10 +31,7 @@ class AddAddressBottomButton extends StatelessWidget {
               SizedBox(width: 8),
               Text(
                 'Add New Address',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                ),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
               ),
             ],
           ),

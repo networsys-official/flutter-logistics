@@ -154,11 +154,7 @@ class ShipmentDetailPage extends StatelessWidget {
             isCurrent: true,
           ),
           _buildTimelineDivider(isCompleted: false),
-          _buildTimelineItem(
-            'Out for Delivery',
-            'Pending',
-            isCompleted: false,
-          ),
+          _buildTimelineItem('Out for Delivery', 'Pending', isCompleted: false),
           _buildTimelineDivider(isCompleted: false),
           _buildTimelineItem(
             'Delivered',
@@ -171,8 +167,13 @@ class ShipmentDetailPage extends StatelessWidget {
     );
   }
 
-  Widget _buildTimelineItem(String title, String subtitle,
-      {bool isCompleted = false, bool isCurrent = false, bool isLast = false}) {
+  Widget _buildTimelineItem(
+    String title,
+    String subtitle, {
+    bool isCompleted = false,
+    bool isCurrent = false,
+    bool isLast = false,
+  }) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -194,7 +195,7 @@ class ShipmentDetailPage extends StatelessWidget {
                           color: AppColors.primary.withValues(alpha: 0.3),
                           blurRadius: 10,
                           spreadRadius: 2,
-                        )
+                        ),
                       ]
                     : null,
               ),
@@ -214,7 +215,11 @@ class ShipmentDetailPage extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: isCurrent ? FontWeight.w800 : FontWeight.w600,
-                  color: isCurrent ? AppColors.neutral900 : (isCompleted ? AppColors.neutral900 : AppColors.neutral500),
+                  color: isCurrent
+                      ? AppColors.neutral900
+                      : (isCompleted
+                            ? AppColors.neutral900
+                            : AppColors.neutral500),
                 ),
               ),
               const SizedBox(height: 2),
@@ -326,10 +331,7 @@ class ShipmentDetailPage extends StatelessWidget {
   Widget _buildActionButtons() {
     return Column(
       children: [
-        AppButton(
-          text: 'Pay Now',
-          onPressed: () {},
-        ),
+        AppButton(text: 'Pay Now', onPressed: () {}),
         const SizedBox(height: 16),
         SizedBox(
           width: double.infinity,

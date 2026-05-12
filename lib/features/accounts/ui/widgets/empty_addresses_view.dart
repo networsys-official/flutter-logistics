@@ -29,10 +29,7 @@ class EmptyAddressesView extends StatelessWidget {
           const SizedBox(height: AppSpacing.sm),
           const Text(
             'Add your first shipment address',
-            style: TextStyle(
-              fontSize: 14,
-              color: AppColors.neutral500,
-            ),
+            style: TextStyle(fontSize: 14, color: AppColors.neutral500),
           ),
         ],
       ),

@@ -14,10 +14,7 @@ class SupportPage extends StatelessWidget {
       backgroundColor: AppColors.neutral100,
       body: Column(
         children: [
-          const AppAppBar(
-            title: 'Support',
-            showBackButton: false,
-          ),
+          const AppAppBar(title: 'Support', showBackButton: false),
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -48,16 +45,16 @@ class SupportPage extends StatelessWidget {
                   Text(
                     'How can we help you?',
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.w800,
-                          color: AppColors.neutral900,
-                        ),
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.neutral900,
+                    ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     'Our team is available to assist you with any questions or concerns.',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: AppColors.neutral700,
-                        ),
+                      color: AppColors.neutral700,
+                    ),
                   ),
                   const SizedBox(height: AppSpacing.xl),
 
@@ -128,11 +125,7 @@ class _ContactCard extends StatelessWidget {
               color: iconBgColor,
               shape: BoxShape.circle,
             ),
-            child: HugeIcon(
-              icon: icon,
-              color: iconColor,
-              size: 24,
-            ),
+            child: HugeIcon(icon: icon, color: iconColor, size: 24),
           ),
           const SizedBox(width: AppSpacing.lg),
           Expanded(
@@ -142,18 +135,18 @@ class _ContactCard extends StatelessWidget {
                 Text(
                   label,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.neutral500,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 0.5,
-                      ),
+                    color: AppColors.neutral500,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 0.5,
+                  ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   value,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: AppColors.neutral900,
-                        fontWeight: FontWeight.w700,
-                      ),
+                    color: AppColors.neutral900,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ],
             ),

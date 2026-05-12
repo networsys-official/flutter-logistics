@@ -16,12 +16,15 @@ class AuthStrings {
   static const String step2of2 = 'Step 2 of 2';
   static const String alreadyHaveAccount = 'Already have an account ? ';
   static const String logIn = 'Log In';
-  static const String acceptTerms = 'Accept Terms & Conditions & Privacy Policy of App';
-  static const String acceptTermsError = 'Accept Terms & Conditions & Privacy Policy to continue';
+  static const String acceptTerms =
+      'Accept Terms & Conditions & Privacy Policy of App';
+  static const String acceptTermsError =
+      'Accept Terms & Conditions & Privacy Policy to continue';
 
   // OTP
   static const String otpVerification = 'OTP Verification';
-  static const String otpSubtitle = 'Enter the OTP sent to your registered account';
+  static const String otpSubtitle =
+      'Enter the OTP sent to your registered account';
   static const String verifyOtp = 'Verify OTP';
   static const String resendingOtp = 'Resending OTP...';
   static const String otpResentSuccess = 'OTP has been sent to your email';
@@ -47,17 +50,21 @@ class AuthStrings {
   static const String confirmPasswordHint = 'Enter confirm password';
 
   // Messages
-  static const String registrationSuccess = 'Registration successful. Continue with OTP verification.';
+  static const String registrationSuccess =
+      'Registration successful. Continue with OTP verification.';
 
   // Forgot Password
   static const String forgotPasswordTitle = 'FORGOT PASSWORD';
-  static const String forgotPasswordSubtitle = 'Enter your email address to receive a password reset OTP';
+  static const String forgotPasswordSubtitle =
+      'Enter your email address to receive a password reset OTP';
   static const String sendOtp = 'Send Reset Link';
-  static const String resetLinkSent = 'A password reset link has been sent to your email address.';
+  static const String resetLinkSent =
+      'A password reset link has been sent to your email address.';
   static const String resetPasswordTitle = 'RESET PASSWORD';
   static const String resetPasswordSubtitle = 'Enter your new password below';
   static const String newPassword = 'New Password';
   static const String newPasswordHint = 'Enter new password';
   static const String updatePassword = 'Update Password';
-  static const String passwordResetSuccess = 'Password has been reset successfully. Please login with your new password.';
+  static const String passwordResetSuccess =
+      'Password has been reset successfully. Please login with your new password.';
 }

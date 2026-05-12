@@ -7,11 +7,7 @@ class HomeSectionHeader extends StatelessWidget {
   final String title;
   final VoidCallback? onViewAll;
 
-  const HomeSectionHeader({
-    super.key,
-    required this.title,
-    this.onViewAll,
-  });
+  const HomeSectionHeader({super.key, required this.title, this.onViewAll});
 
   @override
   Widget build(BuildContext context) {

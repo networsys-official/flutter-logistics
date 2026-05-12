@@ -9,19 +9,14 @@ class HomeAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: AppColors.neutral100,
-      ),
+      decoration: const BoxDecoration(color: AppColors.neutral100),
       child: SafeArea(
         bottom: false,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _buildLogo(),
-              _buildNotificationIcon(),
-            ],
+            children: [_buildLogo(), _buildNotificationIcon()],
           ),
         ),
       ),
@@ -29,11 +24,7 @@ class HomeAppBar extends StatelessWidget {
   }
 
   Widget _buildLogo() {
-    return Image.asset(
-      AppImages.appBarLogo,
-      width: 120,
-      fit: BoxFit.contain,
-    );
+    return Image.asset(AppImages.appBarLogo, width: 120, fit: BoxFit.contain);
   }
 
   Widget _buildNotificationIcon() {

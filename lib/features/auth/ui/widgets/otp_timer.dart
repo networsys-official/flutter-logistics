@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 
 class OtpTimer extends StatefulWidget {
-  const OtpTimer({
-    super.key,
-    required this.onResend,
-  });
+  const OtpTimer({super.key, required this.onResend});
 
   final VoidCallback onResend;
 

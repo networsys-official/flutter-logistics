@@ -47,16 +47,16 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   Text(
                     'Update Password',
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.w800,
-                          color: AppColors.neutral900,
-                        ),
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.neutral900,
+                    ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     'Create a strong password to keep your account secure.',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: AppColors.neutral700,
-                        ),
+                      color: AppColors.neutral700,
+                    ),
                   ),
                   const SizedBox(height: AppSpacing.xl),
                   AppTextField(
@@ -66,11 +66,16 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     obscureText: !_isCurrentPasswordVisible,
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _isCurrentPasswordVisible ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+                        _isCurrentPasswordVisible
+                            ? Icons.visibility_outlined
+                            : Icons.visibility_off_outlined,
                         color: AppColors.neutral500,
                         size: 20,
                       ),
-                      onPressed: () => setState(() => _isCurrentPasswordVisible = !_isCurrentPasswordVisible),
+                      onPressed: () => setState(
+                        () => _isCurrentPasswordVisible =
+                            !_isCurrentPasswordVisible,
+                      ),
                     ),
                   ),
                   const SizedBox(height: AppSpacing.lg),
@@ -81,11 +86,15 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     obscureText: !_isNewPasswordVisible,
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _isNewPasswordVisible ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+                        _isNewPasswordVisible
+                            ? Icons.visibility_outlined
+                            : Icons.visibility_off_outlined,
                         color: AppColors.neutral500,
                         size: 20,
                       ),
-                      onPressed: () => setState(() => _isNewPasswordVisible = !_isNewPasswordVisible),
+                      onPressed: () => setState(
+                        () => _isNewPasswordVisible = !_isNewPasswordVisible,
+                      ),
                     ),
                   ),
                   const SizedBox(height: AppSpacing.lg),
@@ -96,11 +105,16 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     obscureText: !_isConfirmPasswordVisible,
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _isConfirmPasswordVisible ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+                        _isConfirmPasswordVisible
+                            ? Icons.visibility_outlined
+                            : Icons.visibility_off_outlined,
                         color: AppColors.neutral500,
                         size: 20,
                       ),
-                      onPressed: () => setState(() => _isConfirmPasswordVisible = !_isConfirmPasswordVisible),
+                      onPressed: () => setState(
+                        () => _isConfirmPasswordVisible =
+                            !_isConfirmPasswordVisible,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 60),

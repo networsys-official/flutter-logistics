@@ -2,13 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:logistic_by_strom/core/theme/app_spacing.dart';
 
-
 class AuthShell extends StatelessWidget {
-  const AuthShell({
-    super.key,
-    required this.child,
-    this.appBar,
-  });
+  const AuthShell({super.key, required this.child, this.appBar});
 
   final Widget child;
   final PreferredSizeWidget? appBar;

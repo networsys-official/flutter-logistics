@@ -71,7 +71,8 @@ class _HomeBannerCarouselState extends State<HomeBannerCarousel> {
             controller: _pageController,
             itemCount: _banners.length,
             onPageChanged: (index) => setState(() => _currentPage = index),
-            itemBuilder: (context, index) => _BannerSlide(data: _banners[index]),
+            itemBuilder: (context, index) =>
+                _BannerSlide(data: _banners[index]),
           ),
         ),
         const SizedBox(height: 12),

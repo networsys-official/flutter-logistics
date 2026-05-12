@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-
 import 'package:logistic_by_strom/core/constants/app_images.dart';
-
 
 import 'package:logistic_by_strom/core/theme/app_spacing.dart';
 

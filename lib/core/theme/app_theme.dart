@@ -46,10 +46,15 @@ class AppTheme {
         elevation: 0,
         backgroundColor: AppColors.primary,
         foregroundColor: AppColors.white,
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.lg,
+          vertical: AppSpacing.md,
+        ),
         disabledBackgroundColor: AppColors.neutral200,
         disabledForegroundColor: AppColors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppSpacing.radiusMd)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+        ),
         textStyle: GoogleFonts.plusJakartaSans(
           fontSize: 16,
           fontWeight: FontWeight.w700,
@@ -62,8 +67,13 @@ class AppTheme {
         foregroundColor: AppColors.neutral900,
         backgroundColor: AppColors.white,
         side: const BorderSide(color: AppColors.neutral200),
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppSpacing.radiusMd)),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.lg,
+          vertical: AppSpacing.md,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+        ),
         textStyle: GoogleFonts.plusJakartaSans(
           fontSize: 14,
           fontWeight: FontWeight.w700,
@@ -100,7 +110,9 @@ class AppTheme {
       ),
     ),
     checkboxTheme: CheckboxThemeData(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppSpacing.radiusXs)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppSpacing.radiusXs),
+      ),
       side: const BorderSide(color: AppColors.primary, width: 1.4),
       fillColor: const WidgetStatePropertyAll(AppColors.primary),
       checkColor: const WidgetStatePropertyAll(AppColors.white),
@@ -111,7 +123,7 @@ class AppTheme {
       selectedColor: AppColors.secondary,
       secondarySelectedColor: AppColors.secondary,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),
-      padding:  AppSpacing.paddingSm,
+      padding: AppSpacing.paddingSm,
       labelStyle: GoogleFonts.plusJakartaSans(
         color: AppColors.neutral900,
         fontWeight: FontWeight.w700,

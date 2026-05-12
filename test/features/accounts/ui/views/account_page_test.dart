@@ -32,8 +32,9 @@ class MockAccountsRepository implements AccountsRepository {
 }
 
 void main() {
-  testWidgets('AccountPage renders correctly with modernized design',
-      (WidgetTester tester) async {
+  testWidgets('AccountPage renders correctly with modernized design', (
+    WidgetTester tester,
+  ) async {
     const userProfile = UserProfile(
       id: '1',
       name: 'John Doe',
@@ -43,12 +44,11 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
-          accountsRepositoryProvider
-              .overrideWithValue(MockAccountsRepository(userProfile)),
+          accountsRepositoryProvider.overrideWithValue(
+            MockAccountsRepository(userProfile),
+          ),
         ],
-        child: const MaterialApp(
-          home: AccountPage(),
-        ),
+        child: const MaterialApp(home: AccountPage()),
       ),
     );
     await tester.pumpAndSettle();

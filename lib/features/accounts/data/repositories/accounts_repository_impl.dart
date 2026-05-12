@@ -21,9 +21,7 @@ class AccountsRepositoryImpl implements AccountsRepository {
       final response = await _apiClient.get(
         ApiEndpoints.showProfile,
         options: Options(
-          headers: {
-            if (token != null) 'Authorization': 'Bearer $token',
-          },
+          headers: {if (token != null) 'Authorization': 'Bearer $token'},
         ),
       );
       return Right(UserProfile.fromJson(response.data['data']));
@@ -61,9 +59,7 @@ class AccountsRepositoryImpl implements AccountsRepository {
         ApiEndpoints.updateProfile,
         data: formData,
         options: Options(
-          headers: {
-            if (token != null) 'Authorization': 'Bearer $token',
-          },
+          headers: {if (token != null) 'Authorization': 'Bearer $token'},
         ),
       );
 

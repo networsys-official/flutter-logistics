@@ -17,24 +17,21 @@ class UserAddressRepositoryImpl implements UserAddressRepository {
   @override
   ResultFuture<List<UserAddress>> getAddresses() async {
     try {
-      print('Fetching addresses...');
+
       final token = await _storageService.getToken();
       final response = await _apiClient.get(
         ApiEndpoints.userAddresses,
         options: Options(
-          headers: {
-            if (token != null) 'Authorization': 'Bearer $token',
-          },
+          headers: {if (token != null) 'Authorization': 'Bearer $token'},
         ),
       );
-      print('Response received: ${response.data}');
+
       final List data = response.data['data'];
       final addresses = data.map((e) => UserAddress.fromJson(e)).toList();
-      print('Parsed ${addresses.length} addresses');
+
       return Right(addresses);
-    } catch (e, stack) {
-      print('Error fetching addresses: $e');
-      print(stack);
+    } catch (e) {
+
       return Left(AppFailure(message: e.toString()));
     }
   }
@@ -47,9 +44,7 @@ class UserAddressRepositoryImpl implements UserAddressRepository {
         ApiEndpoints.userAddresses,
         data: address.toJson(),
         options: Options(
-          headers: {
-            if (token != null) 'Authorization': 'Bearer $token',
-          },
+          headers: {if (token != null) 'Authorization': 'Bearer $token'},
         ),
       );
       return Right(UserAddress.fromJson(response.data['data']));
@@ -66,9 +61,7 @@ class UserAddressRepositoryImpl implements UserAddressRepository {
         '${ApiEndpoints.userAddresses}/${address.id}',
         data: address.toJson(),
         options: Options(
-          headers: {
-            if (token != null) 'Authorization': 'Bearer $token',
-          },
+          headers: {if (token != null) 'Authorization': 'Bearer $token'},
         ),
       );
       return Right(UserAddress.fromJson(response.data['data']));
@@ -84,9 +77,7 @@ class UserAddressRepositoryImpl implements UserAddressRepository {
       await _apiClient.delete(
         '${ApiEndpoints.userAddresses}/$id',
         options: Options(
-          headers: {
-            if (token != null) 'Authorization': 'Bearer $token',
-          },
+          headers: {if (token != null) 'Authorization': 'Bearer $token'},
         ),
       );
       return const Right(null);
@@ -98,7 +89,9 @@ class UserAddressRepositoryImpl implements UserAddressRepository {
   @override
   ResultFuture<List<Map<String, dynamic>>> getLocations() async {
     try {
-      final response = await _apiClient.get(ApiEndpoints.userAddressesLocations);
+      final response = await _apiClient.get(
+        ApiEndpoints.userAddressesLocations,
+      );
       final List data = response.data['data'];
       return Right(data.cast<Map<String, dynamic>>());
     } catch (e) {

@@ -18,22 +18,16 @@ enum AddressType {
 abstract class UserAddress with _$UserAddress {
   const factory UserAddress({
     required int id,
-    @JsonKey(name: 'user_id') String? userId,
-    AddressType? type,
-    @JsonKey(name: 'contact_name') String? contactName,
-    String? phone,
-    @JsonKey(name: 'country_id') int? countryId,
-    @JsonKey(name: 'country_name') String? countryName,
-    @JsonKey(name: 'location_id') int? locationId,
-    @JsonKey(name: 'location_name') String? locationName,
+    String? island,
+    String? city,
+    String? zone,
+    @JsonKey(name: 'location_id')
+    int? zoneId, // Backend returns location_id, frontend uses zoneId
     @JsonKey(name: 'address_line_1') required String addressLine1,
     @JsonKey(name: 'address_line_2') String? addressLine2,
-    @JsonKey(name: 'postal_code') String? postalCode,
-    double? latitude,
-    double? longitude,
+    @JsonKey(name: 'po_box') String? poBox,
+    String? label,
     @JsonKey(name: 'is_default') @Default(false) bool isDefault,
-    @JsonKey(name: 'created_at') String? createdAt,
-    @JsonKey(name: 'updated_at') String? updatedAt,
   }) = _UserAddress;
 
   factory UserAddress.fromJson(Map<String, dynamic> json) =>

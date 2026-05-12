@@ -1,4 +1,3 @@
-
 class AppPermissions {
   AppPermissions._();
 

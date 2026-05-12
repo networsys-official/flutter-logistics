@@ -21,11 +21,8 @@ class AccountsViewModel extends _$AccountsViewModel {
   FutureOr<UserProfile?> build() async {
     final repository = ref.read(accountsRepositoryProvider);
     final result = await repository.getProfile();
-    
-    return result.fold(
-      (failure) => throw failure,
-      (profile) => profile,
-    );
+
+    return result.fold((failure) => throw failure, (profile) => profile);
   }
 
   Future<void> refreshProfile() async {
@@ -46,14 +43,16 @@ class AccountsViewModel extends _$AccountsViewModel {
     String? imagePath,
   }) async {
     state = const AsyncValue.loading();
-    final result = await ref.read(accountsRepositoryProvider).updateProfile(
-      name: name,
-      phone: phone,
-      gender: gender,
-      dob: dob,
-      language: language,
-      imagePath: imagePath,
-    );
+    final result = await ref
+        .read(accountsRepositoryProvider)
+        .updateProfile(
+          name: name,
+          phone: phone,
+          gender: gender,
+          dob: dob,
+          language: language,
+          imagePath: imagePath,
+        );
 
     return result.fold(
       (failure) {

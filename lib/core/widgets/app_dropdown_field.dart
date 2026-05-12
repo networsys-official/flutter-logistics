@@ -21,8 +21,10 @@ class AppDropdownField<T> extends StatelessWidget {
     this.onChanged,
     this.itemLabelBuilder,
     this.validator,
-  }) : assert(items != null || dropdownItems != null,
-            'Either items or dropdownItems must be provided');
+  }) : assert(
+         items != null || dropdownItems != null,
+         'Either items or dropdownItems must be provided',
+       );
 
   @override
   Widget build(BuildContext context) {
@@ -67,20 +69,15 @@ class AppDropdownField<T> extends StatelessWidget {
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),
-              borderSide: const BorderSide(
-                color: AppColors.error,
-                width: 1.5,
-              ),
+              borderSide: const BorderSide(color: AppColors.error, width: 1.5),
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),
-              borderSide: const BorderSide(
-                color: AppColors.error,
-                width: 1.5,
-              ),
+              borderSide: const BorderSide(color: AppColors.error, width: 1.5),
             ),
           ),
-          items: dropdownItems ??
+          items:
+              dropdownItems ??
               items?.map((T item) {
                 return DropdownMenuItem<T>(
                   value: item,

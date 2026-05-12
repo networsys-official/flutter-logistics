@@ -9,10 +9,7 @@ class UserAddressLocations extends _$UserAddressLocations {
   FutureOr<List<Map<String, dynamic>>> build() async {
     final repository = ref.read(userAddressRepositoryProvider);
     final result = await repository.getLocations();
-    
-    return result.fold(
-      (failure) => throw failure,
-      (locations) => locations,
-    );
+
+    return result.fold((failure) => throw failure, (locations) => locations);
   }
 }

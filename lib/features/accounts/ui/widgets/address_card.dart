@@ -15,6 +15,12 @@ class AddressCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Safely map string label back to enum for UI color/icon
+    final typeEnum = AddressType.values.firstWhere(
+      (e) => e.name == address.label,
+      orElse: () => AddressType.home,
+    );
+
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
@@ -39,7 +45,7 @@ class AddressCard extends ConsumerWidget {
         children: [
           Row(
             children: [
-              _AddressCardIcon(type: address.type),
+              _AddressCardIcon(type: typeEnum),
               const SizedBox(width: 14),
               Expanded(
                 child: Column(
@@ -48,11 +54,11 @@ class AddressCard extends ConsumerWidget {
                     Row(
                       children: [
                         Text(
-                          address.type?.name.toUpperCase() ?? 'ADDRESS',
+                          address.label?.toUpperCase() ?? 'ADDRESS',
                           style: TextStyle(
                             fontSize: 11,
                             fontWeight: FontWeight.w800,
-                            color: _getColor(address.type),
+                            color: _getColor(typeEnum),
                             letterSpacing: 0.5,
                           ),
                         ),
@@ -63,7 +69,7 @@ class AddressCard extends ConsumerWidget {
                       ],
                     ),
                     Text(
-                      address.contactName ?? 'No Name',
+                      address.poBox ?? 'No P.O. Box',
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w800,
@@ -82,14 +88,17 @@ class AddressCard extends ConsumerWidget {
           const SizedBox(height: 16),
           _AddressCardDetails(address: address),
           const SizedBox(height: 12),
-          _AddressCardContactInfo(phone: address.phone),
+          _AddressCardLocationInfo(address: address),
         ],
       ),
     );
   }
 
   void _showDeleteDialog(
-      BuildContext context, WidgetRef ref, UserAddress address) {
+    BuildContext context,
+    WidgetRef ref,
+    UserAddress address,
+  ) {
     showDialog(
       context: context,
       builder: (context) => _DeleteAddressDialog(
@@ -220,11 +229,11 @@ class _AddressCardDetails extends StatelessWidget {
             fontWeight: FontWeight.w600,
           ),
         ),
-        if (address.locationName != null || address.countryName != null)
+        if (address.zone != null || address.city != null)
           Padding(
             padding: const EdgeInsets.only(top: 2),
             child: Text(
-              '${address.locationName ?? ''}${address.locationName != null && address.countryName != null ? ', ' : ''}${address.countryName ?? ''}',
+              '${address.zone ?? ''}${address.zone != null && address.city != null ? ', ' : ''}${address.city ?? ''}',
               style: const TextStyle(
                 fontSize: 13,
                 color: AppColors.neutral500,
@@ -237,22 +246,22 @@ class _AddressCardDetails extends StatelessWidget {
   }
 }
 
-class _AddressCardContactInfo extends StatelessWidget {
-  final String? phone;
-  const _AddressCardContactInfo({required this.phone});
+class _AddressCardLocationInfo extends StatelessWidget {
+  final UserAddress address;
+  const _AddressCardLocationInfo({required this.address});
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         const HugeIcon(
-          icon: HugeIcons.strokeRoundedCall,
+          icon: HugeIcons.strokeRoundedLocation01,
           size: 14,
           color: AppColors.neutral500,
         ),
         const SizedBox(width: 6),
         Text(
-          phone ?? 'No Phone',
+          address.island ?? 'No Island',
           style: const TextStyle(
             fontSize: 13,
             color: AppColors.neutral700,

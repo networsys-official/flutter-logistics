@@ -41,15 +41,15 @@ class HomeCalculatorSection extends StatelessWidget {
                   Text(
                     'Shipping Calculator',
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          color: AppColors.secondaryDark,
-                          fontWeight: FontWeight.w800,
-                        ),
+                      color: AppColors.secondaryDark,
+                      fontWeight: FontWeight.w800,
+                    ),
                   ),
                   Text(
                     'Estimate your shipping costs instantly',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.secondaryDark.withValues(alpha: 0.7),
-                        ),
+                      color: AppColors.secondaryDark.withValues(alpha: 0.7),
+                    ),
                   ),
                 ],
               ),

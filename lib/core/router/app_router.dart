@@ -40,7 +40,7 @@ GoRouter appRouter(Ref ref) {
   ref.listen(authProvider, (_, next) {
     routerStateNotifier.value++;
   });
-  
+
   ref.listen(onboardingProvider, (_, next) {
     routerStateNotifier.value++;
   });
@@ -56,7 +56,7 @@ GoRouter appRouter(Ref ref) {
       final isAuthChecking = authState.isLoading || onboardingState.isLoading;
       final isUserLoggedIn = authState.value?.isLoggedIn ?? false;
       final hasSeenOnboarding = onboardingState.value ?? false;
-      
+
       final currentPath = state.uri.path;
 
       final authRoutes = [
@@ -67,12 +67,13 @@ GoRouter appRouter(Ref ref) {
         AppRoutes.resetPassword,
       ];
 
-      final publicRoutes = [...authRoutes, AppRoutes.onboarding,AppRoutes.splash];
-
-      final guestRestrictedRoutes = [
+      final publicRoutes = [
         ...authRoutes,
         AppRoutes.onboarding,
+        AppRoutes.splash,
       ];
+
+      final guestRestrictedRoutes = [...authRoutes, AppRoutes.onboarding];
 
       final isPublicRoute = publicRoutes.contains(currentPath);
       final isGuestRestrictedRoute = guestRestrictedRoutes.contains(

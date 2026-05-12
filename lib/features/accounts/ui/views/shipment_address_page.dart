@@ -19,9 +19,7 @@ class ShipmentAddressPage extends ConsumerWidget {
       backgroundColor: AppColors.neutral100,
       body: Column(
         children: [
-          const AppAppBar(
-            title: 'Shipment Address',
-          ),
+          const AppAppBar(title: 'Shipment Address'),
           Expanded(
             child: addressState.when(
               data: (addresses) => addresses.isEmpty

@@ -79,7 +79,7 @@ class _NavItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = isActive ? AppColors.primary : AppColors.neutral500;
-    
+
     return Semantics(
       label: label,
       selected: isActive,

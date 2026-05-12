@@ -20,45 +20,37 @@ class AddEditAddressPage extends ConsumerStatefulWidget {
 
 class _AddEditAddressPageState extends ConsumerState<AddEditAddressPage> {
   final _formKey = GlobalKey<FormState>();
-  late final TextEditingController _nameController;
-  late final TextEditingController _phoneController;
+  late final TextEditingController _islandController;
   late final TextEditingController _addressLine1Controller;
-  late final TextEditingController _addressLine2Controller;
-  late final TextEditingController _postalCodeController;
+  late final TextEditingController _poBoxController;
 
-  AddressType _selectedType = AddressType.home;
-  int? _selectedLocationId;
+  String _label = 'home';
+  int? _selectedZoneId;
   bool _isDefault = false;
-  bool _isReceivedByMe = true;
 
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController(text: widget.address?.contactName);
-    _phoneController = TextEditingController(text: widget.address?.phone);
-    _addressLine1Controller =
-        TextEditingController(text: widget.address?.addressLine1);
-    _addressLine2Controller =
-        TextEditingController(text: widget.address?.addressLine2);
-    _postalCodeController =
-        TextEditingController(text: widget.address?.postalCode);
+    _islandController = TextEditingController(
+      text: widget.address?.island ?? 'New Providence',
+    );
+    _addressLine1Controller = TextEditingController(
+      text: widget.address?.addressLine1,
+    );
+    _poBoxController = TextEditingController(text: widget.address?.poBox);
 
     if (widget.address != null) {
-      _selectedType = widget.address!.type ?? AddressType.home;
-      _selectedLocationId = widget.address!.locationId;
+      _label = widget.address!.label ?? 'home';
+      _selectedZoneId = widget.address!.zoneId;
       _isDefault = widget.address!.isDefault;
-      _isReceivedByMe =
-          widget.address!.contactName == null && widget.address!.phone == null;
     }
   }
 
   @override
   void dispose() {
-    _nameController.dispose();
-    _phoneController.dispose();
+    _islandController.dispose();
     _addressLine1Controller.dispose();
-    _addressLine2Controller.dispose();
-    _postalCodeController.dispose();
+    _poBoxController.dispose();
     super.dispose();
   }
 
@@ -67,17 +59,16 @@ class _AddEditAddressPageState extends ConsumerState<AddEditAddressPage> {
 
     final address = UserAddress(
       id: widget.address?.id ?? 0,
-      type: _selectedType,
-      contactName: _isReceivedByMe ? null : _nameController.text.trim(),
-      phone: _isReceivedByMe ? null : _phoneController.text.trim(),
-      locationId: _selectedLocationId,
+      label: _label,
+      zoneId: _selectedZoneId,
+      island: _islandController.text.trim().isEmpty
+          ? 'New Providence'
+          : _islandController.text.trim(),
       addressLine1: _addressLine1Controller.text.trim(),
-      addressLine2: _addressLine2Controller.text.trim().isEmpty
+      addressLine2: null, // Address Line 2 removed from UI
+      poBox: _poBoxController.text.trim().isEmpty
           ? null
-          : _addressLine2Controller.text.trim(),
-      postalCode: _postalCodeController.text.trim().isEmpty
-          ? null
-          : _postalCodeController.text.trim(),
+          : _poBoxController.text.trim(),
       isDefault: _isDefault,
     );
 
@@ -105,9 +96,9 @@ class _AddEditAddressPageState extends ConsumerState<AddEditAddressPage> {
     ref.listen(userAddressActionProvider, (previous, next) {
       next.whenOrNull(
         error: (error, stack) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(errorMessageFrom(error))),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(errorMessageFrom(error))));
         },
       );
     });
@@ -121,32 +112,25 @@ class _AddEditAddressPageState extends ConsumerState<AddEditAddressPage> {
           ),
           Expanded(
             child: locationsAsync.when(
-              data: (locations) => _AddressForm(
+              data: (zones) => _AddressForm(
                 formKey: _formKey,
                 address: widget.address,
-                locations: locations,
+                zones: zones,
                 isSubmitting: actionState.isLoading,
-                selectedType: _selectedType,
-                isReceivedByMe: _isReceivedByMe,
-                nameController: _nameController,
-                phoneController: _phoneController,
+                label: _label,
+                islandController: _islandController,
                 addressLine1Controller: _addressLine1Controller,
-                addressLine2Controller: _addressLine2Controller,
-                postalCodeController: _postalCodeController,
-                selectedLocationId: _selectedLocationId,
+                poBoxController: _poBoxController,
+                selectedZoneId: _selectedZoneId,
                 isDefault: _isDefault,
-                onTypeChanged: (v) => setState(() => _selectedType = v),
-                onReceivedByMeChanged: (v) =>
-                    setState(() => _isReceivedByMe = v),
-                onLocationChanged: (v) =>
-                    setState(() => _selectedLocationId = v),
+                onLabelChanged: (v) => setState(() => _label = v.name),
+                onZoneChanged: (v) => setState(() => _selectedZoneId = v),
                 onDefaultChanged: (v) => setState(() => _isDefault = v),
                 onSubmit: _submit,
               ),
               loading: () => const Center(child: CircularProgressIndicator()),
-              error: (error, stack) => Center(
-                child: Text(errorMessageFrom(error)),
-              ),
+              error: (error, stack) =>
+                  Center(child: Text(errorMessageFrom(error))),
             ),
           ),
         ],
@@ -158,46 +142,44 @@ class _AddEditAddressPageState extends ConsumerState<AddEditAddressPage> {
 class _AddressForm extends StatelessWidget {
   final GlobalKey<FormState> formKey;
   final UserAddress? address;
-  final List<Map<String, dynamic>> locations;
+  final List<Map<String, dynamic>> zones;
   final bool isSubmitting;
-  final AddressType selectedType;
-  final bool isReceivedByMe;
-  final TextEditingController nameController;
-  final TextEditingController phoneController;
+  final String label;
+  final TextEditingController islandController;
   final TextEditingController addressLine1Controller;
-  final TextEditingController addressLine2Controller;
-  final TextEditingController postalCodeController;
-  final int? selectedLocationId;
+  final TextEditingController poBoxController;
+  final int? selectedZoneId;
   final bool isDefault;
-  final ValueChanged<AddressType> onTypeChanged;
-  final ValueChanged<bool> onReceivedByMeChanged;
-  final ValueChanged<int?> onLocationChanged;
+  final ValueChanged<AddressType> onLabelChanged;
+  final ValueChanged<int?> onZoneChanged;
   final ValueChanged<bool> onDefaultChanged;
   final VoidCallback onSubmit;
 
   const _AddressForm({
     required this.formKey,
     this.address,
-    required this.locations,
+    required this.zones,
     required this.isSubmitting,
-    required this.selectedType,
-    required this.isReceivedByMe,
-    required this.nameController,
-    required this.phoneController,
+    required this.label,
+    required this.islandController,
     required this.addressLine1Controller,
-    required this.addressLine2Controller,
-    required this.postalCodeController,
-    required this.selectedLocationId,
+    required this.poBoxController,
+    required this.selectedZoneId,
     required this.isDefault,
-    required this.onTypeChanged,
-    required this.onReceivedByMeChanged,
-    required this.onLocationChanged,
+    required this.onLabelChanged,
+    required this.onZoneChanged,
     required this.onDefaultChanged,
     required this.onSubmit,
   });
 
   @override
   Widget build(BuildContext context) {
+    // Safely map string label back to enum for UI selector
+    final selectedType = AddressType.values.firstWhere(
+      (e) => e.name == label,
+      orElse: () => AddressType.home,
+    );
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20),
       child: Form(
@@ -208,70 +190,34 @@ class _AddressForm extends StatelessWidget {
             const AddressSectionTitle(title: 'Address Type'),
             AddressTypeSelector(
               selectedType: selectedType,
-              onTypeChanged: onTypeChanged,
+              onTypeChanged: onLabelChanged,
             ),
             const SizedBox(height: 24),
-            const AddressSectionTitle(title: 'Contact Information'),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Received by me',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.neutral700,
-                  ),
-                ),
-                Switch.adaptive(
-                  value: isReceivedByMe,
-                  activeThumbColor: AppColors.primary,
-                  onChanged: onReceivedByMeChanged,
-                ),
-              ],
+            AddressFormTextField(
+              controller: islandController,
+              label: 'Island',
+              hint: 'Enter Island',
+              validator: (v) => v?.isEmpty ?? true ? 'Required' : null,
             ),
-            if (!isReceivedByMe) ...[
-              const SizedBox(height: 16),
-              AddressFormTextField(
-                controller: nameController,
-                label: 'Contact Name',
-                hint: 'Enter receiver name',
-                validator: (v) => v?.isEmpty ?? true ? 'Required' : null,
-              ),
-              const SizedBox(height: 16),
-              AddressFormTextField(
-                controller: phoneController,
-                label: 'Phone Number',
-                hint: 'Enter phone number',
-                keyboardType: TextInputType.phone,
-                validator: (v) => v?.isEmpty ?? true ? 'Required' : null,
-              ),
-            ],
             const SizedBox(height: 24),
             const AddressSectionTitle(title: 'Address Details'),
-            AddressLocationDropdown(
-              selectedLocationId: selectedLocationId,
-              locations: locations,
-              onChanged: onLocationChanged,
-            ),
-            const SizedBox(height: 16),
             AddressFormTextField(
               controller: addressLine1Controller,
-              label: 'Address Line 1',
+              label: 'Street Address',
               hint: 'Street, House No, etc.',
               validator: (v) => v?.isEmpty ?? true ? 'Required' : null,
             ),
             const SizedBox(height: 16),
             AddressFormTextField(
-              controller: addressLine2Controller,
-              label: 'Address Line 2 (Optional)',
-              hint: 'Apartment, Suite, etc.',
+              controller: poBoxController,
+              label: 'P.O. Box (Optional)',
+              hint: 'Enter P.O. Box',
             ),
             const SizedBox(height: 16),
-            AddressFormTextField(
-              controller: postalCodeController,
-              label: 'Postal Code',
-              hint: 'Enter postal code',
+            AddressZoneDropdown(
+              selectedZoneId: selectedZoneId,
+              zones: zones,
+              onChanged: onZoneChanged,
             ),
             const SizedBox(height: 24),
             AddressDefaultSwitch(

@@ -3,11 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:logistic_by_strom/core/constants/app_images.dart';
 
 class AuthLogoHeader extends StatelessWidget {
-  const AuthLogoHeader({
-    super.key,
-    required this.title,
-    this.subtitle,
-  });
+  const AuthLogoHeader({super.key, required this.title, this.subtitle});
 
   final String title;
   final String? subtitle;

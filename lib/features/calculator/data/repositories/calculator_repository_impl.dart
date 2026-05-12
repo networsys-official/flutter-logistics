@@ -22,7 +22,9 @@ class CalculatorRepositoryImpl implements CalculatorRepository {
       );
       final data = MapUtils.asMap(response.data);
 
-      final payload = MapUtils.asMap(data['data']).isNotEmpty ? MapUtils.asMap(data['data']) : data;
+      final payload = MapUtils.asMap(data['data']).isNotEmpty
+          ? MapUtils.asMap(data['data'])
+          : data;
 
       return right(CalculatorResponse.fromJson(payload));
     } catch (error, stackTrace) {

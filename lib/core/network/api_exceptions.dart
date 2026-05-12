@@ -5,11 +5,7 @@ import 'package:logistic_by_strom/core/utils/map_utils.dart';
 
 /// Base class for all API exceptions
 abstract class ApiException implements Exception {
-  ApiException(
-    this.message, {
-    this.statusCode,
-    this.fieldErrors = const {},
-  });
+  ApiException(this.message, {this.statusCode, this.fieldErrors = const {}});
 
   final String message;
   final int? statusCode;
@@ -68,20 +64,12 @@ class ForbiddenException extends ApiException {
 
 /// Thrown when server returns 404 Not Found
 class NotFoundException extends ApiException {
-  NotFoundException(
-    super.message, {
-    super.statusCode = 404,
-    super.fieldErrors,
-  });
+  NotFoundException(super.message, {super.statusCode = 404, super.fieldErrors});
 }
 
 /// Thrown when server returns 500+ Server Error
 class ServerException extends ApiException {
-  ServerException(
-    super.message, {
-    super.statusCode,
-    super.fieldErrors,
-  });
+  ServerException(super.message, {super.statusCode, super.fieldErrors});
 }
 
 /// Helper method to map Dio exceptions to custom app exceptions
@@ -94,7 +82,9 @@ ApiException mapDioException(DioException error) {
       stackTrace: error.stackTrace,
     );
   } else {
-    AppLogger.warning('API request failed with status $statusCode: ${error.message}');
+    AppLogger.warning(
+      'API request failed with status $statusCode: ${error.message}',
+    );
   }
 
   if (error.type == DioExceptionType.connectionTimeout ||
@@ -110,9 +100,8 @@ ApiException mapDioException(DioException error) {
   if (error.response != null) {
     final statusCode = error.response!.statusCode;
     final data = error.response?.data;
-    final message = _extractMessage(data) ??
-        error.message ??
-        ErrorStrings.generalError;
+    final message =
+        _extractMessage(data) ?? error.message ?? ErrorStrings.generalError;
     final fieldErrors = _extractFieldErrors(data);
 
     switch (statusCode) {
@@ -133,7 +122,10 @@ ApiException mapDioException(DioException error) {
       case 500:
       case 502:
       case 503:
-        return ServerException(ErrorStrings.serverError, statusCode: statusCode);
+        return ServerException(
+          ErrorStrings.serverError,
+          statusCode: statusCode,
+        );
       default:
         return ServerException(message, statusCode: statusCode);
     }

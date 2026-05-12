@@ -6,7 +6,8 @@ class ImageSourceBottomSheet extends StatelessWidget {
   final VoidCallback onCameraTap;
   final VoidCallback onGalleryTap;
 
-  const ImageSourceBottomSheet({super.key,
+  const ImageSourceBottomSheet({
+    super.key,
     required this.onCameraTap,
     required this.onGalleryTap,
   });
@@ -33,9 +34,9 @@ class ImageSourceBottomSheet extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             'Choose how you want to select your profile picture',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: AppColors.neutral700,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: AppColors.neutral700),
           ),
           const SizedBox(height: 24),
           Row(

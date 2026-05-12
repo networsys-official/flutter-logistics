@@ -16,24 +16,32 @@ class CalculatorInputGrid extends StatelessWidget {
         Text(
           'Item Dimensions',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w800,
-                color: AppColors.neutral900,
-              ),
+            fontWeight: FontWeight.w800,
+            color: AppColors.neutral900,
+          ),
         ),
         const SizedBox(height: AppSpacing.md),
         const Row(
           children: [
-            Expanded(child: AppTextField(label: 'Length', hint: '0.00')),
+            Expanded(
+              child: AppTextField(label: 'Length', hint: '0.00'),
+            ),
             SizedBox(width: AppSpacing.md),
-            Expanded(child: AppTextField(label: 'Width', hint: '0.00')),
+            Expanded(
+              child: AppTextField(label: 'Width', hint: '0.00'),
+            ),
           ],
         ),
         const SizedBox(height: AppSpacing.md),
         const Row(
           children: [
-            Expanded(child: AppTextField(label: 'Height', hint: '0.00')),
+            Expanded(
+              child: AppTextField(label: 'Height', hint: '0.00'),
+            ),
             SizedBox(width: AppSpacing.md),
-            Expanded(child: AppTextField(label: 'Weight', hint: '0 kg')),
+            Expanded(
+              child: AppTextField(label: 'Weight', hint: '0 kg'),
+            ),
           ],
         ),
         const SizedBox(height: AppSpacing.md),
@@ -42,18 +50,19 @@ class CalculatorInputGrid extends StatelessWidget {
         AppDropdownField<String>(
           label: 'Item Type',
           hint: 'Select Item Type',
-          dropdownItems: ['iPhone', 'Laptop', 'Electronics', 'Furniture', 'Clothing']
-              .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-              .toList(),
+          dropdownItems: [
+            'iPhone',
+            'Laptop',
+            'Electronics',
+            'Furniture',
+            'Clothing',
+          ].map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
           onChanged: (val) {},
         ),
         const SizedBox(height: AppSpacing.lg),
         const _ShippingOptions(),
         const SizedBox(height: AppSpacing.xl),
-        AppButton(
-          text: 'Calculate',
-          onPressed: () {},
-        ),
+        AppButton(text: 'Calculate', onPressed: () {}),
       ],
     );
   }

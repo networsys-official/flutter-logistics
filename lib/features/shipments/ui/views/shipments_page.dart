@@ -15,10 +15,7 @@ class ShipmentsPage extends StatelessWidget {
       backgroundColor: AppColors.neutral100,
       body: Column(
         children: [
-          const AppAppBar(
-            title: 'Shipments',
-            showBackButton: false,
-          ),
+          const AppAppBar(title: 'Shipments', showBackButton: false),
           Expanded(
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -134,7 +131,10 @@ class ShipmentsPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: bgColor,
                     borderRadius: BorderRadius.circular(AppSpacing.radiusSm),

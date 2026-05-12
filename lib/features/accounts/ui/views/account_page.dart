@@ -30,13 +30,13 @@ class AccountPage extends ConsumerWidget {
   }
 
   Widget _buildContent(
-      BuildContext context, WidgetRef ref, UserProfile? profile) {
+    BuildContext context,
+    WidgetRef ref,
+    UserProfile? profile,
+  ) {
     return Column(
       children: [
-        const AppAppBar(
-          title: 'Account',
-          showBackButton: false,
-        ),
+        const AppAppBar(title: 'Account', showBackButton: false),
         Expanded(
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
@@ -134,8 +134,10 @@ class AccountPage extends ConsumerWidget {
         imageProvider = NetworkImage(imageUrl);
       } else {
         // Prepend host if relative path
-        final baseUrl =
-            ApiEndpoints.configuredBaseUrl.replaceFirst('/api/v1', '');
+        final baseUrl = ApiEndpoints.configuredBaseUrl.replaceFirst(
+          '/api/v1',
+          '',
+        );
         imageProvider = NetworkImage('$baseUrl$imageUrl');
       }
     } else {
@@ -252,8 +254,10 @@ class AccountPage extends ConsumerWidget {
                   size: 14,
                 ),
                 onTap: action.onTap,
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 4,
+                ),
               ),
               if (index != actions.length - 1)
                 Divider(
@@ -283,14 +287,12 @@ class AccountPage extends ConsumerWidget {
           foregroundColor: AppColors.error,
           padding: const EdgeInsets.symmetric(vertical: 16),
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(AppSpacing.radiusXl)),
+            borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
+          ),
         ),
         child: const Text(
           'Logout',
-          style: TextStyle(
-            fontWeight: FontWeight.w800,
-            fontSize: 15,
-          ),
+          style: TextStyle(fontWeight: FontWeight.w800, fontSize: 15),
         ),
       ),
     );
@@ -301,24 +303,33 @@ class AccountPage extends ConsumerWidget {
       context: context,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppSpacing.radiusXl)),
-        title:
-            const Text('Logout', style: TextStyle(fontWeight: FontWeight.w800)),
+          borderRadius: BorderRadius.circular(AppSpacing.radiusXl),
+        ),
+        title: const Text(
+          'Logout',
+          style: TextStyle(fontWeight: FontWeight.w800),
+        ),
         content: const Text('Are you sure you want to logout?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel',
-                style: TextStyle(color: AppColors.neutral500)),
+            child: const Text(
+              'Cancel',
+              style: TextStyle(color: AppColors.neutral500),
+            ),
           ),
           TextButton(
             onPressed: () {
               ref.read(authProvider.notifier).logout();
               Navigator.pop(context);
             },
-            child: const Text('Logout',
-                style: TextStyle(
-                    color: AppColors.error, fontWeight: FontWeight.w800)),
+            child: const Text(
+              'Logout',
+              style: TextStyle(
+                color: AppColors.error,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
           ),
         ],
       ),

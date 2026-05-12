@@ -11,7 +11,7 @@ class HomeBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: const EdgeInsets.symmetric(horizontal: 20,),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       physics: const BouncingScrollPhysics(),
       children: [
         // Quick-action grid
@@ -27,10 +27,7 @@ class HomeBody extends StatelessWidget {
         const SizedBox(height: 24),
 
         // Current shipment section
-        HomeSectionHeader(
-          title: HomeStrings.currentShipment,
-          onViewAll: () {},
-        ),
+        HomeSectionHeader(title: HomeStrings.currentShipment, onViewAll: () {}),
         const ShipmentCard(
           title: 'Current',
           id: '#HWDSF776567DS',

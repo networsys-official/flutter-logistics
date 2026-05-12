@@ -20,7 +20,10 @@ class AppShellScaffold extends StatelessWidget {
         onPressed: () => context.push(AppRoutes.addShipment),
         backgroundColor: AppColors.primary,
         shape: const CircleBorder(),
-        child: const HugeIcon(color: AppColors.white, icon: HugeIcons.strokeRoundedPackageAdd01,),
+        child: const HugeIcon(
+          color: AppColors.white,
+          icon: HugeIcons.strokeRoundedPackageAdd01,
+        ),
       ),
       bottomNavigationBar: AppBottomNav(
         currentIndex: navigationShell.currentIndex,

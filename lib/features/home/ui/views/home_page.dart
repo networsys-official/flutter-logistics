@@ -10,11 +10,8 @@ class HomePage extends StatelessWidget {
     return const Column(
       children: [
         HomeAppBar(),
-        Expanded(
-          child: HomeBody(),
-        ),
+        Expanded(child: HomeBody()),
       ],
-
     );
   }
 }

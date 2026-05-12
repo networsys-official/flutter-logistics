@@ -28,8 +28,10 @@ class AvatarSection extends StatelessWidget {
         imageProvider = NetworkImage(profileImageUrl!);
       } else {
         // Prepend host if relative path
-        final baseUrl =
-            ApiEndpoints.configuredBaseUrl.replaceFirst('/api/v1', '');
+        final baseUrl = ApiEndpoints.configuredBaseUrl.replaceFirst(
+          '/api/v1',
+          '',
+        );
         imageProvider = NetworkImage('$baseUrl$profileImageUrl');
       }
     } else {

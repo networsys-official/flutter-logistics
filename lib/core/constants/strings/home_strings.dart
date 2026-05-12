@@ -3,7 +3,7 @@ class HomeStrings {
 
   static const String currentShipment = 'Current Shipment';
   static const String recentShipments = 'Recent Shipments';
-  
+
   // Action Grid
   static const String invoice = 'Invoice';
   static const String standBy = 'Stand By';

@@ -19,9 +19,7 @@ class AppAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        color: AppColors.neutral100,
-      ),
+      decoration: const BoxDecoration(color: AppColors.neutral100),
       child: SafeArea(
         bottom: false,
         child: Padding(
@@ -41,9 +39,9 @@ class AppAppBar extends StatelessWidget {
               Text(
                 title,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: AppColors.neutral900,
-                      fontWeight: FontWeight.w800,
-                    ),
+                  color: AppColors.neutral900,
+                  fontWeight: FontWeight.w800,
+                ),
               ),
               const Spacer(),
               if (actions != null) ...actions!,

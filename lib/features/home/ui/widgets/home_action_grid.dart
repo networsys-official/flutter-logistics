@@ -53,9 +53,7 @@ class HomeActionGrid extends StatelessWidget {
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: _actions
-            .map((action) => _ActionItem(data: action))
-            .toList(),
+        children: _actions.map((action) => _ActionItem(data: action)).toList(),
       ),
     );
   }
@@ -98,11 +96,7 @@ class _ActionItem extends StatelessWidget {
               color: data.bgColor,
               shape: BoxShape.circle,
             ),
-            child: HugeIcon(
-              icon: data.icon,
-              color: data.color,
-              size: 28,
-            ),
+            child: HugeIcon(icon: data.icon, color: data.color, size: 28),
           ),
           const SizedBox(height: 8),
           Text(

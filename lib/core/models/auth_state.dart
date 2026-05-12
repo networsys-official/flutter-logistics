@@ -10,7 +10,8 @@ sealed class AuthState with _$AuthState {
 
   const AuthState._();
 
-  factory AuthState.fromJson(Map<String, dynamic> json) => _$AuthStateFromJson(json);
+  factory AuthState.fromJson(Map<String, dynamic> json) =>
+      _$AuthStateFromJson(json);
 
   bool get isLoggedIn => user != null && token != null;
 }

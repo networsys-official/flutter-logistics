@@ -1,6 +1,1 @@
-enum AppTab {
-  home,
-  shipments,
-  support,
-  account,
-}
+enum AppTab { home, shipments, support, account }

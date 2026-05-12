@@ -13,7 +13,7 @@ class ApiEndpoints {
   static const String restPassword = '/auth/reset-password';
   static const String logout = '/auth/logout';
   static const String refreshToken = '/auth/refresh';
-  
+
   // User/Account endpoints
   static const String updateProfile = '/profile';
   static const String showProfile = '/profile';

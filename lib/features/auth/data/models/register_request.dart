@@ -15,5 +15,6 @@ sealed class RegisterRequest with _$RegisterRequest {
     required int locationId,
   }) = _RegisterRequest;
 
-  factory RegisterRequest.fromJson(Map<String, dynamic> json) => _$RegisterRequestFromJson(json);
+  factory RegisterRequest.fromJson(Map<String, dynamic> json) =>
+      _$RegisterRequestFromJson(json);
 }

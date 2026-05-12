@@ -21,11 +21,8 @@ class UserAddressViewModel extends _$UserAddressViewModel {
   FutureOr<List<UserAddress>> build() async {
     final repository = ref.read(userAddressRepositoryProvider);
     final result = await repository.getAddresses();
-    
-    return result.fold(
-      (failure) => throw failure,
-      (addresses) => addresses,
-    );
+
+    return result.fold((failure) => throw failure, (addresses) => addresses);
   }
 
   Future<void> fetchAddresses() async {
@@ -38,43 +35,42 @@ class UserAddressViewModel extends _$UserAddressViewModel {
   }
 
   Future<bool> addAddress(UserAddress address) async {
-    final result = await ref.read(userAddressRepositoryProvider).createAddress(address);
-    return result.fold(
-      (failure) => false,
-      (newAddress) {
-        state.whenData((addresses) {
-          state = AsyncValue.data([...addresses, newAddress]);
-        });
-        return true;
-      },
-    );
+    final result = await ref
+        .read(userAddressRepositoryProvider)
+        .createAddress(address);
+    return result.fold((failure) => false, (newAddress) {
+      state.whenData((addresses) {
+        state = AsyncValue.data([...addresses, newAddress]);
+      });
+      return true;
+    });
   }
 
   Future<bool> updateAddress(UserAddress address) async {
-    final result = await ref.read(userAddressRepositoryProvider).updateAddress(address);
-    return result.fold(
-      (failure) => false,
-      (updatedAddress) {
-        state.whenData((addresses) {
-          state = AsyncValue.data(
-            addresses.map((e) => e.id == updatedAddress.id ? updatedAddress : e).toList()
-          );
-        });
-        return true;
-      },
-    );
+    final result = await ref
+        .read(userAddressRepositoryProvider)
+        .updateAddress(address);
+    return result.fold((failure) => false, (updatedAddress) {
+      state.whenData((addresses) {
+        state = AsyncValue.data(
+          addresses
+              .map((e) => e.id == updatedAddress.id ? updatedAddress : e)
+              .toList(),
+        );
+      });
+      return true;
+    });
   }
 
   Future<bool> deleteAddress(int id) async {
-    final result = await ref.read(userAddressRepositoryProvider).deleteAddress(id);
-    return result.fold(
-      (failure) => false,
-      (_) {
-        state.whenData((addresses) {
-          state = AsyncValue.data(addresses.where((e) => e.id != id).toList());
-        });
-        return true;
-      },
-    );
+    final result = await ref
+        .read(userAddressRepositoryProvider)
+        .deleteAddress(id);
+    return result.fold((failure) => false, (_) {
+      state.whenData((addresses) {
+        state = AsyncValue.data(addresses.where((e) => e.id != id).toList());
+      });
+      return true;
+    });
   }
 }

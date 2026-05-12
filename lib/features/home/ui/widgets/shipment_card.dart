@@ -55,7 +55,10 @@ class ShipmentCard extends StatelessWidget {
                     ),
                     Text(
                       '$status • $date',
-                      style: const TextStyle(color: AppColors.neutral500, fontSize: 12),
+                      style: const TextStyle(
+                        color: AppColors.neutral500,
+                        fontSize: 12,
+                      ),
                     ),
                   ],
                 ),

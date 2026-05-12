@@ -63,21 +63,35 @@ class _AddShipmentFormState extends State<AddShipmentForm> {
         AppDropdownField<String>(
           label: 'Store/Supplier',
           hint: 'Select Store/Supplier',
-          dropdownItems: ['Amazon', 'eBay', 'AliExpress', 'Walmart'].map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+          dropdownItems: [
+            'Amazon',
+            'eBay',
+            'AliExpress',
+            'Walmart',
+          ].map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
           onChanged: (val) {},
         ),
         const SizedBox(height: AppSpacing.lg),
         AppDropdownField<String>(
           label: 'Commodity',
           hint: 'Select Commodity',
-          dropdownItems: ['Electronics', 'Clothing', 'Furniture', 'Others'].map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+          dropdownItems: [
+            'Electronics',
+            'Clothing',
+            'Furniture',
+            'Others',
+          ].map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
           onChanged: (val) {},
         ),
         const SizedBox(height: AppSpacing.lg),
         AppDropdownField<String>(
           label: 'Price',
           hint: 'Select Price Range',
-          dropdownItems: ['\$0 - \$100', '\$100 - \$500', '\$500+'].map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+          dropdownItems: [
+            '\$0 - \$100',
+            '\$100 - \$500',
+            '\$500+',
+          ].map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
           onChanged: (val) {},
         ),
         const SizedBox(height: AppSpacing.lg),
@@ -90,10 +104,7 @@ class _AddShipmentFormState extends State<AddShipmentForm> {
         const SizedBox(height: AppSpacing.xl),
         _buildUploadAction(),
         const SizedBox(height: AppSpacing.xl),
-        AppButton(
-          text: 'Next',
-          onPressed: () {},
-        ),
+        AppButton(text: 'Next', onPressed: () {}),
       ],
     );
   }
@@ -203,21 +214,16 @@ class _UploadOptionBottomSheet extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppColors.neutral100,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: AppColors.neutral200.withValues(alpha: 0.3)),
+          border: Border.all(
+            color: AppColors.neutral200.withValues(alpha: 0.3),
+          ),
         ),
         child: Row(
           children: [
             Container(
               padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: bgColor,
-                shape: BoxShape.circle,
-              ),
-              child: HugeIcon(
-                icon: icon,
-                color: color,
-                size: 22,
-              ),
+              decoration: BoxDecoration(color: bgColor, shape: BoxShape.circle),
+              child: HugeIcon(icon: icon, color: color, size: 22),
             ),
             const SizedBox(width: 16),
             Text(

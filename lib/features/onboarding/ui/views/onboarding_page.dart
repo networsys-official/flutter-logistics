@@ -7,7 +7,6 @@ import 'package:logistic_by_strom/core/services/storage_service.dart';
 
 import 'package:logistic_by_strom/core/theme/app_spacing.dart';
 
-
 import 'package:logistic_by_strom/features/onboarding/data/onboarding_slides.dart';
 import 'package:logistic_by_strom/features/onboarding/data/models/onboarding_slide.dart';
 import 'package:logistic_by_strom/features/onboarding/ui/view_models/onboarding_view_model.dart';
@@ -36,7 +35,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     super.dispose();
   }
 
-  void _goToDashboard() async{
+  void _goToDashboard() async {
     await ref.read(storageServiceProvider.notifier).setHasSeenOnboarding();
     if (!mounted) return;
     context.go(AppRoutes.register);
@@ -97,7 +96,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                       padding: AppSpacing.paddingMd,
                       child: Column(
                         children: [
-                           SizedBox(height: AppSpacing.md),
+                          SizedBox(height: AppSpacing.md),
                           Expanded(
                             flex: 5,
                             child: Center(
@@ -111,9 +110,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                             child: Column(
                               children: [
                                 AnimatedSwitcher(
-                                  duration: const Duration(
-                                    milliseconds: 280,
-                                  ),
+                                  duration: const Duration(milliseconds: 280),
                                   child: Text(
                                     slide.title,
                                     key: ValueKey(slide.title),
@@ -128,9 +125,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
                                 ),
                                 const SizedBox(height: AppSpacing.lg),
                                 AnimatedSwitcher(
-                                  duration: const Duration(
-                                    milliseconds: 280,
-                                  ),
+                                  duration: const Duration(milliseconds: 280),
                                   child: Text(
                                     slide.description,
                                     key: ValueKey(slide.description),

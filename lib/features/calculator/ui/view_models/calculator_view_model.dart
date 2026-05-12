@@ -21,7 +21,7 @@ class CalculatorViewModel extends _$CalculatorViewModel {
 
   Future<void> calculate(CalculatorRequest request) async {
     state = const AsyncValue.loading();
-    
+
     final repository = ref.read(calculatorRepositoryProvider);
     final result = await repository.calculate(request);
 

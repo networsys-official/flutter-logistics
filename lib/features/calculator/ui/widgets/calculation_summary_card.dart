@@ -13,9 +13,9 @@ class CalculationSummaryCard extends StatelessWidget {
         Text(
           'Calculation Details',
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w800,
-                color: AppColors.neutral900,
-              ),
+            fontWeight: FontWeight.w800,
+            color: AppColors.neutral900,
+          ),
         ),
         const SizedBox(height: AppSpacing.md),
         Container(
@@ -45,16 +45,16 @@ class CalculationSummaryCard extends StatelessWidget {
                   Text(
                     'Total Amount',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w800,
-                          color: AppColors.neutral900,
-                        ),
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.neutral900,
+                    ),
                   ),
                   Text(
                     '\$899.00',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.w800,
-                          color: AppColors.primary,
-                        ),
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.primary,
+                    ),
                   ),
                 ],
               ),

@@ -11,8 +11,10 @@ class UserAddressAction extends _$UserAddressAction {
 
   Future<bool> addAddress(UserAddress address) async {
     state = const AsyncValue.loading();
-    final result = await ref.read(userAddressRepositoryProvider).createAddress(address);
-    
+    final result = await ref
+        .read(userAddressRepositoryProvider)
+        .createAddress(address);
+
     return result.fold(
       (failure) {
         state = AsyncValue.error(failure, StackTrace.current);
@@ -29,8 +31,10 @@ class UserAddressAction extends _$UserAddressAction {
 
   Future<bool> updateAddress(UserAddress address) async {
     state = const AsyncValue.loading();
-    final result = await ref.read(userAddressRepositoryProvider).updateAddress(address);
-    
+    final result = await ref
+        .read(userAddressRepositoryProvider)
+        .updateAddress(address);
+
     return result.fold(
       (failure) {
         state = AsyncValue.error(failure, StackTrace.current);

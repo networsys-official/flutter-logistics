@@ -27,7 +27,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
   late TextEditingController _emailController;
   late TextEditingController _phoneController;
   late TextEditingController _dobController;
-  
+
   String? _selectedGender;
   String? _selectedLanguage;
   File? _imageFile;
@@ -41,7 +41,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
     'Dansk',
     'Suomi',
     'Nederlands',
-    'Kreyol Ayisyen'
+    'Kreyol Ayisyen',
   ];
 
   @override
@@ -131,15 +131,18 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
   }
 
   Future<void> _updateProfile() async {
-    final name = '${_firstNameController.text} ${_lastNameController.text}'.trim();
-    final success = await ref.read(accountsViewModelProvider.notifier).updateProfile(
-      name: name,
-      phone: _phoneController.text,
-      gender: _selectedGender,
-      dob: _dobController.text,
-      language: _selectedLanguage,
-      imagePath: _imageFile?.path,
-    );
+    final name = '${_firstNameController.text} ${_lastNameController.text}'
+        .trim();
+    final success = await ref
+        .read(accountsViewModelProvider.notifier)
+        .updateProfile(
+          name: name,
+          phone: _phoneController.text,
+          gender: _selectedGender,
+          dob: _dobController.text,
+          language: _selectedLanguage,
+          imagePath: _imageFile?.path,
+        );
 
     if (mounted) {
       if (success) {
@@ -238,7 +241,8 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                           hint: 'Select Gender',
                           value: _selectedGender,
                           items: _genders,
-                          onChanged: (val) => setState(() => _selectedGender = val),
+                          onChanged: (val) =>
+                              setState(() => _selectedGender = val),
                         ),
                       ),
                       const SizedBox(width: AppSpacing.md),
@@ -248,16 +252,14 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                           hint: 'Language',
                           value: _selectedLanguage,
                           items: _languages,
-                          onChanged: (val) => setState(() => _selectedLanguage = val),
+                          onChanged: (val) =>
+                              setState(() => _selectedLanguage = val),
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 60),
-                  AppButton(
-                    text: 'Update Profile',
-                    onPressed: _updateProfile,
-                  ),
+                  AppButton(text: 'Update Profile', onPressed: _updateProfile),
                   const SizedBox(height: AppSpacing.xl),
                 ],
               ),
@@ -268,6 +270,3 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
     );
   }
 }
-
-
-
