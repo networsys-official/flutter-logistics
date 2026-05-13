@@ -68,4 +68,29 @@ class AccountsRepositoryImpl implements AccountsRepository {
       return Left(AppFailure(message: e.toString()));
     }
   }
+
+  @override
+  ResultVoid updatePassword({
+    required String currentPassword,
+    required String newPassword,
+    required String confirmPassword,
+  }) async {
+    try {
+      final token = await _storageService.getToken();
+      await _apiClient.put(
+        ApiEndpoints.updatePassword,
+        data: {
+          'current_password': currentPassword,
+          'password': newPassword,
+          'password_confirmation': confirmPassword,
+        },
+        options: Options(
+          headers: {if (token != null) 'Authorization': 'Bearer $token'},
+        ),
+      );
+      return const Right(null);
+    } catch (e) {
+      return Left(AppFailure(message: e.toString()));
+    }
+  }
 }

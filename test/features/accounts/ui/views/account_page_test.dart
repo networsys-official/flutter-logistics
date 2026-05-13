@@ -29,6 +29,15 @@ class MockAccountsRepository implements AccountsRepository {
   }) async {
     return Right(profile);
   }
+
+  @override
+  ResultVoid updatePassword({
+    required String currentPassword,
+    required String newPassword,
+    required String confirmPassword,
+  }) async {
+    return const Right(null);
+  }
 }
 
 void main() {
@@ -66,17 +75,19 @@ void main() {
     expect(find.text('General'), findsOneWidget);
 
     // Verify Menu Items
-    expect(find.text('Account Information'), findsOneWidget);
-    expect(find.text('Change Password'), findsOneWidget);
-    expect(find.text('Connect to Banks'), findsOneWidget);
+    expect(find.text('Shipment Address'), findsOneWidget);
+    expect(find.text('Update Password'), findsOneWidget);
     expect(find.text('Settings'), findsOneWidget);
     expect(find.text('Help & Support'), findsOneWidget);
+    expect(find.text('FAQ'), findsOneWidget);
+    expect(find.text('Privacy Policy'), findsOneWidget);
+    expect(find.text('Terms & Conditions'), findsOneWidget);
     expect(find.text('About'), findsOneWidget);
 
     // Verify Logout Button
     expect(find.text('Logout'), findsOneWidget);
 
-    // Verify 6 menu icons + 1 notification icon
-    expect(find.byType(HugeIcon), findsNWidgets(7));
+    // Verify menu icons (8 menu items + 1 notification icon in AppBar)
+    expect(find.byType(HugeIcon), findsNWidgets(9));
   });
 }

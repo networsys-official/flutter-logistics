@@ -12,4 +12,10 @@ abstract interface class AccountsRepository {
     String? language,
     String? imagePath,
   });
+
+  ResultVoid updatePassword({
+    required String currentPassword,
+    required String newPassword,
+    required String confirmPassword,
+  });
 }

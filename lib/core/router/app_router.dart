@@ -18,7 +18,7 @@ import 'package:logistic_by_strom/features/accounts/ui/views/account_page.dart';
 import 'package:logistic_by_strom/features/accounts/ui/views/edit_profile_page.dart';
 import 'package:logistic_by_strom/features/accounts/ui/views/shipment_address_page.dart';
 import 'package:logistic_by_strom/features/accounts/ui/views/add_edit_address_page.dart';
-import 'package:logistic_by_strom/features/accounts/ui/views/change_password_page.dart';
+import 'package:logistic_by_strom/features/accounts/ui/views/update_password_page.dart';
 import 'package:logistic_by_strom/features/accounts/ui/views/terms_and_conditions_page.dart';
 import 'package:logistic_by_strom/features/accounts/ui/views/privacy_policy_page.dart';
 import 'package:logistic_by_strom/features/accounts/ui/views/faq_page.dart';
@@ -174,8 +174,8 @@ GoRouter appRouter(Ref ref) {
         },
       ),
       GoRoute(
-        path: AppRoutes.changePassword,
-        builder: (context, state) => const ChangePasswordPage(),
+        path: AppRoutes.updatePassword,
+        builder: (context, state) => const UpdatePasswordPage(),
       ),
       GoRoute(
         path: AppRoutes.termsAndConditions,

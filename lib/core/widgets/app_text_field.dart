@@ -12,6 +12,7 @@ class AppTextField extends StatelessWidget {
   final VoidCallback? onTap;
   final int maxLines;
   final String? Function(String?)? validator;
+  final String? errorText;
   final ValueChanged<String>? onChanged;
 
   const AppTextField({
@@ -26,6 +27,7 @@ class AppTextField extends StatelessWidget {
     this.onTap,
     this.maxLines = 1,
     this.validator,
+    this.errorText,
     this.onChanged,
   });
 
@@ -57,6 +59,7 @@ class AppTextField extends StatelessWidget {
           style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
           decoration: InputDecoration(
             hintText: hint,
+            errorText: errorText,
             suffixIcon: suffixIcon != null
                 ? Padding(
                     padding: const EdgeInsets.all(12.0),

@@ -58,8 +58,8 @@ class AccountPage extends ConsumerWidget {
                   ),
                   _MenuAction(
                     icon: HugeIcons.strokeRoundedKey01,
-                    title: 'Change Password',
-                    onTap: () => context.push(AppRoutes.changePassword),
+                    title: 'Update Password',
+                    onTap: () => context.push(AppRoutes.updatePassword),
                     color: AppColors.primary,
                     bgColor: const Color(0xFFE8F5E9),
                   ),

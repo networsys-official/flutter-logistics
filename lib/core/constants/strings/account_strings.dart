@@ -23,4 +23,12 @@ class AccountStrings {
   static const String logoutConfirmMessage =
       'Do you want to log out of your account?';
   static const String cancel = 'Cancel';
+
+  // Update Password
+  static const String updatePasswordTitle = 'Update Password';
+  static const String currentPassword = 'Current Password';
+  static const String newPassword = 'New Password';
+  static const String confirmPassword = 'Confirm Password';
+  static const String updatePasswordButton = 'Update Password';
+  static const String passwordUpdatedSuccess = 'Password updated successfully';
 }

@@ -19,7 +19,7 @@ class AppRoutes {
   static const String addAddress = '/add-address';
   static const String addShipment = '/add-shipment';
   static const String shipmentDetail = '/shipment-detail';
-  static const String changePassword = '/change-password';
+  static const String updatePassword = '/update-password';
   static const String termsAndConditions = '/terms-and-conditions';
   static const String privacyPolicy = '/privacy-policy';
   static const String faq = '/faq';
