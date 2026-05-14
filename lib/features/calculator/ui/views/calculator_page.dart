@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 import 'package:logistic_by_strom/core/theme/app_spacing.dart';
 import 'package:logistic_by_strom/features/calculator/ui/widgets/calculation_summary_card.dart';
 import 'package:logistic_by_strom/features/calculator/ui/widgets/calculator_input_grid.dart';
 import 'package:logistic_by_strom/core/widgets/app_app_bar.dart';
 
-class CalculatorPage extends StatelessWidget {
+class CalculatorPage extends ConsumerWidget {
   const CalculatorPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       backgroundColor: AppColors.neutral100,
       body: Column(

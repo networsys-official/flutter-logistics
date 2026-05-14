@@ -109,10 +109,6 @@ class ShipmentRepositoryImpl implements ShipmentRepository {
         // Read bytes upfront — ensures full Content-Length is known
         // and avoids iOS security-scoped file streaming issues.
         final bytes = await file.readAsBytes();
-        print('====== DEBUG FILE UPLOAD ======');
-        print('File path: ${file.path}');
-        print('File size in bytes: ${bytes.length}');
-        print('===============================');
 
         multipartFiles.add(
           MultipartFile.fromBytes(

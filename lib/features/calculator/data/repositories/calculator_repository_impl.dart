@@ -17,7 +17,7 @@ class CalculatorRepositoryImpl implements CalculatorRepository {
   ResultFuture<CalculatorResponse> calculate(CalculatorRequest request) async {
     try {
       final response = await _apiClient.post(
-        ApiEndpoints.calculate,
+        ApiEndpoints.shipmentEstimates,
         data: request.toJson(),
       );
       final data = MapUtils.asMap(response.data);
