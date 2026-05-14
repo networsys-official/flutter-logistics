@@ -83,7 +83,7 @@ ApiException mapDioException(DioException error) {
     );
   } else {
     AppLogger.warning(
-      'API request failed with status $statusCode: ${error.message}',
+      'API request failed with status $statusCode: ${error.message}\nResponse Data: ${error.response?.data}',
     );
   }
 

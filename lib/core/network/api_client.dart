@@ -9,9 +9,9 @@ import 'package:logistic_by_strom/core/services/storage_service.dart';
 
 part 'api_client.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 ApiClient apiClient(Ref ref) {
-  final storageService = ref.read(storageServiceProvider.notifier);
+  final storageService = ref.watch(storageServiceProvider.notifier);
   return ApiClient(storageService);
 }
 
@@ -22,28 +22,40 @@ class ApiClient {
         baseUrl: _resolveBaseUrl(),
         connectTimeout: const Duration(seconds: 15),
         receiveTimeout: const Duration(seconds: 15),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
+        headers: {'Accept': 'application/json'},
       ),
     );
 
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {
-          // Attach the token already stored after a backend auth response.
           final token = await _storageService.getToken();
           if (token != null && token.isNotEmpty) {
             options.headers['Authorization'] = 'Bearer $token';
           }
           return handler.next(options);
         },
-        onError: (DioException e, handler) {
+        onError: (DioException e, handler) async {
+          if (e.response?.statusCode == 401) {
+            // TODO: Trigger logout / redirect to login screen
+          }
           return handler.next(e);
         },
       ),
     );
+    if (kDebugMode) {
+      _dio.interceptors.add(
+        LogInterceptor(
+          request: true,
+          requestHeader: true,
+          requestBody: true,
+          responseHeader: false,
+          responseBody: true,
+          error: true,
+          logPrint: (obj) => debugPrint(obj.toString()),
+        ),
+      );
+    }
   }
 
   late final Dio _dio;
@@ -60,77 +72,86 @@ class ApiClient {
     return 'http://localhost:8080/api/v1';
   }
 
-  Future<Response> get(
-    String path, {
-    Map<String, dynamic>? queryParameters,
-    Options? options,
-  }) async {
+  Future<Response> _request(Future<Response> Function() requestFn) async {
     try {
-      final response = await _dio.get(
-        path,
-        queryParameters: queryParameters,
-        options: options,
-      );
-      return response;
+      return await requestFn();
     } on DioException catch (e) {
       throw mapDioException(e);
     }
   }
 
+  Future<Response> get(
+    String path, {
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+  }) => _request(
+    () => _dio.get(path, queryParameters: queryParameters, options: options),
+  );
   Future<Response> post(
     String path, {
     dynamic data,
     Map<String, dynamic>? queryParameters,
     Options? options,
-  }) async {
-    try {
-      final response = await _dio.post(
-        path,
-        data: data,
-        queryParameters: queryParameters,
-        options: options,
-      );
-      return response;
-    } on DioException catch (e) {
-      throw mapDioException(e);
-    }
-  }
-
+  }) => _request(
+    () => _dio.post(
+      path,
+      data: data,
+      queryParameters: queryParameters,
+      options: options,
+    ),
+  );
   Future<Response> put(
     String path, {
     dynamic data,
     Map<String, dynamic>? queryParameters,
     Options? options,
-  }) async {
-    try {
-      final response = await _dio.put(
-        path,
-        data: data,
-        queryParameters: queryParameters,
-        options: options,
-      );
-      return response;
-    } on DioException catch (e) {
-      throw mapDioException(e);
-    }
-  }
-
+  }) => _request(
+    () => _dio.put(
+      path,
+      data: data,
+      queryParameters: queryParameters,
+      options: options,
+    ),
+  );
+  Future<Response> patch(
+    String path, {
+    dynamic data,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+  }) => _request(
+    () => _dio.patch(
+      path,
+      data: data,
+      queryParameters: queryParameters,
+      options: options,
+    ),
+  );
   Future<Response> delete(
     String path, {
     dynamic data,
     Map<String, dynamic>? queryParameters,
     Options? options,
-  }) async {
-    try {
-      final response = await _dio.delete(
-        path,
-        data: data,
-        queryParameters: queryParameters,
-        options: options,
-      );
-      return response;
-    } on DioException catch (e) {
-      throw mapDioException(e);
-    }
-  }
+  }) => _request(
+    () => _dio.delete(
+      path,
+      data: data,
+      queryParameters: queryParameters,
+      options: options,
+    ),
+  );
+  Future<Response> uploadFile(
+    String path, {
+    required FormData formData,
+    void Function(int sent, int total)? onSendProgress,
+    Options? options,
+    CancelToken? cancelToken,
+  }) => _request(
+    () => _dio.post(
+      path,
+      data: formData,
+      onSendProgress: onSendProgress,
+      options: options,
+      cancelToken: cancelToken,
+    ),
+  );
 }

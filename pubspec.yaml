@@ -21,7 +21,9 @@ dependencies:
   fpdart: ^1.2.0
   hugeicons: ^1.1.6
   image_picker: ^1.2.2
+  file_picker: ^8.1.7
   logger: ^2.7.0
+  intl: ^0.20.2
 
 dev_dependencies:
   flutter_test:

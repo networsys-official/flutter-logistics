@@ -44,6 +44,7 @@ class AppDropdownField<T> extends StatelessWidget {
         ),
         DropdownButtonFormField<T>(
           initialValue: value,
+          isExpanded: true,
           style: const TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 15,

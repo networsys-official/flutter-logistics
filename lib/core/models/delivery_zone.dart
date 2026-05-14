@@ -5,8 +5,10 @@ part 'delivery_zone.g.dart';
 
 @freezed
 sealed class DeliveryZone with _$DeliveryZone {
-  const factory DeliveryZone({required int id, required String label}) =
-      _DeliveryZone;
+  const factory DeliveryZone({
+    required int id,
+    required String name,
+  }) = _DeliveryZone;
 
   factory DeliveryZone.fromJson(Map<String, dynamic> json) =>
       _$DeliveryZoneFromJson(json);

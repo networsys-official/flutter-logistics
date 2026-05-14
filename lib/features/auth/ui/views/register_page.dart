@@ -11,7 +11,7 @@ import 'package:logistic_by_strom/core/theme/app_spacing.dart';
 import 'package:logistic_by_strom/core/utils/error_message.dart';
 import 'package:logistic_by_strom/core/utils/validators.dart';
 import 'package:logistic_by_strom/features/auth/data/delivery_zones.dart';
-import 'package:logistic_by_strom/features/auth/data/models/delivery_zone.dart';
+import 'package:logistic_by_strom/core/models/delivery_zone.dart';
 import 'package:logistic_by_strom/features/auth/ui/view_models/register_view_model.dart';
 import 'package:logistic_by_strom/features/auth/ui/widgets/auth_logo_header.dart';
 import 'package:logistic_by_strom/features/auth/ui/widgets/auth_shell.dart';
@@ -122,7 +122,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
   String get _fullAddress {
     return [
       _streetAddressController.text.trim(),
-      _selectedDeliveryZone.label,
+      _selectedDeliveryZone.name,
       _selectedCountryName,
     ].where((part) => part.isNotEmpty).join(', ');
   }
@@ -324,7 +324,7 @@ class _StepOne extends StatelessWidget {
           hint: AuthStrings.deliveryZoneHint,
           items: deliveryZones,
           value: selectedDeliveryZone,
-          itemLabelBuilder: (zone) => zone.label,
+          itemLabelBuilder: (zone) => zone.name,
           onChanged: onDeliveryZoneChanged,
         ),
         const SizedBox(height: AppSpacing.lg),

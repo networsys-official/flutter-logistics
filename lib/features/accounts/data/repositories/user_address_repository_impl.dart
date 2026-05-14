@@ -93,6 +93,7 @@ class UserAddressRepositoryImpl implements UserAddressRepository {
         ApiEndpoints.userAddressesLocations,
       );
       final List data = response.data['data'];
+
       return Right(data.cast<Map<String, dynamic>>());
     } catch (e) {
       return Left(AppFailure(message: e.toString()));

@@ -25,4 +25,9 @@ class ApiEndpoints {
 
   // Calculator endpoints
   static const String calculate = '/calculator/calculate';
+
+  // Shipment endpoints
+  static const String suppliers = '/suppliers';
+  static const String customsDuties = '/customs-duties';
+  static const String shipmentRequests = '/shipment-requests';
 }

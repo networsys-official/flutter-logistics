@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 import 'package:logistic_by_strom/core/theme/app_spacing.dart';
-import 'package:logistic_by_strom/core/utils/image_utils.dart';
+import 'package:logistic_by_strom/core/utils/file_utils.dart';
 import 'package:logistic_by_strom/features/accounts/ui/view_models/accounts_view_model.dart';
 import 'package:logistic_by_strom/features/accounts/ui/widgets/avatar_section_widgets.dart';
 import 'package:logistic_by_strom/core/widgets/app_app_bar.dart';
@@ -93,11 +93,11 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
       backgroundColor: Colors.transparent,
       builder: (context) => ImageSourceBottomSheet(
         onCameraTap: () async {
-          final image = await ImageUtils.pickImageFromCamera();
+          final image = await FileUtils.pickImage();
           if (image != null) setState(() => _imageFile = File(image.path));
         },
         onGalleryTap: () async {
-          final image = await ImageUtils.pickImageFromGallery();
+          final image = await FileUtils.pickImage();
           if (image != null) setState(() => _imageFile = File(image.path));
         },
       ),
