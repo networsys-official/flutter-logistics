@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 import 'package:logistic_by_strom/core/theme/app_spacing.dart';
 import 'package:logistic_by_strom/core/utils/error_message.dart';
-import 'package:logistic_by_strom/core/widgets/app_dropdown_field.dart';
+import 'package:logistic_by_strom/core/widgets/app_searchable_select.dart';
 import 'package:logistic_by_strom/core/widgets/app_text_field.dart';
-import 'package:logistic_by_strom/features/shipments/data/models/customs_duty.dart';
+import 'package:logistic_by_strom/core/models/customs_duty.dart';
 import 'package:logistic_by_strom/features/shipments/ui/view_models/add_shipment_state.dart';
 
 class ShipmentItemCard extends StatelessWidget {
@@ -62,21 +62,13 @@ class ShipmentItemCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: AppSpacing.sm),
-          AppDropdownField<CustomsDuty>(
+          AppSearchableSelect<CustomsDuty>(
             label: 'Commodity',
-            hint: 'Select Commodity',
+            hint: 'Search Commodity',
             value: item.commodity,
-            dropdownItems: customsDuties
-                .map(
-                  (duty) => DropdownMenuItem(
-                    value: duty,
-                    child: Text(
-                      duty.item ?? 'Unknown Item',
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                )
-                .toList(),
+            items: customsDuties,
+            itemLabelBuilder: (duty) => duty.item ?? 'Unknown Item',
+            itemSubtitleBuilder: (duty) => 'Tariff: ${duty.tariffCode ?? 'N/A'}',
             onChanged: onCommodityChanged,
           ),
           const SizedBox(height: AppSpacing.md),

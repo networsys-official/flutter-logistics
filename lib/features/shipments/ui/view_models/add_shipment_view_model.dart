@@ -1,11 +1,10 @@
-import 'package:fpdart/fpdart.dart';
-import 'package:logistic_by_strom/core/errors/app_failure.dart';
+import 'package:logistic_by_strom/core/providers/reference_data_provider.dart';
 import 'package:logistic_by_strom/features/shipments/data/repositories/shipment_repository_impl.dart';
 import 'package:logistic_by_strom/features/shipments/ui/view_models/add_shipment_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:logistic_by_strom/core/utils/file_utils.dart';
-import 'package:logistic_by_strom/features/shipments/data/models/supplier.dart';
-import 'package:logistic_by_strom/features/shipments/data/models/customs_duty.dart';
+import 'package:logistic_by_strom/core/models/supplier.dart';
+import 'package:logistic_by_strom/core/models/customs_duty.dart';
 import 'package:logistic_by_strom/core/models/delivery_zone.dart';
 import 'package:logistic_by_strom/features/shipments/data/models/add_shipment_request.dart';
 import 'package:logistic_by_strom/features/shipments/ui/widgets/upload_option_bottom_sheet.dart';
@@ -16,32 +15,12 @@ part 'add_shipment_view_model.g.dart';
 class AddShipmentViewModel extends _$AddShipmentViewModel {
   @override
   Future<AddShipmentFormData> build() async {
-    final repo = ref.read(shipmentRepositoryProvider);
-
-    final results = await Future.wait([
-      repo.getSuppliers(),
-      repo.getCustomsDuties(),
-      repo.getLocations(),
-    ]);
-
-    final suppliersResult = results[0] as Either<AppFailure, List<Supplier>>;
-    final dutiesResult = results[1] as Either<AppFailure, List<CustomsDuty>>;
-    final locationsResult =
-        results[2] as Either<AppFailure, List<DeliveryZone>>;
-
-    // If any API fails, throw it so Riverpod automatically sets AsyncError state
-    final suppliers = suppliersResult.getOrElse(
-      (failure) => throw failure.message,
-    );
-    final duties = dutiesResult.getOrElse((failure) => throw failure.message);
-    final locations = locationsResult.getOrElse(
-      (failure) => throw failure.message,
-    );
+    final refData = await ref.watch(referenceDataProvider.future);
 
     return AddShipmentFormData(
-      suppliers: suppliers,
-      customsDuties: duties,
-      locations: locations,
+      suppliers: refData.suppliers,
+      customsDuties: refData.customsDuties,
+      locations: refData.locations,
     );
   }
 

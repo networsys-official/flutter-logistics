@@ -3,9 +3,9 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 import 'package:logistic_by_strom/core/theme/app_spacing.dart';
 
-import 'package:logistic_by_strom/core/widgets/app_dropdown_field.dart';
+import 'package:logistic_by_strom/core/widgets/app_searchable_select.dart';
 import 'package:logistic_by_strom/core/widgets/app_text_field.dart';
-import 'package:logistic_by_strom/features/shipments/data/models/supplier.dart';
+import 'package:logistic_by_strom/core/models/supplier.dart';
 import 'package:logistic_by_strom/features/shipments/ui/view_models/add_shipment_state.dart';
 
 class ShipmentTrackingFields extends StatelessWidget {
@@ -50,21 +50,12 @@ class ShipmentTrackingFields extends StatelessWidget {
           onTap: onDateTap,
         ),
         const SizedBox(height: AppSpacing.lg),
-        AppDropdownField<Supplier>(
+        AppSearchableSelect<Supplier>(
           label: 'Store/Supplier',
-          hint: 'Select Store/Supplier',
+          hint: 'Search Store/Supplier',
           value: state.selectedSupplier,
-          dropdownItems: state.suppliers
-              .map(
-                (supplier) => DropdownMenuItem(
-                  value: supplier,
-                  child: Text(
-                    supplier.company,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              )
-              .toList(),
+          items: state.suppliers,
+          itemLabelBuilder: (supplier) => supplier.company,
           onChanged: onSupplierChanged,
         ),
       ],

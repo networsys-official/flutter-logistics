@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 
 class AppTextField extends StatelessWidget {
-  final String label;
+  final String? label;
   final String hint;
   final TextEditingController? controller;
   final TextInputType keyboardType;
   final bool obscureText;
   final Widget? suffixIcon;
+  final Widget? prefixIcon;
   final bool readOnly;
+  final bool autoFocus;
   final VoidCallback? onTap;
   final int maxLines;
   final String? Function(String?)? validator;
@@ -17,13 +19,15 @@ class AppTextField extends StatelessWidget {
 
   const AppTextField({
     super.key,
-    required this.label,
+    this.label,
     required this.hint,
     this.controller,
     this.keyboardType = TextInputType.text,
     this.obscureText = false,
     this.suffixIcon,
+    this.prefixIcon,
     this.readOnly = false,
+    this.autoFocus = false,
     this.onTap,
     this.maxLines = 1,
     this.validator,
@@ -36,22 +40,24 @@ class AppTextField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 4, bottom: 8),
-          child: Text(
-            label,
-            style: const TextStyle(
-              fontSize: 13,
-              fontWeight: FontWeight.w700,
-              color: AppColors.neutral500,
+        if (label != null && label!.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.only(left: 4, bottom: 8),
+            child: Text(
+              label!,
+              style: const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w700,
+                color: AppColors.neutral500,
+              ),
             ),
           ),
-        ),
         TextFormField(
           controller: controller,
           keyboardType: keyboardType,
           obscureText: obscureText,
           readOnly: readOnly,
+          autofocus: autoFocus,
           onTap: onTap,
           maxLines: maxLines,
           validator: validator,
@@ -60,6 +66,12 @@ class AppTextField extends StatelessWidget {
           decoration: InputDecoration(
             hintText: hint,
             errorText: errorText,
+            prefixIcon: prefixIcon != null
+                ? Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: prefixIcon,
+                  )
+                : null,
             suffixIcon: suffixIcon != null
                 ? Padding(
                     padding: const EdgeInsets.all(12.0),

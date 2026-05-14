@@ -3,32 +3,37 @@ import 'package:logistic_by_strom/core/errors/error_mapper.dart';
 import 'package:logistic_by_strom/core/network/api_client.dart';
 import 'package:logistic_by_strom/core/network/api_endpoints.dart';
 import 'package:logistic_by_strom/core/typedefs/result.dart';
-import 'package:logistic_by_strom/core/utils/map_utils.dart';
-import 'package:logistic_by_strom/features/calculator/data/models/calculator_request.dart';
-import 'package:logistic_by_strom/features/calculator/data/models/calculator_response.dart';
+import 'package:logistic_by_strom/features/calculator/data/models/estimate_request.dart';
+import 'package:logistic_by_strom/features/calculator/data/models/estimate_response.dart';
 import 'package:logistic_by_strom/features/calculator/data/repositories/calculator_repository.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+part 'calculator_repository_impl.g.dart';
+
+@riverpod
+CalculatorRepository calculatorRepository(Ref ref) {
+  return CalculatorRepositoryImpl(ref.watch(apiClientProvider));
+}
 
 class CalculatorRepositoryImpl implements CalculatorRepository {
-  CalculatorRepositoryImpl(this._apiClient);
-
   final ApiClient _apiClient;
 
+  CalculatorRepositoryImpl(this._apiClient);
+
   @override
-  ResultFuture<CalculatorResponse> calculate(CalculatorRequest request) async {
+  ResultFuture<EstimateResponse> getEstimate(EstimateRequest request) async {
     try {
       final response = await _apiClient.post(
         ApiEndpoints.shipmentEstimates,
         data: request.toJson(),
       );
-      final data = MapUtils.asMap(response.data);
-
-      final payload = MapUtils.asMap(data['data']).isNotEmpty
-          ? MapUtils.asMap(data['data'])
-          : data;
-
-      return right(CalculatorResponse.fromJson(payload));
+      
+      // Handle potential 'data' wrapper from API
+      final Map<String, dynamic> responseData = response.data['data'] ?? response.data;
+      
+      return Right(EstimateResponse.fromJson(responseData));
     } catch (error, stackTrace) {
-      return left(ErrorMapper.map(error, stackTrace));
+      return Left(ErrorMapper.map(error, stackTrace));
     }
   }
 }

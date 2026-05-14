@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logistic_by_strom/features/calculator/data/models/estimate_request.dart';
 import 'package:logistic_by_strom/features/calculator/data/models/estimate_response.dart';
-import 'package:logistic_by_strom/features/calculator/data/repositories/calculator_repository.dart';
+import 'package:logistic_by_strom/features/calculator/data/repositories/calculator_repository_impl.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'calculator_view_model.freezed.dart';
@@ -46,7 +46,9 @@ class CalculatorViewModel extends _$CalculatorViewModel {
     state = state.copyWith(
       deliveryType: type,
       // Reset location if switching to pickup
-      destinationLocationId: type == 'pickup' ? null : state.destinationLocationId,
+      destinationLocationId: type == 'pickup'
+          ? null
+          : state.destinationLocationId,
     );
   }
 
@@ -83,16 +85,10 @@ class CalculatorViewModel extends _$CalculatorViewModel {
 
     result.fold(
       (error) {
-        state = state.copyWith(
-          isLoading: false,
-          errorMessage: error.message,
-        );
+        state = state.copyWith(isLoading: false, errorMessage: error.message);
       },
       (response) {
-        state = state.copyWith(
-          isLoading: false,
-          estimate: response,
-        );
+        state = state.copyWith(isLoading: false, estimate: response);
       },
     );
   }

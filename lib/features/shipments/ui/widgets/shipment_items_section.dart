@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 import 'package:logistic_by_strom/core/theme/app_spacing.dart';
-import 'package:logistic_by_strom/features/shipments/data/models/customs_duty.dart';
+import 'package:logistic_by_strom/core/models/customs_duty.dart';
 import 'package:logistic_by_strom/features/shipments/ui/view_models/add_shipment_state.dart';
 import 'package:logistic_by_strom/features/shipments/ui/widgets/shipment_item_card.dart';
 

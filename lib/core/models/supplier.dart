@@ -4,7 +4,7 @@ part 'supplier.freezed.dart';
 part 'supplier.g.dart';
 
 @freezed
-abstract class Supplier with _$Supplier {
+sealed class Supplier with _$Supplier {
   const factory Supplier({
     required int id,
     required String company,

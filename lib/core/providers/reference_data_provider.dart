@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logistic_by_strom/core/models/delivery_zone.dart';
-import 'package:logistic_by_strom/features/shipments/data/models/customs_duty.dart';
-import 'package:logistic_by_strom/features/shipments/data/models/supplier.dart';
+import 'package:logistic_by_strom/core/models/customs_duty.dart';
+import 'package:logistic_by_strom/core/models/supplier.dart';
 import 'package:logistic_by_strom/features/shipments/data/repositories/shipment_repository_impl.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
