@@ -9,10 +9,10 @@ sealed class RegisterRequest with _$RegisterRequest {
     required String name,
     required String email,
     required String phone,
-    required String address,
+    String? address,
     required String password,
-    required int countryId,
-    required int locationId,
+    int? countryId,
+    int? locationId,
   }) = _RegisterRequest;
 
   factory RegisterRequest.fromJson(Map<String, dynamic> json) =>

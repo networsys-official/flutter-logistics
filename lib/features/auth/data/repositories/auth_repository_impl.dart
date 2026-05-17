@@ -49,7 +49,7 @@ class AuthRepositoryImpl implements AuthRepository {
           'email': request.email.trim(),
           'phone': request.phone.trim(),
           'location_id': request.locationId,
-          'address_line_1': request.address.trim(),
+          'address_line_1': request.address?.trim(),
           'password': request.password,
           'country_id': request.countryId,
         },

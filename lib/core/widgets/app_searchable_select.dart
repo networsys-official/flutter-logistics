@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 import 'package:logistic_by_strom/core/theme/app_spacing.dart';
 import 'package:logistic_by_strom/core/widgets/app_text_field.dart';
@@ -231,7 +230,7 @@ class _SearchSheetState<T> extends State<_SearchSheet<T>> {
                 : ListView.separated(
                     padding: const EdgeInsets.all(20),
                     itemCount: _filteredItems.length,
-                    separatorBuilder: (_, __) => const Divider(height: 1, color: AppColors.neutral100),
+                    separatorBuilder: (_, _) => const Divider(height: 1, color: AppColors.neutral100),
                     itemBuilder: (context, index) {
                       final item = _filteredItems[index];
                       final isSelected = item == widget.selectedValue;
@@ -255,7 +254,7 @@ class _SearchSheetState<T> extends State<_SearchSheet<T>> {
                                 widget.itemSubtitleBuilder!(item),
                                 style: TextStyle(
                                   fontSize: 13,
-                                  color: isSelected ? AppColors.primary.withOpacity(0.7) : AppColors.neutral500,
+                                  color: isSelected ? AppColors.primary.withValues(alpha: 0.7) : AppColors.neutral500,
                                 ),
                               )
                             : null,

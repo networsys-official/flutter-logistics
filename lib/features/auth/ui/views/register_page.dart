@@ -10,15 +10,10 @@ import 'package:logistic_by_strom/core/theme/app_spacing.dart';
 
 import 'package:logistic_by_strom/core/utils/error_message.dart';
 import 'package:logistic_by_strom/core/utils/validators.dart';
-import 'package:logistic_by_strom/features/auth/data/delivery_zones.dart';
-import 'package:logistic_by_strom/core/models/delivery_zone.dart';
 import 'package:logistic_by_strom/features/auth/ui/view_models/register_view_model.dart';
 import 'package:logistic_by_strom/features/auth/ui/widgets/auth_logo_header.dart';
 import 'package:logistic_by_strom/features/auth/ui/widgets/auth_shell.dart';
 import 'package:logistic_by_strom/features/auth/ui/widgets/auth_text_field.dart';
-import 'package:logistic_by_strom/core/widgets/app_dropdown_field.dart';
-
-const _countries = [(id: 1, name: 'Bahamas')];
 
 class RegisterPage extends ConsumerStatefulWidget {
   const RegisterPage({super.key});
@@ -32,14 +27,11 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
   final _firstNameController = TextEditingController();
   final _surnameController = TextEditingController();
   final _emailController = TextEditingController();
-  final _streetAddressController = TextEditingController();
   final _mobileController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
   int _currentStep = 0;
-  final int _selectedCountryId = 1;
-  DeliveryZone _selectedDeliveryZone = deliveryZones.first;
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
   bool _acceptedTerms = true;
@@ -49,7 +41,6 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     _firstNameController.dispose();
     _surnameController.dispose();
     _emailController.dispose();
-    _streetAddressController.dispose();
     _mobileController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
@@ -82,12 +73,9 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
         .read(registerViewModelProvider.notifier)
         .register(
           name: _fullName,
-          email: _emailController.text,
-          phone: _mobileController.text,
-          address: _fullAddress,
+          email: _emailController.text.trim(),
+          phone: _mobileController.text.trim(),
           password: _passwordController.text,
-          countryId: _selectedCountryId,
-          locationId: _selectedDeliveryZone.id,
         );
 
     if (response != null && mounted) {
@@ -107,24 +95,6 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
       _firstNameController.text.trim(),
       _surnameController.text.trim(),
     ].where((part) => part.isNotEmpty).join(' ');
-  }
-
-  String get _selectedCountryName {
-    final selected = _countries.where(
-      (country) => country.id == _selectedCountryId,
-    );
-    if (selected.isEmpty) {
-      return 'Bahamas';
-    }
-    return selected.first.name;
-  }
-
-  String get _fullAddress {
-    return [
-      _streetAddressController.text.trim(),
-      _selectedDeliveryZone.name,
-      _selectedCountryName,
-    ].where((part) => part.isNotEmpty).join(', ');
   }
 
   @override
@@ -176,18 +146,11 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                 firstNameController: _firstNameController,
                 surnameController: _surnameController,
                 emailController: _emailController,
-                selectedCountryId: _selectedCountryId,
-                selectedDeliveryZone: _selectedDeliveryZone,
-                streetAddressController: _streetAddressController,
+                mobileController: _mobileController,
                 error: registerError,
-                onDeliveryZoneChanged: (value) {
-                  if (value == null) return;
-                  setState(() => _selectedDeliveryZone = value);
-                },
               ),
             if (_currentStep == 1)
               _StepTwo(
-                mobileController: _mobileController,
                 passwordController: _passwordController,
                 confirmPasswordController: _confirmPasswordController,
                 obscurePassword: _obscurePassword,
@@ -261,21 +224,15 @@ class _StepOne extends StatelessWidget {
     required this.firstNameController,
     required this.surnameController,
     required this.emailController,
-    required this.selectedCountryId,
-    required this.selectedDeliveryZone,
-    required this.streetAddressController,
+    required this.mobileController,
     required this.error,
-    required this.onDeliveryZoneChanged,
   });
 
   final TextEditingController firstNameController;
   final TextEditingController surnameController;
   final TextEditingController emailController;
-  final int selectedCountryId;
-  final DeliveryZone selectedDeliveryZone;
-  final TextEditingController streetAddressController;
+  final TextEditingController mobileController;
   final Object? error;
-  final ValueChanged<DeliveryZone?> onDeliveryZoneChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -309,33 +266,14 @@ class _StepOne extends StatelessWidget {
           errorText: fieldErrorFrom(error, 'email'),
         ),
         const SizedBox(height: AppSpacing.lg),
-        AppDropdownField<int>(
-          label: AuthStrings.country,
-          hint: AuthStrings.countryHint,
-          items: _countries.map((country) => country.id).toList(),
-          value: selectedCountryId,
-          itemLabelBuilder: (id) =>
-              _countries.firstWhere((country) => country.id == id).name,
-          onChanged: null,
-        ),
-        const SizedBox(height: AppSpacing.lg),
-        AppDropdownField<DeliveryZone>(
-          label: AuthStrings.deliveryZone,
-          hint: AuthStrings.deliveryZoneHint,
-          items: deliveryZones,
-          value: selectedDeliveryZone,
-          itemLabelBuilder: (zone) => zone.name,
-          onChanged: onDeliveryZoneChanged,
-        ),
-        const SizedBox(height: AppSpacing.lg),
         AuthTextField(
-          label: AuthStrings.streetAddress,
-          hintText: AuthStrings.streetAddressHint,
-          controller: streetAddressController,
+          label: AuthStrings.mobileNumber,
+          hintText: AuthStrings.mobileNumberHint,
+          controller: mobileController,
+          keyboardType: TextInputType.phone,
           textInputAction: TextInputAction.next,
-          validator: (value) =>
-              Validators.required(value, AuthStrings.streetAddress),
-          errorText: fieldErrorFrom(error, 'address_line_1'),
+          validator: Validators.mobile,
+          errorText: fieldErrorFrom(error, 'phone'),
         ),
       ],
     );
@@ -344,7 +282,6 @@ class _StepOne extends StatelessWidget {
 
 class _StepTwo extends StatelessWidget {
   const _StepTwo({
-    required this.mobileController,
     required this.passwordController,
     required this.confirmPasswordController,
     required this.obscurePassword,
@@ -357,7 +294,6 @@ class _StepTwo extends StatelessWidget {
     required this.textTheme,
   });
 
-  final TextEditingController mobileController;
   final TextEditingController passwordController;
   final TextEditingController confirmPasswordController;
   final bool obscurePassword;
@@ -374,16 +310,6 @@ class _StepTwo extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        AuthTextField(
-          label: AuthStrings.mobileNumber,
-          hintText: AuthStrings.mobileNumberHint,
-          controller: mobileController,
-          keyboardType: TextInputType.phone,
-          textInputAction: TextInputAction.next,
-          validator: Validators.mobile,
-          errorText: fieldErrorFrom(error, 'phone'),
-        ),
-        const SizedBox(height: AppSpacing.lg),
         AuthTextField(
           label: AuthStrings.password,
           hintText: AuthStrings.passwordHint,

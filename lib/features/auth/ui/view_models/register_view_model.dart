@@ -15,10 +15,10 @@ class RegisterViewModel extends _$RegisterViewModel {
     required String name,
     required String email,
     required String phone,
-    required String address,
+    String? address,
     required String password,
-    required int countryId,
-    required int locationId,
+    int? countryId,
+    int? locationId,
   }) async {
     state = const AsyncValue.loading();
 
