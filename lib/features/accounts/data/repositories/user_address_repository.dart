@@ -1,5 +1,5 @@
 import 'package:logistic_by_strom/core/typedefs/result.dart';
-import 'package:logistic_by_strom/features/accounts/data/models/user_address.dart';
+import 'package:logistic_by_strom/core/models/user_address.dart';
 
 abstract interface class UserAddressRepository {
   ResultFuture<List<UserAddress>> getAddresses();

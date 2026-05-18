@@ -38,19 +38,37 @@ class CalculationSummaryCard extends ConsumerWidget {
           ),
           child: Column(
             children: [
-              _SummaryRow(label: 'Shipping Price', value: '\$${breakdown.shippingPrice.toStringAsFixed(2)}'),
+              _SummaryRow(
+                label: 'Shipping Price',
+                value: '\$${breakdown.shippingPrice.toStringAsFixed(2)}',
+              ),
               const SizedBox(height: AppSpacing.md),
               if (breakdown.deliverySurcharge > 0) ...[
-                _SummaryRow(label: 'Delivery Surcharge', value: '\$${breakdown.deliverySurcharge.toStringAsFixed(2)}'),
+                _SummaryRow(
+                  label: 'Delivery Surcharge',
+                  value: '\$${breakdown.deliverySurcharge.toStringAsFixed(2)}',
+                ),
                 const SizedBox(height: AppSpacing.md),
               ],
-              _SummaryRow(label: 'Customs Duty', value: '\$${breakdown.customsDuty.toStringAsFixed(2)}'),
+              _SummaryRow(
+                label: 'Customs Duty',
+                value: '\$${breakdown.customsDuty.toStringAsFixed(2)}',
+              ),
               const SizedBox(height: AppSpacing.md),
-              _SummaryRow(label: 'Processing Fee', value: '\$${breakdown.processingFee.toStringAsFixed(2)}'),
+              _SummaryRow(
+                label: 'Processing Fee',
+                value: '\$${breakdown.processingFee.toStringAsFixed(2)}',
+              ),
               const SizedBox(height: AppSpacing.md),
-              _SummaryRow(label: 'Document Fee', value: '\$${breakdown.documentFee.toStringAsFixed(2)}'),
+              _SummaryRow(
+                label: 'Document Fee',
+                value: '\$${breakdown.documentFee.toStringAsFixed(2)}',
+              ),
               const SizedBox(height: AppSpacing.md),
-              _SummaryRow(label: 'VAT', value: '\$${breakdown.vat.toStringAsFixed(2)}'),
+              _SummaryRow(
+                label: 'VAT',
+                value: '\$${breakdown.vat.toStringAsFixed(2)}',
+              ),
               const SizedBox(height: AppSpacing.lg),
               _buildDashedLine(),
               const SizedBox(height: AppSpacing.lg),

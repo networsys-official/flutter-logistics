@@ -7,6 +7,8 @@ import 'package:logistic_by_strom/features/auth/data/repositories/auth_repositor
 import 'package:logistic_by_strom/core/models/user_model.dart';
 import 'package:logistic_by_strom/core/models/auth_state.dart';
 
+import 'package:logistic_by_strom/core/providers/session_provider.dart';
+
 part 'auth_provider.g.dart';
 
 @Riverpod(keepAlive: true)
@@ -14,6 +16,13 @@ class AuthNotifier extends _$AuthNotifier {
   @override
   FutureOr<AuthState> build() async {
     final storage = ref.watch(storageServiceProvider.notifier);
+
+    ref.listen(sessionProvider, (previous, next) {
+      if (next > 0) {
+        logout();
+      }
+    });
+
     final token = await storage.getToken();
     final userJson = await storage.getUser();
 

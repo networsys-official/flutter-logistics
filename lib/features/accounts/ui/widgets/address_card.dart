@@ -5,7 +5,7 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:logistic_by_strom/core/router/app_routes.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 
-import 'package:logistic_by_strom/features/accounts/data/models/user_address.dart';
+import 'package:logistic_by_strom/core/models/user_address.dart';
 import 'package:logistic_by_strom/features/accounts/ui/view_models/user_address_view_model.dart';
 
 class AddressCard extends ConsumerWidget {

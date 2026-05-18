@@ -48,16 +48,19 @@ class CalculatorInputGrid extends ConsumerWidget {
         // Dynamic Item Type (Customs Duties) Dropdown using Pattern Matching
         switch (referenceData) {
           AsyncData(:final value) => AppSearchableSelect<CustomsDuty>(
-              label: 'Item Type',
-              hint: 'Search Item Type',
-              value: state.tariffCode != null 
-                  ? value.customsDuties.where((d) => d.id == state.tariffCode).firstOrNull
-                  : null,
-              items: value.customsDuties,
-              itemLabelBuilder: (duty) => duty.item ?? 'Unknown',
-              itemSubtitleBuilder: (duty) => 'Tariff Code: ${duty.tariffCode ?? 'N/A'}',
-              onChanged: (val) => notifier.updateTariffCode(val?.id),
-            ),
+            label: 'Item Type',
+            hint: 'Search Item Type',
+            value: state.tariffCode != null
+                ? value.customsDuties
+                      .where((d) => d.id == state.tariffCode)
+                      .firstOrNull
+                : null,
+            items: value.customsDuties,
+            itemLabelBuilder: (duty) => duty.item ?? 'Unknown',
+            itemSubtitleBuilder: (duty) =>
+                'Tariff Code: ${duty.tariffCode ?? 'N/A'}',
+            onChanged: (val) => notifier.updateTariffCode(val?.id),
+          ),
           AsyncError(:final error) => Text('Failed to load item types: $error'),
           _ => const Center(child: CircularProgressIndicator()),
         },

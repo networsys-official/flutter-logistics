@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -7,19 +5,22 @@ import 'package:logistic_by_strom/core/network/api_endpoints.dart';
 import 'package:logistic_by_strom/core/network/api_exceptions.dart';
 import 'package:logistic_by_strom/core/services/storage_service.dart';
 
+import 'package:logistic_by_strom/core/providers/session_provider.dart';
+
 part 'api_client.g.dart';
 
 @Riverpod(keepAlive: true)
 ApiClient apiClient(Ref ref) {
   final storageService = ref.watch(storageServiceProvider.notifier);
-  return ApiClient(storageService);
+  final sessionNotifier = ref.watch(sessionProvider.notifier);
+  return ApiClient(storageService, sessionNotifier);
 }
 
 class ApiClient {
-  ApiClient(this._storageService) {
+  ApiClient(this._storageService, this._sessionNotifier) {
     _dio = Dio(
       BaseOptions(
-        baseUrl: _resolveBaseUrl(),
+        baseUrl: ApiEndpoints.baseUrl,
         connectTimeout: const Duration(seconds: 15),
         receiveTimeout: const Duration(seconds: 15),
         headers: {'Accept': 'application/json'},
@@ -37,7 +38,7 @@ class ApiClient {
         },
         onError: (DioException e, handler) async {
           if (e.response?.statusCode == 401) {
-            // TODO: Trigger logout / redirect to login screen
+            _sessionNotifier.triggerUnauthorized();
           }
           return handler.next(e);
         },
@@ -60,17 +61,7 @@ class ApiClient {
 
   late final Dio _dio;
   final StorageService _storageService;
-
-  String _resolveBaseUrl() {
-    if (ApiEndpoints.configuredBaseUrl.isNotEmpty) {
-      return ApiEndpoints.configuredBaseUrl;
-    }
-
-    if (!kIsWeb && Platform.isAndroid) {
-      return 'http://10.0.2.2:8080/api/v1';
-    }
-    return 'http://localhost:8080/api/v1';
-  }
+  final SessionNotifier _sessionNotifier;
 
   Future<Response> _request(Future<Response> Function() requestFn) async {
     try {

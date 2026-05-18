@@ -5,7 +5,7 @@ import 'package:logistic_by_strom/core/network/api_client.dart';
 import 'package:logistic_by_strom/core/network/api_endpoints.dart';
 import 'package:logistic_by_strom/core/services/storage_service.dart';
 import 'package:logistic_by_strom/core/typedefs/result.dart';
-import 'package:logistic_by_strom/features/accounts/data/models/user_address.dart';
+import 'package:logistic_by_strom/core/models/user_address.dart';
 import 'package:logistic_by_strom/features/accounts/data/repositories/user_address_repository.dart';
 
 class UserAddressRepositoryImpl implements UserAddressRepository {
@@ -17,7 +17,6 @@ class UserAddressRepositoryImpl implements UserAddressRepository {
   @override
   ResultFuture<List<UserAddress>> getAddresses() async {
     try {
-
       final token = await _storageService.getToken();
       final response = await _apiClient.get(
         ApiEndpoints.userAddresses,
@@ -31,7 +30,6 @@ class UserAddressRepositoryImpl implements UserAddressRepository {
 
       return Right(addresses);
     } catch (e) {
-
       return Left(AppFailure(message: e.toString()));
     }
   }

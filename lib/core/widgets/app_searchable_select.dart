@@ -50,7 +50,9 @@ class _AppSearchableSelectState<T> extends State<AppSearchableSelect<T>> {
 
   @override
   Widget build(BuildContext context) {
-    final selectedLabel = widget.value != null ? widget.itemLabelBuilder(widget.value as T) : null;
+    final selectedLabel = widget.value != null
+        ? widget.itemLabelBuilder(widget.value as T)
+        : null;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,8 +85,12 @@ class _AppSearchableSelectState<T> extends State<AppSearchableSelect<T>> {
                     selectedLabel ?? widget.hint,
                     style: TextStyle(
                       fontSize: 15,
-                      color: selectedLabel != null ? AppColors.neutral900 : AppColors.neutral500,
-                      fontWeight: selectedLabel != null ? FontWeight.w500 : FontWeight.normal,
+                      color: selectedLabel != null
+                          ? AppColors.neutral900
+                          : AppColors.neutral500,
+                      fontWeight: selectedLabel != null
+                          ? FontWeight.w500
+                          : FontWeight.normal,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -160,8 +166,10 @@ class _SearchSheetState<T> extends State<_SearchSheet<T>> {
         setState(() {
           _filteredItems = widget.items.where((item) {
             final label = widget.itemLabelBuilder(item).toLowerCase();
-            final subtitle = widget.itemSubtitleBuilder?.call(item).toLowerCase() ?? '';
-            return label.contains(query.toLowerCase()) || subtitle.contains(query.toLowerCase());
+            final subtitle =
+                widget.itemSubtitleBuilder?.call(item).toLowerCase() ?? '';
+            return label.contains(query.toLowerCase()) ||
+                subtitle.contains(query.toLowerCase());
           }).toList();
         });
       }
@@ -171,7 +179,7 @@ class _SearchSheetState<T> extends State<_SearchSheet<T>> {
   @override
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context);
-    
+
     return Container(
       height: mq.size.height * 0.8,
       decoration: const BoxDecoration(
@@ -218,7 +226,10 @@ class _SearchSheetState<T> extends State<_SearchSheet<T>> {
             child: AppTextField(
               controller: _searchController,
               hint: widget.hint,
-              prefixIcon: const Icon(Icons.search_rounded, color: AppColors.neutral500),
+              prefixIcon: const Icon(
+                Icons.search_rounded,
+                color: AppColors.neutral500,
+              ),
               onChanged: _onSearchChanged,
               autoFocus: true,
             ),
@@ -230,11 +241,12 @@ class _SearchSheetState<T> extends State<_SearchSheet<T>> {
                 : ListView.separated(
                     padding: const EdgeInsets.all(20),
                     itemCount: _filteredItems.length,
-                    separatorBuilder: (_, _) => const Divider(height: 1, color: AppColors.neutral100),
+                    separatorBuilder: (_, _) =>
+                        const Divider(height: 1, color: AppColors.neutral100),
                     itemBuilder: (context, index) {
                       final item = _filteredItems[index];
                       final isSelected = item == widget.selectedValue;
-                      
+
                       return ListTile(
                         onTap: () {
                           widget.onSelected(item);
@@ -245,8 +257,12 @@ class _SearchSheetState<T> extends State<_SearchSheet<T>> {
                           widget.itemLabelBuilder(item),
                           style: TextStyle(
                             fontSize: 15,
-                            fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-                            color: isSelected ? AppColors.primary : AppColors.neutral900,
+                            fontWeight: isSelected
+                                ? FontWeight.w700
+                                : FontWeight.w500,
+                            color: isSelected
+                                ? AppColors.primary
+                                : AppColors.neutral900,
                           ),
                         ),
                         subtitle: widget.itemSubtitleBuilder != null
@@ -254,12 +270,17 @@ class _SearchSheetState<T> extends State<_SearchSheet<T>> {
                                 widget.itemSubtitleBuilder!(item),
                                 style: TextStyle(
                                   fontSize: 13,
-                                  color: isSelected ? AppColors.primary.withValues(alpha: 0.7) : AppColors.neutral500,
+                                  color: isSelected
+                                      ? AppColors.primary.withValues(alpha: 0.7)
+                                      : AppColors.neutral500,
                                 ),
                               )
                             : null,
                         trailing: isSelected
-                            ? const Icon(Icons.check_circle_rounded, color: AppColors.primary)
+                            ? const Icon(
+                                Icons.check_circle_rounded,
+                                color: AppColors.primary,
+                              )
                             : null,
                       );
                     },

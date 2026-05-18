@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logistic_by_strom/core/models/delivery_zone.dart';
+import 'package:logistic_by_strom/core/models/user_address.dart';
 import 'package:logistic_by_strom/core/models/supplier.dart';
 import 'package:logistic_by_strom/core/models/customs_duty.dart';
 
@@ -21,6 +22,7 @@ sealed class AddShipmentFormData with _$AddShipmentFormData {
     @Default([]) List<Supplier> suppliers,
     @Default([]) List<CustomsDuty> customsDuties,
     @Default([]) List<DeliveryZone> locations,
+    @Default([]) List<UserAddress> addresses,
     // Form fields
     String? trackingNumber,
     DateTime? expectedArrival,

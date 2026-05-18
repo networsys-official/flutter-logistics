@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 import 'package:logistic_by_strom/core/widgets/app_app_bar.dart';
-import 'package:logistic_by_strom/features/accounts/data/models/user_address.dart';
+import 'package:logistic_by_strom/core/models/user_address.dart';
 import 'package:logistic_by_strom/features/accounts/ui/view_models/user_address_view_model.dart';
 import 'package:logistic_by_strom/features/accounts/ui/widgets/add_address_bottom_button.dart';
 import 'package:logistic_by_strom/features/accounts/ui/widgets/address_card.dart';

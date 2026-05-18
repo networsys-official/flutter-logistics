@@ -68,7 +68,8 @@ class ShipmentItemCard extends StatelessWidget {
             value: item.commodity,
             items: customsDuties,
             itemLabelBuilder: (duty) => duty.item ?? 'Unknown Item',
-            itemSubtitleBuilder: (duty) => 'Tariff: ${duty.tariffCode ?? 'N/A'}',
+            itemSubtitleBuilder: (duty) =>
+                'Tariff: ${duty.tariffCode ?? 'N/A'}',
             onChanged: onCommodityChanged,
           ),
           const SizedBox(height: AppSpacing.md),

@@ -14,6 +14,7 @@ abstract class AddShipmentRequest with _$AddShipmentRequest {
     @JsonKey(name: 'service_type_id') required int serviceTypeId,
     @JsonKey(name: 'delivery_type') required String deliveryType,
     @JsonKey(name: 'destination_location_id') int? locationId,
+    @JsonKey(name: 'delivery_address_id') int? deliveryAddressId,
     @JsonKey(name: 'supplier_name') required String supplierName,
     @JsonKey(name: 'supplier_tracking_number') required String trackingNumber,
     @JsonKey(name: 'expected_arrival_at_warehouse')

@@ -12,5 +12,6 @@ sealed class CustomsDuty with _$CustomsDuty {
     @JsonKey(name: 'duty_rate_label') String? dutyRateLabel,
   }) = _CustomsDuty;
 
-  factory CustomsDuty.fromJson(Map<String, dynamic> json) => _$CustomsDutyFromJson(json);
+  factory CustomsDuty.fromJson(Map<String, dynamic> json) =>
+      _$CustomsDutyFromJson(json);
 }

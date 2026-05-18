@@ -13,7 +13,7 @@ import 'package:logistic_by_strom/features/auth/ui/views/reset_password_page.dar
 import 'package:logistic_by_strom/features/home/ui/views/home_page.dart';
 import 'package:logistic_by_strom/features/onboarding/ui/views/onboarding_page.dart';
 import 'package:logistic_by_strom/features/onboarding/ui/views/splash_page.dart';
-import 'package:logistic_by_strom/features/accounts/data/models/user_address.dart';
+import 'package:logistic_by_strom/core/models/user_address.dart';
 import 'package:logistic_by_strom/features/accounts/ui/views/account_page.dart';
 import 'package:logistic_by_strom/features/accounts/ui/views/edit_profile_page.dart';
 import 'package:logistic_by_strom/features/accounts/ui/views/shipment_address_page.dart';
@@ -25,6 +25,7 @@ import 'package:logistic_by_strom/features/accounts/ui/views/faq_page.dart';
 import 'package:logistic_by_strom/features/shipments/ui/views/shipments_page.dart';
 import 'package:logistic_by_strom/features/shipments/ui/views/add_shipment_page.dart';
 import 'package:logistic_by_strom/features/shipments/ui/views/shipment_detail_page.dart';
+import 'package:logistic_by_strom/features/shipments/data/models/shipment_request_model.dart';
 import 'package:logistic_by_strom/features/support/ui/views/support_page.dart';
 import 'package:logistic_by_strom/features/calculator/ui/views/calculator_page.dart';
 import 'package:logistic_by_strom/core/widgets/app_shell_scaffold.dart';
@@ -156,7 +157,10 @@ GoRouter appRouter(Ref ref) {
       ),
       GoRoute(
         path: AppRoutes.shipmentDetail,
-        builder: (context, state) => const ShipmentDetailPage(),
+        builder: (context, state) {
+          final shipment = state.extra as ShipmentRequestModel;
+          return ShipmentDetailPage(shipment: shipment);
+        },
       ),
       GoRoute(
         path: AppRoutes.editProfile,

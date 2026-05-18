@@ -1,6 +1,6 @@
 import 'package:logistic_by_strom/core/network/api_client.dart';
 import 'package:logistic_by_strom/core/services/storage_service.dart';
-import 'package:logistic_by_strom/features/accounts/data/models/user_address.dart';
+import 'package:logistic_by_strom/core/models/user_address.dart';
 import 'package:logistic_by_strom/features/accounts/data/repositories/user_address_repository.dart';
 import 'package:logistic_by_strom/features/accounts/data/repositories/user_address_repository_impl.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

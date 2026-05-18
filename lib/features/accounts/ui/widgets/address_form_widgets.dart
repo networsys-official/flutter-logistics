@@ -4,7 +4,7 @@ import 'package:logistic_by_strom/core/theme/app_spacing.dart';
 import 'package:logistic_by_strom/core/widgets/app_button.dart';
 import 'package:logistic_by_strom/core/widgets/app_dropdown_field.dart';
 import 'package:logistic_by_strom/core/widgets/app_text_field.dart';
-import 'package:logistic_by_strom/features/accounts/data/models/user_address.dart';
+import 'package:logistic_by_strom/core/models/user_address.dart';
 
 class AddressSectionTitle extends StatelessWidget {
   final String title;

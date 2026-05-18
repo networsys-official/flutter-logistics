@@ -1,9 +1,19 @@
 import 'package:dio/dio.dart';
 
 void main() async {
-  final dio = Dio(BaseOptions(headers: {'Accept': 'application/json', 'Authorization': 'Bearer 5|fV5K0S4b3IzAF0Ej9pk5eUqQhWzdLI0DeaybGWbs752a4653'}));
-  dio.interceptors.add(LogInterceptor(requestBody: true)); // Enable requestBody like the app
-  
+  final dio = Dio(
+    BaseOptions(
+      headers: {
+        'Accept': 'application/json',
+        'Authorization':
+            'Bearer 5|fV5K0S4b3IzAF0Ej9pk5eUqQhWzdLI0DeaybGWbs752a4653',
+      },
+    ),
+  );
+  dio.interceptors.add(
+    LogInterceptor(requestBody: true),
+  ); // Enable requestBody like the app
+
   final formData = FormData.fromMap({
     'origin_country_id': 2,
     'origin_facility_id': 2,
@@ -18,13 +28,22 @@ void main() async {
     'items[0][price]': 25,
   }, ListFormat.multiCompatible);
 
-  formData.files.add(MapEntry(
-    'documents[]',
-    MultipartFile.fromString('fake image content', filename: 'test.jpg', contentType: DioMediaType('image', 'jpeg')),
-  ));
+  formData.files.add(
+    MapEntry(
+      'documents[]',
+      MultipartFile.fromString(
+        'fake image content',
+        filename: 'test.jpg',
+        contentType: DioMediaType('image', 'jpeg'),
+      ),
+    ),
+  );
 
   try {
-    final response = await dio.post('http://localhost:8080/api/v1/shipment-requests', data: formData);
+    final response = await dio.post(
+      'http://localhost:8080/api/v1/shipment-requests',
+      data: formData,
+    );
     print('SUCCESS: ${response.data}');
   } on DioException catch (e) {
     print('ERROR: ${e.response?.statusCode}');

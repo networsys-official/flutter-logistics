@@ -19,8 +19,11 @@ class DimensionInputs extends ConsumerWidget {
               child: AppTextField(
                 label: 'Length',
                 hint: '0.00',
-                keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                onChanged: (val) => notifier.updateLength(double.tryParse(val) ?? 0),
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
+                onChanged: (val) =>
+                    notifier.updateLength(double.tryParse(val) ?? 0),
               ),
             ),
             const SizedBox(width: AppSpacing.md),
@@ -28,8 +31,11 @@ class DimensionInputs extends ConsumerWidget {
               child: AppTextField(
                 label: 'Width',
                 hint: '0.00',
-                keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                onChanged: (val) => notifier.updateWidth(double.tryParse(val) ?? 0),
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
+                onChanged: (val) =>
+                    notifier.updateWidth(double.tryParse(val) ?? 0),
               ),
             ),
           ],
@@ -41,8 +47,11 @@ class DimensionInputs extends ConsumerWidget {
               child: AppTextField(
                 label: 'Height',
                 hint: '0.00',
-                keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                onChanged: (val) => notifier.updateHeight(double.tryParse(val) ?? 0),
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
+                onChanged: (val) =>
+                    notifier.updateHeight(double.tryParse(val) ?? 0),
               ),
             ),
             const SizedBox(width: AppSpacing.md),
@@ -50,8 +59,11 @@ class DimensionInputs extends ConsumerWidget {
               child: AppTextField(
                 label: 'Weight (lbs)',
                 hint: '0',
-                keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                onChanged: (val) => notifier.updateWeight(double.tryParse(val) ?? 0),
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
+                onChanged: (val) =>
+                    notifier.updateWeight(double.tryParse(val) ?? 0),
               ),
             ),
           ],

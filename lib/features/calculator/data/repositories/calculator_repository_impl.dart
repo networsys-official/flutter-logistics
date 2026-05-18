@@ -27,10 +27,11 @@ class CalculatorRepositoryImpl implements CalculatorRepository {
         ApiEndpoints.shipmentEstimates,
         data: request.toJson(),
       );
-      
+
       // Handle potential 'data' wrapper from API
-      final Map<String, dynamic> responseData = response.data['data'] ?? response.data;
-      
+      final Map<String, dynamic> responseData =
+          response.data['data'] ?? response.data;
+
       return Right(EstimateResponse.fromJson(responseData));
     } catch (error, stackTrace) {
       return Left(ErrorMapper.map(error, stackTrace));

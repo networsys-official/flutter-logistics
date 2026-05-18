@@ -48,9 +48,7 @@ class _UpdatePasswordPageState extends ConsumerState<UpdatePasswordPage> {
 
       if (success && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(AccountStrings.passwordUpdatedSuccess),
-          ),
+          const SnackBar(content: Text(AccountStrings.passwordUpdatedSuccess)),
         );
         Navigator.pop(context);
       }
@@ -93,10 +91,11 @@ class _UpdatePasswordPageState extends ConsumerState<UpdatePasswordPage> {
                     const SizedBox(height: AppSpacing.lg),
                     Text(
                       AccountStrings.updatePasswordTitle,
-                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.neutral900,
-                      ),
+                      style: Theme.of(context).textTheme.headlineSmall
+                          ?.copyWith(
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.neutral900,
+                          ),
                     ),
                     const SizedBox(height: 8),
                     Text(
@@ -111,7 +110,10 @@ class _UpdatePasswordPageState extends ConsumerState<UpdatePasswordPage> {
                       controller: _currentPasswordController,
                       hint: 'Enter current password',
                       obscureText: !_isCurrentPasswordVisible,
-                      validator: (value) => Validators.required(value, AccountStrings.currentPassword),
+                      validator: (value) => Validators.required(
+                        value,
+                        AccountStrings.currentPassword,
+                      ),
                       errorText: fieldErrorFrom(error, 'current_password'),
                       suffixIcon: IconButton(
                         icon: Icon(
@@ -154,7 +156,10 @@ class _UpdatePasswordPageState extends ConsumerState<UpdatePasswordPage> {
                       controller: _confirmPasswordController,
                       hint: 'Confirm new password',
                       obscureText: !_isConfirmPasswordVisible,
-                      validator: (value) => Validators.confirmPassword(value, _newPasswordController.text),
+                      validator: (value) => Validators.confirmPassword(
+                        value,
+                        _newPasswordController.text,
+                      ),
                       errorText: fieldErrorFrom(error, 'password_confirmation'),
                       suffixIcon: IconButton(
                         icon: Icon(

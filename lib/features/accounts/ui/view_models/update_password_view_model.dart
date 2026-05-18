@@ -14,12 +14,14 @@ class UpdatePasswordViewModel extends _$UpdatePasswordViewModel {
     required String confirmPassword,
   }) async {
     state = const AsyncValue.loading();
-    
-    final result = await ref.read(accountsRepositoryProvider).updatePassword(
-      currentPassword: currentPassword,
-      newPassword: newPassword,
-      confirmPassword: confirmPassword,
-    );
+
+    final result = await ref
+        .read(accountsRepositoryProvider)
+        .updatePassword(
+          currentPassword: currentPassword,
+          newPassword: newPassword,
+          confirmPassword: confirmPassword,
+        );
 
     return result.fold(
       (failure) {

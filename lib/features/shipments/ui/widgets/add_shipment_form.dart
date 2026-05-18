@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:logistic_by_strom/core/router/app_routes.dart';
 import 'package:logistic_by_strom/core/utils/ui_utils.dart';
 import 'package:logistic_by_strom/core/theme/app_spacing.dart';
 import 'package:logistic_by_strom/core/widgets/app_button.dart';
 import 'package:logistic_by_strom/core/widgets/app_text_field.dart';
+import 'package:logistic_by_strom/features/shipments/ui/view_models/add_shipment_state.dart';
 import 'package:logistic_by_strom/features/shipments/ui/view_models/add_shipment_view_model.dart';
+import 'package:logistic_by_strom/features/shipments/ui/view_models/shipment_list_view_model.dart';
 import 'package:logistic_by_strom/features/shipments/ui/widgets/add_shipment_error_banner.dart';
 import 'package:logistic_by_strom/features/shipments/ui/widgets/shipment_items_section.dart';
 import 'package:logistic_by_strom/features/shipments/ui/widgets/shipment_route_fields.dart';
@@ -58,7 +61,61 @@ class _AddShipmentFormState extends ConsumerState<AddShipmentForm> {
     );
   }
 
-  Future<void> _submit() async {
+  Future<void> _openAddAddress() async {
+    await context.push(AppRoutes.addAddress);
+
+    if (!mounted) return;
+    await ref
+        .read(addShipmentViewModelProvider.notifier)
+        .refreshReferenceData();
+  }
+
+  void _showMissingAddressSnackBar({
+    String message = 'Please update your address first.',
+  }) {
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content: Text(message),
+          action: SnackBarAction(
+            label: 'Add Address',
+            onPressed: () {
+              _openAddAddress();
+            },
+          ),
+        ),
+      );
+  }
+
+  void _handleDeliveryTypeChanged(AddShipmentFormData formData, String type) {
+    final notifier = ref.read(addShipmentViewModelProvider.notifier);
+    notifier.updateDeliveryType(type);
+
+    if (type != 'door_delivery' || formData.addresses.isNotEmpty) {
+      return;
+    }
+
+    _showMissingAddressSnackBar();
+  }
+
+  Future<void> _submit(AddShipmentFormData formData) async {
+    if (formData.addresses.isEmpty) {
+      _showMissingAddressSnackBar();
+      return;
+    }
+
+    if (formData.deliveryType == 'door_delivery' &&
+        formData.selectedLocation != null &&
+        !formData.addresses.any(
+          (address) => address.zoneId == formData.selectedLocation?.id,
+        )) {
+      _showMissingAddressSnackBar(
+        message: 'Please add an address for the selected delivery zone first.',
+      );
+      return;
+    }
+
     setState(() {
       _isSubmitting = true;
       _localError = null;
@@ -68,6 +125,7 @@ class _AddShipmentFormState extends ConsumerState<AddShipmentForm> {
       await ref.read(addShipmentViewModelProvider.notifier).submit();
 
       if (!mounted) return;
+      ref.invalidate(shipmentListViewModelProvider);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Shipment request submitted successfully!'),
@@ -116,7 +174,8 @@ class _AddShipmentFormState extends ConsumerState<AddShipmentForm> {
               state: formData,
               onOriginFacilityChanged: notifier.updateOriginFacility,
               onServiceTypeChanged: notifier.updateServiceType,
-              onDeliveryTypeChanged: notifier.updateDeliveryType,
+              onDeliveryTypeChanged: (type) =>
+                  _handleDeliveryTypeChanged(formData, type),
               onLocationChanged: notifier.updateLocation,
             ),
             ShipmentTrackingFields(
@@ -153,7 +212,7 @@ class _AddShipmentFormState extends ConsumerState<AddShipmentForm> {
             AppButton(
               text: 'Submit Request',
               isLoading: _isSubmitting,
-              onPressed: _isSubmitting ? null : _submit,
+              onPressed: _isSubmitting ? null : () => _submit(formData),
             ),
           ],
         );

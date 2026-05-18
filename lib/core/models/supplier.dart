@@ -11,5 +11,6 @@ sealed class Supplier with _$Supplier {
     required bool status,
   }) = _Supplier;
 
-  factory Supplier.fromJson(Map<String, dynamic> json) => _$SupplierFromJson(json);
+  factory Supplier.fromJson(Map<String, dynamic> json) =>
+      _$SupplierFromJson(json);
 }

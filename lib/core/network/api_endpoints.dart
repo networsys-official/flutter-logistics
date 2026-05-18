@@ -1,8 +1,26 @@
+import 'dart:io';
+import 'package:flutter/foundation.dart';
+
 class ApiEndpoints {
   static const String configuredBaseUrl = String.fromEnvironment(
     'BASE_URL',
     defaultValue: '', //http://82.29.162.169:8080/api/v1
   );
+
+  static String get baseUrl {
+    if (configuredBaseUrl.isNotEmpty) {
+      return configuredBaseUrl;
+    }
+
+    if (!kIsWeb && Platform.isAndroid) {
+      return 'http://10.0.2.2:8080/api/v1';
+    }
+    return 'http://localhost:8080/api/v1';
+  }
+
+  static String get storageBaseUrl {
+    return baseUrl.replaceAll('/api/v1', '');
+  }
 
   // Auth endpoints
   static const String login = '/auth/login';

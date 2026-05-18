@@ -4,6 +4,7 @@ import 'package:logistic_by_strom/core/models/delivery_zone.dart';
 import 'package:logistic_by_strom/core/models/supplier.dart';
 import 'package:logistic_by_strom/core/models/customs_duty.dart';
 import 'package:logistic_by_strom/features/shipments/data/models/add_shipment_request.dart';
+import 'package:logistic_by_strom/features/shipments/data/models/shipment_request_model.dart';
 
 abstract interface class ShipmentRepository {
   ResultFuture<List<Supplier>> getSuppliers();
@@ -13,4 +14,5 @@ abstract interface class ShipmentRepository {
     AddShipmentRequest request,
     List<File> documents,
   );
+  ResultFuture<List<ShipmentRequestModel>> getShipmentRequests();
 }

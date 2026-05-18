@@ -15,12 +15,13 @@ part 'add_shipment_view_model.g.dart';
 class AddShipmentViewModel extends _$AddShipmentViewModel {
   @override
   Future<AddShipmentFormData> build() async {
-    final refData = await ref.watch(referenceDataProvider.future);
+    final refData = await ref.read(referenceDataProvider.future);
 
     return AddShipmentFormData(
       suppliers: refData.suppliers,
       customsDuties: refData.customsDuties,
       locations: refData.locations,
+      addresses: refData.addresses,
     );
   }
 
@@ -92,6 +93,19 @@ class AddShipmentViewModel extends _$AddShipmentViewModel {
   void updateLocation(DeliveryZone? location) =>
       _updateState((s) => s.copyWith(selectedLocation: location));
 
+  Future<void> refreshReferenceData() async {
+    final refData = await ref.refresh(referenceDataProvider.future);
+
+    _updateState((s) {
+      return s.copyWith(
+        suppliers: refData.suppliers,
+        customsDuties: refData.customsDuties,
+        locations: refData.locations,
+        addresses: refData.addresses,
+      );
+    });
+  }
+
   Future<void> pickFile(DocumentPickerSource source) async {
     final pickedFile = source == DocumentPickerSource.camera
         ? await FileUtils.pickImage()
@@ -124,6 +138,10 @@ class AddShipmentViewModel extends _$AddShipmentViewModel {
       throw 'Please fill all required fields and upload at least one document.';
     }
 
+    if (formData.addresses.isEmpty) {
+      throw 'Please update your address first.';
+    }
+
     if (formData.deliveryType == 'door_delivery' &&
         formData.selectedLocation == null) {
       throw 'Please select a delivery zone for door delivery.';
@@ -135,6 +153,21 @@ class AddShipmentViewModel extends _$AddShipmentViewModel {
       }
     }
 
+    final deliveryAddress = formData.deliveryType == 'door_delivery'
+        ? formData.addresses
+              .where(
+                (address) => address.zoneId == formData.selectedLocation?.id,
+              )
+              .firstOrNull
+        : formData.addresses
+                  .where((address) => address.isDefault)
+                  .firstOrNull ??
+              formData.addresses.first;
+
+    if (deliveryAddress == null) {
+      throw 'Please add an address for the selected delivery zone first.';
+    }
+
     final request = AddShipmentRequest(
       originCountryId: formData.originCountryId,
       originFacilityId: formData.originFacilityId,
@@ -142,7 +175,10 @@ class AddShipmentViewModel extends _$AddShipmentViewModel {
       destinationFacilityId: formData.destinationFacilityId,
       serviceTypeId: formData.serviceTypeId,
       deliveryType: formData.deliveryType,
-      locationId: formData.selectedLocation?.id,
+      locationId: formData.deliveryType == 'door_delivery'
+          ? formData.selectedLocation?.id
+          : null,
+      deliveryAddressId: deliveryAddress.id,
       supplierName: formData.selectedSupplier!.company,
       trackingNumber: formData.trackingNumber!,
       expectedArrival: formData.expectedArrival!.toIso8601String().split(

@@ -21,8 +21,7 @@ abstract class UserAddress with _$UserAddress {
     String? island,
     String? city,
     String? zone,
-    @JsonKey(name: 'location_id')
-    int? zoneId, // Backend returns location_id, frontend uses zoneId
+    @JsonKey(name: 'location_id') int? zoneId,
     @JsonKey(name: 'address_line_1') required String addressLine1,
     @JsonKey(name: 'address_line_2') String? addressLine2,
     @JsonKey(name: 'po_box') String? poBox,
