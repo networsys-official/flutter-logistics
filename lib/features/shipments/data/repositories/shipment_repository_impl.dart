@@ -9,6 +9,7 @@ import 'package:logistic_by_strom/core/models/delivery_zone.dart';
 import 'package:logistic_by_strom/core/models/supplier.dart';
 import 'package:logistic_by_strom/core/models/customs_duty.dart';
 import 'package:logistic_by_strom/features/shipments/data/models/add_shipment_request.dart';
+import 'package:logistic_by_strom/features/shipments/data/models/invoice_model.dart';
 import 'package:logistic_by_strom/features/shipments/data/models/shipment_request_model.dart';
 import 'package:logistic_by_strom/features/shipments/data/repositories/shipment_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -68,6 +69,34 @@ class ShipmentRepositoryImpl implements ShipmentRepository {
       final response = await _apiClient.get(ApiEndpoints.shipmentRequests);
       final List<dynamic> data = response.data['data'];
       return Right(data.map((e) => ShipmentRequestModel.fromJson(e)).toList());
+    } catch (error, stackTrace) {
+      return Left(ErrorMapper.map(error, stackTrace));
+    }
+  }
+
+  @override
+  ResultFuture<InvoiceModel> getInvoice(int shipmentRequestId) async {
+    try {
+      final response = await _apiClient.get(
+        ApiEndpoints.shipmentInvoice(shipmentRequestId),
+      );
+      return Right(InvoiceModel.fromJson(response.data['data']));
+    } catch (error, stackTrace) {
+      return Left(ErrorMapper.map(error, stackTrace));
+    }
+  }
+
+  @override
+  ResultFuture<PaymentResponseModel> initiatePayment(
+    int invoiceId,
+    String gateway,
+  ) async {
+    try {
+      final response = await _apiClient.post(
+        ApiEndpoints.payInvoice(invoiceId),
+        data: {'gateway': gateway},
+      );
+      return Right(PaymentResponseModel.fromJson(response.data));
     } catch (error, stackTrace) {
       return Left(ErrorMapper.map(error, stackTrace));
     }

@@ -1,4 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:logistic_by_strom/core/utils/num_parser.dart';
+import 'invoice_model.dart';
 
 part 'shipment_request_model.freezed.dart';
 part 'shipment_request_model.g.dart';
@@ -17,10 +19,11 @@ sealed class ShipmentRequestModel with _$ShipmentRequestModel {
     @JsonKey(name: 'requested_at') required String requestedAt,
     @JsonKey(name: 'expected_arrival_at_warehouse') String? expectedArrival,
     @JsonKey(name: 'currency_code') String? currencyCode,
-    @JsonKey(name: 'service_rate_per_lb') double? ratePerLb,
+    @JsonKey(name: 'service_rate_per_lb', fromJson: NumParser.doubleFromJson) double? ratePerLb,
     @JsonKey(name: 'special_instructions') String? note,
     List<ShipmentRequestItemModel>? items,
     List<ShipmentDocumentModel>? documents,
+    InvoiceModel? invoice,
   }) = _ShipmentRequestModel;
 
   factory ShipmentRequestModel.fromJson(Map<String, dynamic> json) =>
@@ -32,8 +35,8 @@ sealed class ShipmentRequestItemModel with _$ShipmentRequestItemModel {
   const factory ShipmentRequestItemModel({
     required int id,
     @JsonKey(name: 'commodity_type') String? commodityType,
-    @Default(1) int quantity,
-    required double price,
+    @JsonKey(fromJson: NumParser.intFromJson) @Default(1) int quantity,
+    @JsonKey(fromJson: NumParser.doubleFromJson) required double price,
     String? description,
   }) = _ShipmentRequestItemModel;
 
