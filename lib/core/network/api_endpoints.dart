@@ -4,8 +4,8 @@ import 'package:flutter/foundation.dart';
 class ApiEndpoints {
   static const String configuredBaseUrl = String.fromEnvironment(
     'BASE_URL',
-     defaultValue:'',
-    // defaultValue: 'http://82.29.162.169:8080/api/v1',
+    // defaultValue:'',
+    defaultValue: 'https://logisticsystems.webandappdevelopmenttech.com/api/v1',
   );
 
   static String get baseUrl {
@@ -51,5 +51,6 @@ class ApiEndpoints {
   static const String shipmentRequests = '/shipment-requests';
   static String shipmentInvoice(int id) => '/shipment-request-invoice/$id';
   static String payInvoice(int id) => '/invoices/$id/pay';
-  static String downloadInvoice(int id) => '/shipment-request-invoice/$id/download';
+  static String downloadInvoice(int id) =>
+      '/shipment-request-invoice/$id/download';
 }

@@ -36,13 +36,17 @@ class _PaymentWebViewPageState extends State<PaymentWebViewPage> {
             setState(() {
               _isLoading = false;
             });
+            // Once the page loading is finished, check if it's the backend return/success page
+            if (url.contains('/paypal/return') ||
+                url.contains('/payments/paypal/return') ||
+                url.contains('/payments/fygaro/return') ||
+                url.contains('success') ||
+                url.contains('complete')) {
+              Navigator.pop(context, true); // Return true on success
+            }
           },
           onNavigationRequest: (NavigationRequest request) {
-            // You can intercept success/cancel URLs here
-            if (request.url.contains('success') || request.url.contains('complete') || request.url.contains('return')) {
-              Navigator.pop(context, true); // Return true on success
-              return NavigationDecision.prevent;
-            }
+            // Intercept cancel URLs immediately
             if (request.url.contains('cancel')) {
               Navigator.pop(context, false); // Return false on cancel
               return NavigationDecision.prevent;
