@@ -53,15 +53,16 @@ GoRouter appRouter(Ref ref) {
     refreshListenable: routerStateNotifier,
     onException: (context, state, router) {
       final uri = state.uri;
-      if (uri.scheme == 'stromapp' || uri.toString().startsWith('stromapp://')) {
+      if (uri.scheme == 'stromapp' ||
+          uri.toString().startsWith('stromapp://')) {
         final token = uri.queryParameters['token'];
         final user = uri.queryParameters['user'];
         router.go(
           Uri(
             path: AppRoutes.authCallback,
             queryParameters: {
-              if (token != null) 'token': token,
-              if (user != null) 'user': user,
+              (token != null) ? 'token' : '': token,
+              (user != null) ? 'user' : '': user,
             },
           ).toString(),
         );
@@ -94,7 +95,11 @@ GoRouter appRouter(Ref ref) {
         AppRoutes.authCallback,
       ];
 
-      final guestRestrictedRoutes = [...authRoutes, AppRoutes.onboarding];
+      final guestRestrictedRoutes = [
+        ...authRoutes,
+        AppRoutes.onboarding,
+        AppRoutes.authCallback,
+      ];
 
       final isPublicRoute = publicRoutes.contains(currentPath);
       final isGuestRestrictedRoute = guestRestrictedRoutes.contains(

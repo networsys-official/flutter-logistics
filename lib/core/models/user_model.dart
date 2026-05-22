@@ -9,7 +9,7 @@ sealed class UserModel with _$UserModel {
     @JsonKey(name: 'id') required String id,
     @JsonKey(name: 'name') required String name,
     @JsonKey(name: 'email') required String email,
-    @JsonKey(name: 'phone') required String phone,
+    @JsonKey(name: 'phone') @Default('') String phone,
     @Default([]) List<String> role,
     @Default([]) List<String> permissions,
   }) = _UserModel;

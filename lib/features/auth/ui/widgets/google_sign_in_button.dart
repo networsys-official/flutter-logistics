@@ -18,16 +18,27 @@ class GoogleSignInButton extends StatelessWidget {
       height: 54,
       child: OutlinedButton(
         onPressed: onPressed,
-        style: OutlinedButton.styleFrom(
-          backgroundColor: isEnabled ? colorScheme.surface : colorScheme.surfaceContainerHighest.withOpacity(0.45),
-          foregroundColor: colorScheme.onSurface,
-          side: BorderSide(
-            color: isEnabled ? colorScheme.outline.withOpacity(0.35) : colorScheme.outline.withOpacity(0.18),
-          ),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-          elevation: 0,
-          padding: const EdgeInsets.symmetric(horizontal: 18),
-        ).copyWith(overlayColor: WidgetStateProperty.all(colorScheme.primary.withOpacity(0.06))),
+        style:
+            OutlinedButton.styleFrom(
+              backgroundColor: isEnabled
+                  ? colorScheme.surface
+                  : colorScheme.surfaceContainerHighest.withValues(alpha: 0.45),
+              foregroundColor: colorScheme.onSurface,
+              side: BorderSide(
+                color: isEnabled
+                    ? colorScheme.outline.withValues(alpha: 0.35)
+                    : colorScheme.outline.withValues(alpha: 0.18),
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14),
+              ),
+              elevation: 0,
+              padding: const EdgeInsets.symmetric(horizontal: 18),
+            ).copyWith(
+              overlayColor: WidgetStateProperty.all(
+                colorScheme.primary.withValues(alpha: 0.06),
+              ),
+            ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -37,7 +48,9 @@ class GoogleSignInButton extends StatelessWidget {
               'Login with Google',
               style: theme.textTheme.titleSmall?.copyWith(
                 fontWeight: FontWeight.w700,
-                color: isEnabled ? colorScheme.onSurface : colorScheme.onSurface.withOpacity(0.45),
+                color: isEnabled
+                    ? colorScheme.onSurface
+                    : colorScheme.onSurface.withValues(alpha: 0.45),
               ),
             ),
           ],
@@ -59,11 +72,18 @@ class _GoogleBadge extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.12)),
+        border: Border.all(
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.12),
+        ),
       ),
       child: const Text(
         'G',
-        style: TextStyle(fontSize: 18, height: 1, fontWeight: FontWeight.w800, color: Color(0xFF4285F4)),
+        style: TextStyle(
+          fontSize: 18,
+          height: 1,
+          fontWeight: FontWeight.w800,
+          color: Color(0xFF4285F4),
+        ),
       ),
     );
   }
