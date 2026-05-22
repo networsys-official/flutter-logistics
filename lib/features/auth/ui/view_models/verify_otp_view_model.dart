@@ -1,5 +1,5 @@
 import 'package:logistic_by_strom/core/errors/error_mapper.dart';
-import 'package:logistic_by_strom/features/auth/data/repositories/auth_repository_impl.dart';
+import 'package:logistic_by_strom/features/auth/data/repositories/auth_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:logistic_by_strom/core/providers/auth_provider.dart';
 

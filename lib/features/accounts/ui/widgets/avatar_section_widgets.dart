@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:logistic_by_strom/core/constants/app_images.dart';
-import 'package:logistic_by_strom/core/network/api_endpoints.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 
 class AvatarSection extends StatelessWidget {
@@ -24,16 +23,7 @@ class AvatarSection extends StatelessWidget {
     if (imageFile != null) {
       imageProvider = FileImage(imageFile!);
     } else if (profileImageUrl != null && profileImageUrl!.isNotEmpty) {
-      if (profileImageUrl!.startsWith('http')) {
-        imageProvider = NetworkImage(profileImageUrl!);
-      } else {
-        // Prepend host if relative path
-        final baseUrl = ApiEndpoints.configuredBaseUrl.replaceFirst(
-          '/api/v1',
-          '',
-        );
-        imageProvider = NetworkImage('$baseUrl$profileImageUrl');
-      }
+      imageProvider = NetworkImage(profileImageUrl!);
     } else {
       imageProvider = const AssetImage(AppImages.userProfile);
     }

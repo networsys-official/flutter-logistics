@@ -23,6 +23,8 @@ class ApiEndpoints {
     return baseUrl.replaceAll('/api/v1', '');
   }
 
+  static String get googleRedirectUrl => '$baseUrl/auth/google/redirect';
+
   // Auth endpoints
   static const String login = '/auth/login';
   static const String register = '/auth/register';

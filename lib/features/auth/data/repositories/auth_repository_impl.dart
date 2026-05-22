@@ -9,16 +9,8 @@ import 'package:logistic_by_strom/features/auth/data/models/registration_respons
 import 'package:logistic_by_strom/core/models/user_model.dart';
 import 'package:logistic_by_strom/features/auth/data/models/login_request.dart';
 import 'package:logistic_by_strom/features/auth/data/models/register_request.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:logistic_by_strom/core/utils/map_utils.dart';
 import 'package:logistic_by_strom/features/auth/data/repositories/auth_repository.dart';
-
-part 'auth_repository_impl.g.dart';
-
-@riverpod
-AuthRepository authRepository(Ref ref) {
-  return AuthRepositoryImpl(ref.watch(apiClientProvider));
-}
 
 class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl(this._apiClient);

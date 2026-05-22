@@ -3,8 +3,8 @@ import 'package:logistic_by_strom/core/models/delivery_zone.dart';
 import 'package:logistic_by_strom/core/models/customs_duty.dart';
 import 'package:logistic_by_strom/core/models/supplier.dart';
 import 'package:logistic_by_strom/core/models/user_address.dart';
-import 'package:logistic_by_strom/features/accounts/ui/view_models/user_address_view_model.dart';
-import 'package:logistic_by_strom/features/shipments/data/repositories/shipment_repository_impl.dart';
+import 'package:logistic_by_strom/features/accounts/data/repositories/user_address_repository.dart';
+import 'package:logistic_by_strom/features/shipments/data/repositories/shipment_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'reference_data_provider.freezed.dart';

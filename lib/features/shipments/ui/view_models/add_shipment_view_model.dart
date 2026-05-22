@@ -1,5 +1,5 @@
 import 'package:logistic_by_strom/core/providers/reference_data_provider.dart';
-import 'package:logistic_by_strom/features/shipments/data/repositories/shipment_repository_impl.dart';
+import 'package:logistic_by_strom/features/shipments/data/repositories/shipment_repository.dart';
 import 'package:logistic_by_strom/features/shipments/ui/view_models/add_shipment_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:logistic_by_strom/core/utils/file_utils.dart';
@@ -7,7 +7,7 @@ import 'package:logistic_by_strom/core/models/supplier.dart';
 import 'package:logistic_by_strom/core/models/customs_duty.dart';
 import 'package:logistic_by_strom/core/models/delivery_zone.dart';
 import 'package:logistic_by_strom/features/shipments/data/models/add_shipment_request.dart';
-import 'package:logistic_by_strom/features/shipments/ui/widgets/upload_option_bottom_sheet.dart';
+import 'package:logistic_by_strom/features/shipments/ui/models/document_picker_source.dart';
 
 part 'add_shipment_view_model.g.dart';
 

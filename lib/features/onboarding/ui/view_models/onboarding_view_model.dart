@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:logistic_by_strom/core/constants/strings/app_strings.dart';
+import 'package:logistic_by_strom/core/providers/onboarding_provider.dart';
 import 'package:logistic_by_strom/features/onboarding/data/onboarding_slides.dart';
 
 part 'onboarding_view_model.g.dart';
@@ -19,5 +20,9 @@ class OnboardingViewModel extends _$OnboardingViewModel {
       return;
     }
     state = index;
+  }
+
+  Future<void> completeOnboarding() async {
+    await ref.read(onboardingProvider.notifier).completeOnboarding();
   }
 }

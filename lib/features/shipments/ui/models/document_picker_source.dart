@@ -1,0 +1,1 @@
+enum DocumentPickerSource { camera, files }

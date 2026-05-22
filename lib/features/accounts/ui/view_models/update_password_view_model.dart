@@ -1,4 +1,4 @@
-import 'package:logistic_by_strom/features/accounts/ui/view_models/accounts_view_model.dart';
+import 'package:logistic_by_strom/features/accounts/data/repositories/accounts_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'update_password_view_model.g.dart';

@@ -1,19 +1,8 @@
-import 'package:logistic_by_strom/core/network/api_client.dart';
-import 'package:logistic_by_strom/core/services/storage_service.dart';
 import 'package:logistic_by_strom/core/models/user_address.dart';
 import 'package:logistic_by_strom/features/accounts/data/repositories/user_address_repository.dart';
-import 'package:logistic_by_strom/features/accounts/data/repositories/user_address_repository_impl.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'user_address_view_model.g.dart';
-
-@riverpod
-UserAddressRepository userAddressRepository(Ref ref) {
-  return UserAddressRepositoryImpl(
-    ref.watch(apiClientProvider),
-    ref.watch(storageServiceProvider.notifier),
-  );
-}
 
 @riverpod
 class UserAddressViewModel extends _$UserAddressViewModel {

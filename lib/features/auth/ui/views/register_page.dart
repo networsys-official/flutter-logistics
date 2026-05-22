@@ -15,7 +15,6 @@ import 'package:logistic_by_strom/features/auth/ui/widgets/auth_logo_header.dart
 import 'package:logistic_by_strom/features/auth/ui/widgets/auth_shell.dart';
 import 'package:logistic_by_strom/features/auth/ui/widgets/auth_text_field.dart';
 import 'package:logistic_by_strom/features/auth/ui/widgets/google_sign_in_button.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class RegisterPage extends ConsumerStatefulWidget {
   const RegisterPage({super.key});
@@ -47,29 +46,6 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
-  }
-
-  Future<void> _handleGoogleSignIn() async {
-    final url = Uri.parse(
-      'https://sprinkler-celibate-unreached.ngrok-free.dev/api/v1/auth/google/redirect',
-    );
-    try {
-      if (await canLaunchUrl(url)) {
-        await launchUrl(url, mode: LaunchMode.externalApplication);
-      } else {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Could not launch Google Sign In.')),
-          );
-        }
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Error launching sign in: $e')));
-      }
-    }
   }
 
   bool _validateCurrentStep() {
@@ -207,7 +183,13 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                 ),
               ),
               const SizedBox(height: AppSpacing.sm),
-              GoogleSignInButton(onPressed: _handleGoogleSignIn),
+              GoogleSignInButton(
+                onPressed: registerState.isLoading
+                    ? null
+                    : () => ref
+                        .read(registerViewModelProvider.notifier)
+                        .signUpWithGoogle(),
+              ),
             ],
             if (_currentStep == 1) ...[
               ElevatedButton(

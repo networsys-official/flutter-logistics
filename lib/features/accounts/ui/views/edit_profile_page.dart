@@ -5,6 +5,7 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 import 'package:logistic_by_strom/core/theme/app_spacing.dart';
 import 'package:logistic_by_strom/core/utils/file_utils.dart';
+import 'package:logistic_by_strom/features/accounts/data/models/user_profile.dart';
 import 'package:logistic_by_strom/features/accounts/ui/view_models/accounts_view_model.dart';
 import 'package:logistic_by_strom/features/accounts/ui/widgets/avatar_section_widgets.dart';
 import 'package:logistic_by_strom/core/widgets/app_app_bar.dart';
@@ -176,7 +177,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                   const SizedBox(height: AppSpacing.lg),
                   AvatarSection(
                     imageFile: _imageFile,
-                    profileImageUrl: accountState.value?.profileImageUrl,
+                    profileImageUrl: accountState.value?.resolvedImageUrl,
                     onPickImage: _handleImageSelection,
                   ),
                   const SizedBox(height: AppSpacing.xl),

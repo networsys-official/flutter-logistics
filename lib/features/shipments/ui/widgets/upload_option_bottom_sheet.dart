@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
-
-enum DocumentPickerSource { camera, files }
+import 'package:logistic_by_strom/features/shipments/ui/models/document_picker_source.dart';
 
 class UploadOptionBottomSheet extends StatelessWidget {
   const UploadOptionBottomSheet({super.key, required this.onPick});

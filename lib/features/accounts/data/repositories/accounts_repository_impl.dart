@@ -7,7 +7,6 @@ import 'package:logistic_by_strom/core/services/storage_service.dart';
 import 'package:logistic_by_strom/core/typedefs/result.dart';
 import 'package:logistic_by_strom/features/accounts/data/models/user_profile.dart';
 import 'package:logistic_by_strom/features/accounts/data/repositories/accounts_repository.dart';
-
 class AccountsRepositoryImpl implements AccountsRepository {
   final ApiClient _apiClient;
   final StorageService _storageService;

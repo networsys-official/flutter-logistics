@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:logistic_by_strom/core/services/storage_service.dart';
-import 'package:logistic_by_strom/features/auth/data/repositories/auth_repository_impl.dart';
+import 'package:logistic_by_strom/features/auth/data/repositories/auth_repository.dart';
 
 import 'package:logistic_by_strom/core/models/user_model.dart';
 import 'package:logistic_by_strom/core/models/auth_state.dart';

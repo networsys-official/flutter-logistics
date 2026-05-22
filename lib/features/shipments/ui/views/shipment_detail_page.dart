@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 import 'package:logistic_by_strom/core/theme/app_spacing.dart';
 import 'package:logistic_by_strom/core/widgets/app_app_bar.dart';
-import 'package:logistic_by_strom/core/network/api_endpoints.dart';
 import 'package:logistic_by_strom/core/widgets/app_button.dart';
 import 'package:logistic_by_strom/features/shipments/data/models/shipment_request_model.dart';
 import 'package:logistic_by_strom/features/shipments/ui/view_models/shipment_detail_view_model.dart';
@@ -134,6 +133,8 @@ class _ShipmentDetailPageState extends ConsumerState<ShipmentDetailPage> {
             (context) => PaymentWebViewPage(url: url, title: 'Secure Payment'),
       ),
     );
+
+    if (!mounted) return;
 
     if (result == true) {
       // Refresh invoice status if payment was successful
@@ -556,12 +557,8 @@ class _ShipmentDetailPageState extends ConsumerState<ShipmentDetailPage> {
                 separatorBuilder: (context, index) => const SizedBox(width: 12),
                 itemBuilder: (context, index) {
                   final doc = documents[index];
-                  if (doc.fileUrl == null) return const SizedBox.shrink();
-
-                  final fullUrl =
-                      doc.fileUrl!.startsWith('http')
-                          ? doc.fileUrl!
-                          : '${ApiEndpoints.storageBaseUrl}${doc.fileUrl}';
+                  final fullUrl = doc.resolvedFileUrl;
+                  if (fullUrl == null) return const SizedBox.shrink();
 
                   return Container(
                     width: 240,

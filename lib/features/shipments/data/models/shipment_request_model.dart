@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:logistic_by_strom/core/network/api_endpoints.dart';
 import 'package:logistic_by_strom/core/utils/num_parser.dart';
 import 'invoice_model.dart';
 
@@ -55,4 +56,12 @@ sealed class ShipmentDocumentModel with _$ShipmentDocumentModel {
 
   factory ShipmentDocumentModel.fromJson(Map<String, dynamic> json) =>
       _$ShipmentDocumentModelFromJson(json);
+}
+
+extension ShipmentDocumentModelX on ShipmentDocumentModel {
+  String? get resolvedFileUrl {
+    if (fileUrl == null || fileUrl!.isEmpty) return null;
+    if (fileUrl!.startsWith('http')) return fileUrl;
+    return '${ApiEndpoints.storageBaseUrl}$fileUrl';
+  }
 }

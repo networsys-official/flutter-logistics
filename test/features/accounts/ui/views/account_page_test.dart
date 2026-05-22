@@ -6,7 +6,6 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:logistic_by_strom/core/typedefs/result.dart';
 import 'package:logistic_by_strom/features/accounts/data/models/user_profile.dart';
 import 'package:logistic_by_strom/features/accounts/data/repositories/accounts_repository.dart';
-import 'package:logistic_by_strom/features/accounts/ui/view_models/accounts_view_model.dart';
 import 'package:logistic_by_strom/features/accounts/ui/views/account_page.dart';
 
 class MockAccountsRepository implements AccountsRepository {

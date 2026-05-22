@@ -12,14 +12,6 @@ import 'package:logistic_by_strom/features/shipments/data/models/add_shipment_re
 import 'package:logistic_by_strom/features/shipments/data/models/invoice_model.dart';
 import 'package:logistic_by_strom/features/shipments/data/models/shipment_request_model.dart';
 import 'package:logistic_by_strom/features/shipments/data/repositories/shipment_repository.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-part 'shipment_repository_impl.g.dart';
-
-@riverpod
-ShipmentRepository shipmentRepository(Ref ref) {
-  return ShipmentRepositoryImpl(ref.watch(apiClientProvider));
-}
 
 class ShipmentRepositoryImpl implements ShipmentRepository {
   final ApiClient _apiClient;

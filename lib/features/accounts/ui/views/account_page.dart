@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:logistic_by_strom/core/constants/app_images.dart';
-import 'package:logistic_by_strom/core/network/api_endpoints.dart';
 import 'package:logistic_by_strom/core/router/app_routes.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 import 'package:logistic_by_strom/core/theme/app_spacing.dart';
@@ -126,23 +125,10 @@ class AccountPage extends ConsumerWidget {
   }
 
   Widget _buildProfileCard(BuildContext context, UserProfile? profile) {
-    final imageUrl = profile?.profileImageUrl;
-    ImageProvider imageProvider;
-
-    if (imageUrl != null && imageUrl.isNotEmpty) {
-      if (imageUrl.startsWith('http')) {
-        imageProvider = NetworkImage(imageUrl);
-      } else {
-        // Prepend host if relative path
-        final baseUrl = ApiEndpoints.configuredBaseUrl.replaceFirst(
-          '/api/v1',
-          '',
-        );
-        imageProvider = NetworkImage('$baseUrl$imageUrl');
-      }
-    } else {
-      imageProvider = const AssetImage(AppImages.userProfile);
-    }
+    final resolvedUrl = profile?.resolvedImageUrl;
+    final ImageProvider imageProvider = (resolvedUrl != null && resolvedUrl.isNotEmpty)
+        ? NetworkImage(resolvedUrl)
+        : const AssetImage(AppImages.userProfile);
 
     return Container(
       padding: const EdgeInsets.all(24),

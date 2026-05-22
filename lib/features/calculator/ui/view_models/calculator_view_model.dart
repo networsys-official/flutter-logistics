@@ -1,7 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logistic_by_strom/features/calculator/data/models/estimate_request.dart';
 import 'package:logistic_by_strom/features/calculator/data/models/estimate_response.dart';
-import 'package:logistic_by_strom/features/calculator/data/repositories/calculator_repository_impl.dart';
+import 'package:logistic_by_strom/features/calculator/data/repositories/calculator_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'calculator_view_model.freezed.dart';

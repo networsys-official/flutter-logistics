@@ -1,19 +1,8 @@
-import 'package:logistic_by_strom/core/network/api_client.dart';
-import 'package:logistic_by_strom/core/services/storage_service.dart';
-import 'package:logistic_by_strom/features/accounts/data/repositories/accounts_repository_impl.dart';
+import 'package:logistic_by_strom/features/accounts/data/repositories/accounts_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:logistic_by_strom/features/accounts/data/models/user_profile.dart';
-import 'package:logistic_by_strom/features/accounts/data/repositories/accounts_repository.dart';
 
 part 'accounts_view_model.g.dart';
-
-@riverpod
-AccountsRepository accountsRepository(Ref ref) {
-  return AccountsRepositoryImpl(
-    ref.watch(apiClientProvider),
-    ref.watch(storageServiceProvider.notifier),
-  );
-}
 
 @riverpod
 class AccountsViewModel extends _$AccountsViewModel {
