@@ -10,6 +10,7 @@ import 'package:logistic_by_strom/features/auth/ui/views/register_page.dart';
 import 'package:logistic_by_strom/features/auth/ui/views/otp_page.dart';
 import 'package:logistic_by_strom/features/auth/ui/views/forgot_password_page.dart';
 import 'package:logistic_by_strom/features/auth/ui/views/reset_password_page.dart';
+import 'package:logistic_by_strom/features/auth/ui/views/social_auth_callback_page.dart';
 import 'package:logistic_by_strom/features/home/ui/views/home_page.dart';
 import 'package:logistic_by_strom/features/onboarding/ui/views/onboarding_page.dart';
 import 'package:logistic_by_strom/features/onboarding/ui/views/splash_page.dart';
@@ -50,6 +51,24 @@ GoRouter appRouter(Ref ref) {
     initialLocation: AppRoutes.splash,
     navigatorKey: _rootNavigatorKey,
     refreshListenable: routerStateNotifier,
+    onException: (context, state, router) {
+      final uri = state.uri;
+      if (uri.scheme == 'stromapp' || uri.toString().startsWith('stromapp://')) {
+        final token = uri.queryParameters['token'];
+        final user = uri.queryParameters['user'];
+        router.go(
+          Uri(
+            path: AppRoutes.authCallback,
+            queryParameters: {
+              if (token != null) 'token': token,
+              if (user != null) 'user': user,
+            },
+          ).toString(),
+        );
+        return;
+      }
+      router.go(AppRoutes.login);
+    },
     redirect: (context, state) {
       final authState = ref.read(authProvider);
       final onboardingState = ref.read(onboardingProvider);
@@ -72,6 +91,7 @@ GoRouter appRouter(Ref ref) {
         ...authRoutes,
         AppRoutes.onboarding,
         AppRoutes.splash,
+        AppRoutes.authCallback,
       ];
 
       final guestRestrictedRoutes = [...authRoutes, AppRoutes.onboarding];
@@ -116,6 +136,14 @@ GoRouter appRouter(Ref ref) {
       GoRoute(
         path: AppRoutes.register,
         builder: (context, state) => const RegisterPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.authCallback,
+        builder: (context, state) {
+          final token = state.uri.queryParameters['token'];
+          final userJson = state.uri.queryParameters['user'];
+          return SocialAuthCallbackPage(token: token, userJson: userJson);
+        },
       ),
       GoRoute(
         path: AppRoutes.otp,

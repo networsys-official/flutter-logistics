@@ -4,6 +4,7 @@ import 'package:logistic_by_strom/core/errors/app_failure.dart';
 import 'package:logistic_by_strom/core/errors/failure_code.dart';
 import 'package:logistic_by_strom/core/network/api_exceptions.dart';
 import 'package:logistic_by_strom/core/utils/app_logger.dart';
+import 'package:logistic_by_strom/core/utils/map_utils.dart';
 
 class ErrorMapper {
   const ErrorMapper._();
@@ -128,8 +129,8 @@ class ErrorMapper {
   }
 
   static Map<String, List<String>> _extractFieldErrors(dynamic data) {
-    final map = _asMap(data);
-    final errors = _asMap(map['errors']);
+    final map = MapUtils.asMap(data);
+    final errors = MapUtils.asMap(map['errors']);
     if (errors.isEmpty) return const {};
 
     return errors.map((field, value) {
@@ -150,13 +151,5 @@ class ErrorMapper {
             .map((errors) => errors.first)
             .firstOrNull ??
         ErrorStrings.validationFailedFriendly;
-  }
-
-  static Map<String, dynamic> _asMap(dynamic value) {
-    if (value is Map<String, dynamic>) return value;
-    if (value is Map) {
-      return value.map((key, item) => MapEntry(key.toString(), item));
-    }
-    return const {};
   }
 }

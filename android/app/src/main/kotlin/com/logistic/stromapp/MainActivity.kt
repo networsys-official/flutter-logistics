@@ -1,4 +1,4 @@
-package com.example.logistic_by_strom
+package com.logistic.stromapp
 
 import io.flutter.embedding.android.FlutterActivity
 

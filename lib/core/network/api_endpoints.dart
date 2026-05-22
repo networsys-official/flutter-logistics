@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 class ApiEndpoints {
   static const String configuredBaseUrl = String.fromEnvironment(
     'BASE_URL',
-    // defaultValue:'',
+    // defaultValue: '',
     defaultValue: 'https://logisticsystems.webandappdevelopmenttech.com/api/v1',
   );
 

@@ -1,6 +1,7 @@
 import 'package:logistic_by_strom/features/shipments/data/models/shipment_request_model.dart';
 import 'package:logistic_by_strom/features/shipments/data/repositories/shipment_repository_impl.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:fpdart/fpdart.dart';
 
 part 'shipment_list_view_model.g.dart';
 
@@ -38,45 +39,29 @@ class ShipmentListViewModel extends _$ShipmentListViewModel {
     final repository = ref.read(shipmentRepositoryProvider);
     final result = await repository.getShipmentRequests();
 
-    return result.fold(
-      (failure) => throw failure.message,
-      (shipments) => ShipmentListGroups(
+    return switch (result) {
+      Left(value: final failure) => throw failure.message,
+      Right(value: final shipments) => ShipmentListGroups(
         all: shipments,
-        booked: _booked(shipments),
-        pending: _pending(shipments),
-        invoiced: _invoiced(shipments),
-        standby: _standby(shipments),
-        cancelled: _cancelled(shipments),
+        booked: _filterByStatus(shipments, 'booked'),
+        pending: _filterByStatus(shipments, 'pending'),
+        invoiced: _filterByStatus(shipments, 'invoiced'),
+        standby: _filterByStatus(shipments, 'standby'),
+        cancelled: _filterByStatus(shipments, 'cancelled'),
       ),
-    );
+    };
   }
 
   Future<void> refresh() async {
     state = await AsyncValue.guard(() => _fetchShipments());
   }
 
-  List<ShipmentRequestModel> _invoiced(List<ShipmentRequestModel> shipments) =>
-      shipments
-          .where((shipment) => shipment.bookingStatus == 'invoiced')
-          .toList();
-
-  List<ShipmentRequestModel> _pending(List<ShipmentRequestModel> shipments) =>
-      shipments
-          .where((shipment) => shipment.bookingStatus == 'pending')
-          .toList();
-
-  List<ShipmentRequestModel> _standby(List<ShipmentRequestModel> shipments) =>
-      shipments
-          .where((shipment) => shipment.bookingStatus == 'standby')
-          .toList();
-
-  List<ShipmentRequestModel> _cancelled(List<ShipmentRequestModel> shipments) =>
-      shipments
-          .where((shipment) => shipment.bookingStatus == 'cancelled')
-          .toList();
-
-  List<ShipmentRequestModel> _booked(List<ShipmentRequestModel> shipments) =>
-      shipments
-          .where((shipment) => shipment.bookingStatus == 'booked')
-          .toList();
+  List<ShipmentRequestModel> _filterByStatus(
+    List<ShipmentRequestModel> shipments,
+    String status,
+  ) {
+    return shipments
+        .where((shipment) => shipment.bookingStatus == status)
+        .toList();
+  }
 }
