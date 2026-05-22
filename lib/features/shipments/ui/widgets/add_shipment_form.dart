@@ -43,7 +43,7 @@ class _AddShipmentFormState extends ConsumerState<AddShipmentForm> {
   Future<void> _selectDate() async {
     final picked = await UiUtils.pickDate(context);
 
-    if (picked == null) return;
+    if (picked == null || !mounted) return;
 
     _dateController.text = DateFormat('yyyy-MM-dd').format(picked);
     ref.read(addShipmentViewModelProvider.notifier).updateDate(picked);
@@ -62,6 +62,7 @@ class _AddShipmentFormState extends ConsumerState<AddShipmentForm> {
   }
 
   Future<void> _openAddAddress() async {
+    if (!mounted) return;
     await context.push(AppRoutes.addAddress);
 
     if (!mounted) return;

@@ -8,6 +8,7 @@ import 'package:logistic_by_strom/core/models/customs_duty.dart';
 import 'package:logistic_by_strom/core/models/delivery_zone.dart';
 import 'package:logistic_by_strom/features/shipments/data/models/add_shipment_request.dart';
 import 'package:logistic_by_strom/features/shipments/ui/models/document_picker_source.dart';
+import 'package:logistic_by_strom/features/accounts/ui/view_models/user_address_view_model.dart';
 
 part 'add_shipment_view_model.g.dart';
 
@@ -17,11 +18,26 @@ class AddShipmentViewModel extends _$AddShipmentViewModel {
   Future<AddShipmentFormData> build() async {
     final refData = await ref.read(referenceDataProvider.future);
 
+    // Listen to userAddressViewModelProvider to reactively update addresses when they change
+    ref.listen(userAddressViewModelProvider, (previous, next) {
+      next.whenData((newAddresses) {
+        _updateState((s) => s.copyWith(addresses: newAddresses));
+      });
+    });
+
+    // Try to get initial addresses from userAddressViewModelProvider if it has data,
+    // otherwise fallback to refData.addresses
+    final addressState = ref.read(userAddressViewModelProvider);
+    final initialAddresses = addressState.maybeWhen(
+      data: (data) => data,
+      orElse: () => refData.addresses,
+    );
+
     return AddShipmentFormData(
       suppliers: refData.suppliers,
       customsDuties: refData.customsDuties,
       locations: refData.locations,
-      addresses: refData.addresses,
+      addresses: initialAddresses,
     );
   }
 
@@ -97,11 +113,17 @@ class AddShipmentViewModel extends _$AddShipmentViewModel {
     final refData = await ref.refresh(referenceDataProvider.future);
 
     _updateState((s) {
+      final addressState = ref.read(userAddressViewModelProvider);
+      final latestAddresses = addressState.maybeWhen(
+        data: (data) => data,
+        orElse: () => refData.addresses,
+      );
+
       return s.copyWith(
         suppliers: refData.suppliers,
         customsDuties: refData.customsDuties,
         locations: refData.locations,
-        addresses: refData.addresses,
+        addresses: latestAddresses,
       );
     });
   }
