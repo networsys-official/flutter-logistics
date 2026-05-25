@@ -1,3 +1,4 @@
+import 'package:logistic_by_strom/core/providers/auth_provider.dart';
 import 'package:logistic_by_strom/core/models/user_address.dart';
 import 'package:logistic_by_strom/features/accounts/data/repositories/user_address_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -8,6 +9,13 @@ part 'user_address_view_model.g.dart';
 class UserAddressViewModel extends _$UserAddressViewModel {
   @override
   FutureOr<List<UserAddress>> build() async {
+    final authState = ref.watch(authProvider);
+    final isLoggedIn = authState.value?.isLoggedIn ?? false;
+    
+    if (!isLoggedIn) {
+      return const [];
+    }
+
     final repository = ref.read(userAddressRepositoryProvider);
     final result = await repository.getAddresses();
 

@@ -14,6 +14,9 @@ import 'package:logistic_by_strom/features/auth/ui/views/social_auth_callback_pa
 import 'package:logistic_by_strom/features/home/ui/views/home_page.dart';
 import 'package:logistic_by_strom/features/onboarding/ui/views/onboarding_page.dart';
 import 'package:logistic_by_strom/features/onboarding/ui/views/splash_page.dart';
+import 'package:logistic_by_strom/features/onboarding/ui/views/zone_onboarding_page.dart';
+import 'package:logistic_by_strom/features/accounts/ui/views/setup_address_page.dart';
+import 'package:logistic_by_strom/features/accounts/ui/view_models/user_address_view_model.dart';
 import 'package:logistic_by_strom/core/models/user_address.dart';
 import 'package:logistic_by_strom/features/accounts/ui/views/account_page.dart';
 import 'package:logistic_by_strom/features/accounts/ui/views/edit_profile_page.dart';
@@ -44,6 +47,10 @@ GoRouter appRouter(Ref ref) {
   });
 
   ref.listen(onboardingProvider, (_, next) {
+    routerStateNotifier.value++;
+  });
+
+  ref.listen(userAddressViewModelProvider, (_, next) {
     routerStateNotifier.value++;
   });
 
@@ -137,6 +144,26 @@ GoRouter appRouter(Ref ref) {
         return isPublicRoute ? null : AppRoutes.login;
       }
 
+      final addressesState = ref.read(userAddressViewModelProvider);
+      if (addressesState.isLoading) {
+        return null; // Wait for addresses to finish loading
+      }
+
+      final hasAddresses = addressesState.value?.isNotEmpty ?? false;
+
+      // Force users with zero addresses to go to zone onboarding & setup address
+      if (!hasAddresses) {
+        if (currentPath == AppRoutes.zoneOnboarding || currentPath == AppRoutes.setupAddress) {
+          return null;
+        }
+        return AppRoutes.zoneOnboarding;
+      }
+
+      // Prevent users who have addresses from viewing onboarding/setup pages
+      if (currentPath == AppRoutes.zoneOnboarding || currentPath == AppRoutes.setupAddress) {
+        return AppRoutes.home;
+      }
+
       if (isGuestRestrictedRoute) {
         return AppRoutes.home;
       }
@@ -144,6 +171,14 @@ GoRouter appRouter(Ref ref) {
       return null;
     },
     routes: [
+      GoRoute(
+        path: AppRoutes.zoneOnboarding,
+        builder: (context, state) => const ZoneOnboardingPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.setupAddress,
+        builder: (context, state) => const SetupAddressPage(),
+      ),
       GoRoute(
         path: AppRoutes.splash,
         builder: (context, state) => const SplashPage(),

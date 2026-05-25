@@ -24,6 +24,8 @@ class AppRoutes {
   static const String termsAndConditions = '/terms-and-conditions';
   static const String privacyPolicy = '/privacy-policy';
   static const String faq = '/faq';
+  static const String zoneOnboarding = '/zone-onboarding';
+  static const String setupAddress = '/setup-address';
 
   // Order must match StatefulShellRoute branches in AppRouter
   static const List<String> bottomNavLocations = [
