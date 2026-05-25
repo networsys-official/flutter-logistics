@@ -16,14 +16,14 @@ part 'add_shipment_view_model.g.dart';
 class AddShipmentViewModel extends _$AddShipmentViewModel {
   @override
   Future<AddShipmentFormData> build() async {
-    final refData = await ref.read(referenceDataProvider.future);
-
     // Listen to userAddressViewModelProvider to reactively update addresses when they change
     ref.listen(userAddressViewModelProvider, (previous, next) {
       next.whenData((newAddresses) {
         _updateState((s) => s.copyWith(addresses: newAddresses));
       });
     });
+
+    final refData = await ref.read(referenceDataProvider.future);
 
     // Try to get initial addresses from userAddressViewModelProvider if it has data,
     // otherwise fallback to refData.addresses

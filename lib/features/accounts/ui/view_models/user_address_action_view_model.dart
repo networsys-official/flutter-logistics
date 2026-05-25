@@ -21,9 +21,9 @@ class UserAddressAction extends _$UserAddressAction {
         state = AsyncValue.error(failure, StackTrace.current);
         return false;
       },
-      (newAddress) {
+      (newAddress) async {
         // Update the list state
-        ref.read(userAddressViewModelProvider.notifier).fetchAddresses();
+        await ref.read(userAddressViewModelProvider.notifier).fetchAddresses();
         state = const AsyncValue.data(null);
         return true;
       },
@@ -41,9 +41,9 @@ class UserAddressAction extends _$UserAddressAction {
         state = AsyncValue.error(failure, StackTrace.current);
         return false;
       },
-      (updatedAddress) {
+      (updatedAddress) async {
         // Update the list state
-        ref.read(userAddressViewModelProvider.notifier).fetchAddresses();
+        await ref.read(userAddressViewModelProvider.notifier).fetchAddresses();
         state = const AsyncValue.data(null);
         return true;
       },
