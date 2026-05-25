@@ -33,21 +33,14 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
 
-            <!-- Deep Linking Intent Filter -->
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http" android:host="82.29.162.169" android:port="8080" />
-                <data android:scheme="https" android:host="82.29.162.169" android:port="8080" />
-            </intent-filter>
+            
 
             <!-- stromapp Custom Scheme Intent Filter -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="stromapp" android:host="auth" />
+                <data android:scheme="stromapp" />
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

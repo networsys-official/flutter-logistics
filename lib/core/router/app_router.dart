@@ -55,14 +55,32 @@ GoRouter appRouter(Ref ref) {
       final uri = state.uri;
       if (uri.scheme == 'stromapp' ||
           uri.toString().startsWith('stromapp://')) {
+        final host = uri.host;
+        final path = uri.path;
+
+        if (host == 'reset-password' || path == '/reset-password') {
+          final token = uri.queryParameters['token'];
+          final email = uri.queryParameters['email'];
+          router.go(
+            Uri(
+              path: AppRoutes.resetPassword,
+              queryParameters: {
+                'token':? token,
+                'email':? email,
+              },
+            ).toString(),
+          );
+          return;
+        }
+
         final token = uri.queryParameters['token'];
         final user = uri.queryParameters['user'];
         router.go(
           Uri(
             path: AppRoutes.authCallback,
             queryParameters: {
-              (token != null) ? 'token' : '': token,
-              (user != null) ? 'user' : '': user,
+              'token':? token,
+              'user':? user,
             },
           ).toString(),
         );
