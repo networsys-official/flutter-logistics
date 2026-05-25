@@ -3,29 +3,23 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:logistic_by_strom/features/auth/data/models/registration_response.dart';
 import 'package:logistic_by_strom/features/auth/data/models/register_request.dart';
-import 'package:logistic_by_strom/core/network/api_endpoints.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 part 'register_view_model.g.dart';
 
 @riverpod
 class RegisterViewModel extends _$RegisterViewModel {
+  AuthRepository get _authRepo => ref.read(authRepositoryProvider);
+
   @override
   AsyncValue<RegistrationResponse?> build() => const AsyncValue.data(null);
 
   Future<void> signUpWithGoogle() async {
     state = const AsyncValue.loading();
-    final url = Uri.parse(ApiEndpoints.googleRedirectUrl);
-    try {
-      if (await canLaunchUrl(url)) {
-        await launchUrl(url, mode: LaunchMode.externalApplication);
-        state = const AsyncValue.data(null);
-      } else {
-        state = AsyncValue.error('Could not launch Google Sign In.', StackTrace.current);
-      }
-    } catch (e, stackTrace) {
-      state = AsyncValue.error(e, stackTrace);
-    }
+    final result = await _authRepo.launchGoogleSignIn();
+    result.match(
+      (failure) => state = AsyncValue.error(failure, StackTrace.current),
+      (_) => state = const AsyncValue.data(null),
+    );
   }
 
   Future<RegistrationResponse?> register({
@@ -39,8 +33,7 @@ class RegisterViewModel extends _$RegisterViewModel {
   }) async {
     state = const AsyncValue.loading();
 
-    final repository = ref.read(authRepositoryProvider);
-    final result = await repository.register(
+    final result = await _authRepo.register(
       RegisterRequest(
         name: name,
         email: email,

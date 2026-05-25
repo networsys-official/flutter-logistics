@@ -38,4 +38,6 @@ abstract interface class AuthRepository {
   });
 
   ResultFuture<String?> refreshToken(String oldToken);
+
+  ResultVoid launchGoogleSignIn();
 }

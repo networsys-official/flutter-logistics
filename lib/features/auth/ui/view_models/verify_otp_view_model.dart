@@ -7,6 +7,8 @@ part 'verify_otp_view_model.g.dart';
 
 @riverpod
 class VerifyOtpViewModel extends _$VerifyOtpViewModel {
+  AuthRepository get _authRepo => ref.read(authRepositoryProvider);
+
   @override
   AsyncValue<void> build() => const AsyncValue.data(null);
 
@@ -17,8 +19,7 @@ class VerifyOtpViewModel extends _$VerifyOtpViewModel {
   }) async {
     state = const AsyncValue.loading();
 
-    final repository = ref.read(authRepositoryProvider);
-    final result = await repository.verifyOtp(
+    final result = await _authRepo.verifyOtp(
       identifier: identifier,
       type: type,
       otp: otp,
@@ -50,8 +51,7 @@ class VerifyOtpViewModel extends _$VerifyOtpViewModel {
     required String type,
   }) async {
     state = const AsyncValue.loading();
-    final repository = ref.read(authRepositoryProvider);
-    final result = await repository.sendOtp(identifier: identifier, type: type);
+    final result = await _authRepo.sendOtp(identifier: identifier, type: type);
 
     result.match(
       (failure) {

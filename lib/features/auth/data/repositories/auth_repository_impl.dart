@@ -11,6 +11,8 @@ import 'package:logistic_by_strom/features/auth/data/models/login_request.dart';
 import 'package:logistic_by_strom/features/auth/data/models/register_request.dart';
 import 'package:logistic_by_strom/core/utils/map_utils.dart';
 import 'package:logistic_by_strom/features/auth/data/repositories/auth_repository.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:logistic_by_strom/core/errors/app_failure.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl(this._apiClient);
@@ -139,6 +141,21 @@ class AuthRepositoryImpl implements AuthRepository {
   ResultFuture<String?> refreshToken(String oldToken) async {
     // Refresh must come from the backend. Do not fabricate tokens client-side.
     return right(null);
+  }
+
+  @override
+  ResultVoid launchGoogleSignIn() async {
+    try {
+      final url = Uri.parse(ApiEndpoints.googleRedirectUrl);
+      if (await canLaunchUrl(url)) {
+        await launchUrl(url, mode: LaunchMode.externalApplication);
+        return right(null);
+      } else {
+        return left(const AppFailure(message: 'Could not launch Google Sign In.'));
+      }
+    } catch (error, stackTrace) {
+      return left(ErrorMapper.map(error, stackTrace));
+    }
   }
 
   AuthState _authStateFromResponse(dynamic responseData, int? statusCode) {

@@ -3,36 +3,29 @@ import 'package:logistic_by_strom/features/auth/data/repositories/auth_repositor
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:logistic_by_strom/core/providers/auth_provider.dart';
 import 'package:logistic_by_strom/features/auth/data/models/login_request.dart';
-import 'package:logistic_by_strom/core/network/api_endpoints.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 part 'login_view_model.g.dart';
 
 @riverpod
 class LoginViewModel extends _$LoginViewModel {
+  AuthRepository get _authRepo => ref.read(authRepositoryProvider);
+
   @override
   AsyncValue<void> build() => const AsyncValue.data(null);
 
   Future<void> loginWithGoogle() async {
     state = const AsyncValue.loading();
-    final url = Uri.parse(ApiEndpoints.googleRedirectUrl);
-    try {
-      if (await canLaunchUrl(url)) {
-        await launchUrl(url, mode: LaunchMode.externalApplication);
-        state = const AsyncValue.data(null);
-      } else {
-        state = AsyncValue.error('Could not launch Google Sign In.', StackTrace.current);
-      }
-    } catch (e, stackTrace) {
-      state = AsyncValue.error(e, stackTrace);
-    }
+    final result = await _authRepo.launchGoogleSignIn();
+    result.match(
+      (failure) => state = AsyncValue.error(failure, StackTrace.current),
+      (_) => state = const AsyncValue.data(null),
+    );
   }
 
   Future<void> login(String email, String password) async {
     state = const AsyncValue.loading();
 
-    final repository = ref.read(authRepositoryProvider);
-    final result = await repository.login(
+    final result = await _authRepo.login(
       LoginRequest(email: email, password: password),
     );
 

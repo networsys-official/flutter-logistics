@@ -5,14 +5,15 @@ part 'forgot_password_view_model.g.dart';
 
 @riverpod
 class ForgotPasswordViewModel extends _$ForgotPasswordViewModel {
+  AuthRepository get _authRepo => ref.read(authRepositoryProvider);
+
   @override
   AsyncValue<void> build() => const AsyncValue.data(null);
 
   Future<bool> forgotPassword(String email) async {
     state = const AsyncValue.loading();
 
-    final repository = ref.read(authRepositoryProvider);
-    final result = await repository.forgotPassword(email);
+    final result = await _authRepo.forgotPassword(email);
 
     var success = false;
     result.match(
@@ -36,8 +37,7 @@ class ForgotPasswordViewModel extends _$ForgotPasswordViewModel {
     state = const AsyncValue.loading();
     var success = false;
 
-    final repository = ref.read(authRepositoryProvider);
-    final result = await repository.resetPassword(
+    final result = await _authRepo.resetPassword(
       email: email,
       token: token,
       newPassword: newPassword,

@@ -15,7 +15,7 @@ class AuthLogoHeader extends StatelessWidget {
     return Column(
       children: [
         ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 250),
+          constraints: const BoxConstraints(maxWidth: 230),
           child: Image.asset(AppImages.logo, fit: BoxFit.scaleDown),
         ),
         const SizedBox(height: 30),
@@ -32,7 +32,7 @@ class AuthLogoHeader extends StatelessWidget {
           Text(
             subtitle!,
             textAlign: TextAlign.center,
-            style: textTheme.bodyMedium,
+            style: textTheme.displayMedium,
           ),
         ],
       ],
