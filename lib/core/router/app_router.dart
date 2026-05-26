@@ -33,6 +33,7 @@ import 'package:logistic_by_strom/features/shipments/data/models/shipment_reques
 import 'package:logistic_by_strom/features/support/ui/views/support_page.dart';
 import 'package:logistic_by_strom/features/calculator/ui/views/calculator_page.dart';
 import 'package:logistic_by_strom/core/widgets/app_shell_scaffold.dart';
+import 'package:logistic_by_strom/features/notifications/ui/views/notifications_page.dart';
 
 part 'app_router.g.dart';
 
@@ -236,6 +237,10 @@ GoRouter appRouter(Ref ref) {
       GoRoute(
         path: AppRoutes.calculator,
         builder: (context, state) => const CalculatorPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.notifications,
+        builder: (context, state) => const NotificationsPage(),
       ),
       GoRoute(
         path: AppRoutes.addShipment,

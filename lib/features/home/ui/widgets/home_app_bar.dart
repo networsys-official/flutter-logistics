@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:logistic_by_strom/core/router/app_routes.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:logistic_by_strom/core/constants/app_images.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
@@ -16,7 +18,7 @@ class HomeAppBar extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [_buildLogo(), _buildNotificationIcon()],
+            children: [_buildLogo(), _buildNotificationIcon(context)],
           ),
         ),
       ),
@@ -27,9 +29,9 @@ class HomeAppBar extends StatelessWidget {
     return Image.asset(AppImages.appBarLogo, width: 120, fit: BoxFit.contain);
   }
 
-  Widget _buildNotificationIcon() {
+  Widget _buildNotificationIcon(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () => context.push(AppRoutes.notifications),
       borderRadius: BorderRadius.circular(24),
       child: const Padding(
         padding: EdgeInsets.all(8.0),

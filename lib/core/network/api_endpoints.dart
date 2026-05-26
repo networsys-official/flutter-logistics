@@ -5,8 +5,8 @@ class ApiEndpoints {
   static const String configuredBaseUrl = String.fromEnvironment(
     'BASE_URL',
     // defaultValue: '',
-    defaultValue: 'https://sprinkler-celibate-unreached.ngrok-free.dev/api/v1',
-    // defaultValue: 'https://logisticsystems.webandappdevelopmenttech.com/api/v1',
+    // defaultValue: 'https://sprinkler-celibate-unreached.ngrok-free.dev/api/v1',
+    defaultValue: 'https://logisticsystems.webandappdevelopmenttech.com/api/v1',
   );
 
   static String get baseUrl {
@@ -36,6 +36,7 @@ class ApiEndpoints {
   static const String logout = '/auth/logout';
   static const String refreshToken = '/auth/refresh';
   static const String updatePassword = '/update-password';
+  static const String fcmToken = '/user/fcm-token';
 
   // User/Account endpoints
   static const String updateProfile = '/profile';

@@ -44,4 +44,18 @@ class StorageService extends _$StorageService {
     final value = await _storage.read(key: 'has_seen_onboarding');
     return value == 'true';
   }
+
+  // --- Notifications Storage ---
+
+  Future<void> saveNotifications(String notificationsJson) async {
+    await _storage.write(key: 'notifications', value: notificationsJson);
+  }
+
+  Future<String?> getNotifications() async {
+    return await _storage.read(key: 'notifications');
+  }
+
+  Future<void> clearNotifications() async {
+    await _storage.delete(key: 'notifications');
+  }
 }

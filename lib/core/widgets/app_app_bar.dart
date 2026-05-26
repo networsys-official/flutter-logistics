@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:logistic_by_strom/core/router/app_routes.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 
-class AppAppBar extends StatelessWidget {
+class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final bool showBackButton;
   final bool showNotification;
@@ -15,6 +17,9 @@ class AppAppBar extends StatelessWidget {
     this.showNotification = true,
     this.actions,
   });
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +50,7 @@ class AppAppBar extends StatelessWidget {
               ),
               const Spacer(),
               if (actions != null) ...actions!,
-              if (showNotification) _buildNotificationIcon(),
+              if (showNotification) _buildNotificationIcon(context),
             ],
           ),
         ),
@@ -53,22 +58,27 @@ class AppAppBar extends StatelessWidget {
     );
   }
 
-  Widget _buildNotificationIcon() {
-    return InkWell(
-      onTap: () {},
-      borderRadius: BorderRadius.circular(24),
-      child: const Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Badge(
-          label: Text('2'),
-          backgroundColor: AppColors.error,
-          child: HugeIcon(
-            icon: HugeIcons.strokeRoundedNotification01,
-            color: AppColors.neutral900,
-            size: 24,
+  Widget _buildNotificationIcon(BuildContext context) {
+    return Builder(
+      builder: (context) {
+        final theme = Theme.of(context);
+        return InkWell(
+          onTap: () => context.push(AppRoutes.notifications),
+          borderRadius: BorderRadius.circular(24),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Badge(
+              label: const Text('2'),
+              backgroundColor: AppColors.error,
+              child: HugeIcon(
+                icon: HugeIcons.strokeRoundedNotification01,
+                color: theme.colorScheme.onSurface,
+                size: 24,
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      }
     );
   }
 }

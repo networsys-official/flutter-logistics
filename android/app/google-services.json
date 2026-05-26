@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "374504476829",
+    "project_id": "logisticsystem-7389c",
+    "storage_bucket": "logisticsystem-7389c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:374504476829:android:5fc8895061dcfe07b7c474",
+        "android_client_info": {
+          "package_name": "com.logistic.stromapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEV14efBUx4E95BHjdjsqeJpQvHReu2SI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

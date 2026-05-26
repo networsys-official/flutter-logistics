@@ -3,6 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:logistic_by_strom/core/services/storage_service.dart';
 import 'package:logistic_by_strom/features/auth/data/repositories/auth_repository.dart';
+import 'package:logistic_by_strom/core/services/notification_service.dart';
 
 import 'package:logistic_by_strom/core/models/user_model.dart';
 import 'package:logistic_by_strom/core/models/auth_state.dart';
@@ -47,6 +48,11 @@ class AuthNotifier extends _$AuthNotifier {
 
   Future<void> logout() async {
     final repository = ref.read(authRepositoryProvider);
+    try {
+      await ref.read(notificationServiceProvider.notifier).deleteTokenFromServer();
+    } catch (_) {
+      // Ignored: proceed with local logout regardless of API success
+    }
     await repository.logout();
     await _clearStorage();
     state = const AsyncValue.data(AuthState());
