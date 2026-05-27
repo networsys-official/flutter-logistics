@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logistic_by_strom/core/router/app_routes.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
+import 'package:logistic_by_strom/features/notifications/ui/view_models/notifications_view_model.dart';
 
 class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -59,26 +61,37 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   Widget _buildNotificationIcon(BuildContext context) {
-    return Builder(
-      builder: (context) {
+    return Consumer(
+      builder: (context, ref, child) {
+        final notificationsAsync = ref.watch(notificationsViewModelProvider);
         final theme = Theme.of(context);
+        
+        final unreadCount = notificationsAsync.maybeWhen(
+          data: (list) => list.where((n) => !n.isRead).length,
+          orElse: () => 0,
+        );
+
+        final icon = HugeIcon(
+          icon: HugeIcons.strokeRoundedNotification01,
+          color: theme.colorScheme.onSurface,
+          size: 24,
+        );
+
         return InkWell(
           onTap: () => context.push(AppRoutes.notifications),
           borderRadius: BorderRadius.circular(24),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Badge(
-              label: const Text('2'),
-              backgroundColor: AppColors.error,
-              child: HugeIcon(
-                icon: HugeIcons.strokeRoundedNotification01,
-                color: theme.colorScheme.onSurface,
-                size: 24,
-              ),
-            ),
+            child: unreadCount > 0
+                ? Badge(
+                    label: Text(unreadCount.toString()),
+                    backgroundColor: AppColors.error,
+                    child: icon,
+                  )
+                : icon,
           ),
         );
-      }
+      },
     );
   }
 }

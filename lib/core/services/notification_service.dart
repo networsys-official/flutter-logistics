@@ -4,13 +4,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:logistic_by_strom/core/network/api_client.dart';
 import 'package:logistic_by_strom/core/network/api_endpoints.dart';
 import 'package:logistic_by_strom/core/providers/auth_provider.dart';
 import 'package:logistic_by_strom/firebase_options.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:logistic_by_strom/features/notifications/ui/view_models/notifications_view_model.dart';
 import 'package:logistic_by_strom/core/router/app_router.dart';
 import 'package:logistic_by_strom/core/router/app_routes.dart';
 
@@ -140,11 +138,6 @@ class NotificationService extends _$NotificationService {
         print('Message data: ${message.data}');
       }
 
-      // Add to local state/storage
-      ref
-          .read(notificationsViewModelProvider.notifier)
-          .addNotification(message);
-
       if (message.notification != null) {
         if (kDebugMode) {
           print(
@@ -259,10 +252,6 @@ class NotificationService extends _$NotificationService {
       print('Notification clicked with data: ${message.data}');
     }
 
-    // Add to local state/storage if it wasn't already saved
-    // (deduplication by ID is handled inside addNotification).
-    ref.read(notificationsViewModelProvider.notifier).addNotification(message);
-
     final router = appRouter(ref);
     final type = message.data['type'] as String?;
 
@@ -280,56 +269,12 @@ class NotificationService extends _$NotificationService {
 }
 
 // Background message handler must be a top-level function.
-// Runs in a separate isolate — Riverpod is not available here.
-// We write directly to FlutterSecureStorage using the same JSON schema
-// as NotificationModel.toJson() so that NotificationsViewModel picks it
-// up automatically on the next app open.
+// Runs in a separate isolate.
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   if (kDebugMode) {
     print('Handling a background message: ${message.messageId}');
-  }
-
-  const storage = FlutterSecureStorage();
-  try {
-    // Read the existing persisted list
-    final existing = await storage.read(key: 'notifications');
-    final List<dynamic> list = (existing != null && existing.isNotEmpty)
-        ? jsonDecode(existing) as List<dynamic>
-        : [];
-
-    final notificationId =
-        message.messageId ?? DateTime.now().toIso8601String();
-
-    // Deduplicate — skip if this message was already saved
-    final alreadyExists = list.any(
-      (item) => (item as Map<String, dynamic>)['id'] == notificationId,
-    );
-
-    if (!alreadyExists) {
-      // Use the same JSON shape as NotificationModel.toJson() so that
-      // NotificationModel.fromJson() can deserialize it without changes.
-      list.insert(0, {
-        'id': notificationId,
-        'title': message.notification?.title ?? 'New Notification',
-        'body': message.notification?.body ?? '',
-        'data': message.data,
-        // json_serializable encodes DateTime as ISO-8601 string
-        'receivedAt': (message.sentTime ?? DateTime.now()).toIso8601String(),
-        'isRead': false,
-      });
-
-      await storage.write(key: 'notifications', value: jsonEncode(list));
-
-      if (kDebugMode) {
-        print('Background notification saved to storage: $notificationId');
-      }
-    }
-  } catch (e) {
-    if (kDebugMode) {
-      print('Error saving background notification to storage: $e');
-    }
   }
 }

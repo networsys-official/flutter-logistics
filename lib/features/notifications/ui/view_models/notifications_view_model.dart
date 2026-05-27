@@ -1,8 +1,7 @@
-import 'dart:convert';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:logistic_by_strom/core/services/storage_service.dart';
+import 'package:logistic_by_strom/core/network/api_client.dart';
+import 'package:logistic_by_strom/core/network/api_endpoints.dart';
 import 'package:logistic_by_strom/features/notifications/data/models/notification_model.dart';
-import 'package:uuid/uuid.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 part 'notifications_view_model.g.dart';
@@ -11,46 +10,33 @@ part 'notifications_view_model.g.dart';
 class NotificationsViewModel extends _$NotificationsViewModel {
   @override
   FutureOr<List<NotificationModel>> build() async {
+    // Subscribe to foreground FCM messages to refresh the state in real-time
+    final subscription = FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      ref.invalidateSelf();
+    });
+    
+    ref.onDispose(() {
+      subscription.cancel();
+    });
+
     return _loadNotifications();
   }
 
   Future<List<NotificationModel>> _loadNotifications() async {
-    final storageService = ref.read(storageServiceProvider.notifier);
-    final jsonStr = await storageService.getNotifications();
-    if (jsonStr == null || jsonStr.isEmpty) return [];
-
+    final client = ref.read(apiClientProvider);
     try {
-      final List<dynamic> decodedList = jsonDecode(jsonStr);
-      return decodedList
-          .map((item) => NotificationModel.fromJson(item as Map<String, dynamic>))
-          .toList()
-        ..sort((a, b) => b.receivedAt.compareTo(a.receivedAt));
+      final response = await client.get(ApiEndpoints.notifications);
+      final dynamic responseData = response.data;
+      if (responseData is Map<String, dynamic> && responseData['data'] is List) {
+        final List<dynamic> list = responseData['data'] as List<dynamic>;
+        return list
+            .map((item) => NotificationModel.fromJson(item as Map<String, dynamic>))
+            .toList();
+      }
+      return [];
     } catch (e) {
       return [];
     }
-  }
-
-  Future<void> addNotification(RemoteMessage message) async {
-    final currentNotifications = state.value ?? [];
-    
-    // Create new model
-    final newNotification = NotificationModel(
-      id: message.messageId ?? const Uuid().v4(),
-      title: message.notification?.title ?? 'New Notification',
-      body: message.notification?.body ?? '',
-      data: message.data,
-      receivedAt: message.sentTime ?? DateTime.now(),
-      isRead: false,
-    );
-
-    // Ensure no duplicates by ID
-    if (currentNotifications.any((n) => n.id == newNotification.id)) return;
-
-    final updatedList = [newNotification, ...currentNotifications];
-    
-    // Save to state and storage
-    state = AsyncValue.data(updatedList);
-    await _saveNotifications(updatedList);
   }
 
   Future<void> markAsRead(String id) async {
@@ -58,38 +44,61 @@ class NotificationsViewModel extends _$NotificationsViewModel {
     final index = currentNotifications.indexWhere((n) => n.id == id);
     if (index == -1) return;
 
+    // Snappy UI: Update state immediately
     final updatedNotification = currentNotifications[index].copyWith(isRead: true);
     final updatedList = List<NotificationModel>.from(currentNotifications);
     updatedList[index] = updatedNotification;
-
     state = AsyncValue.data(updatedList);
-    await _saveNotifications(updatedList);
+
+    // Call API in the background
+    final client = ref.read(apiClientProvider);
+    try {
+      await client.patch(ApiEndpoints.markNotificationRead(id));
+    } catch (_) {
+      // In case of error, reload from backend to ensure state consistency
+      ref.invalidateSelf();
+    }
   }
 
   Future<void> markAllAsRead() async {
     final currentNotifications = state.value ?? [];
+    // Snappy UI: Update state immediately
     final updatedList = currentNotifications.map((n) => n.copyWith(isRead: true)).toList();
-
     state = AsyncValue.data(updatedList);
-    await _saveNotifications(updatedList);
+
+    // Call API in the background
+    final client = ref.read(apiClientProvider);
+    try {
+      await client.patch(ApiEndpoints.markAllNotificationsRead);
+    } catch (_) {
+      ref.invalidateSelf();
+    }
   }
 
   Future<void> clearAll() async {
     state = const AsyncValue.data([]);
-    await ref.read(storageServiceProvider.notifier).clearNotifications();
+
+    // Call API in the background
+    final client = ref.read(apiClientProvider);
+    try {
+      await client.delete(ApiEndpoints.clearNotifications);
+    } catch (_) {
+      ref.invalidateSelf();
+    }
   }
 
   Future<void> removeNotification(String id) async {
     final currentNotifications = state.value ?? [];
+    // Snappy UI: Update state immediately
     final updatedList = currentNotifications.where((n) => n.id != id).toList();
-
     state = AsyncValue.data(updatedList);
-    await _saveNotifications(updatedList);
-  }
 
-  Future<void> _saveNotifications(List<NotificationModel> notifications) async {
-    final storageService = ref.read(storageServiceProvider.notifier);
-    final jsonList = notifications.map((n) => n.toJson()).toList();
-    await storageService.saveNotifications(jsonEncode(jsonList));
+    // Call API in the background
+    final client = ref.read(apiClientProvider);
+    try {
+      await client.delete(ApiEndpoints.deleteNotification(id));
+    } catch (_) {
+      ref.invalidateSelf();
+    }
   }
 }
