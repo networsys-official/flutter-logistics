@@ -82,8 +82,13 @@ class _ActionItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (data.label == HomeStrings.calculator ||
-            data.label == HomeStrings.invoice) {
+        if (data.label == HomeStrings.invoice) {
+          context.push('${AppRoutes.statusRequests}?status=invoiced');
+        } else if (data.label == HomeStrings.standBy) {
+          context.push('${AppRoutes.statusRequests}?status=standby');
+        } else if (data.label == HomeStrings.cancelled) {
+          context.push('${AppRoutes.statusRequests}?status=cancelled');
+        } else if (data.label == HomeStrings.calculator) {
           context.push(AppRoutes.calculator);
         }
       },

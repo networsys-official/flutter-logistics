@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:logistic_by_strom/core/constants/app_images.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 
@@ -45,6 +46,7 @@ class _HomeBannerCarouselState extends State<HomeBannerCarousel> {
 
   void _startAutoScroll() {
     _timer = Timer.periodic(const Duration(seconds: 4), (_) {
+      if (mounted && Skeletonizer.of(context).enabled) return;
       final next = (_currentPage + 1) % _banners.length;
       _pageController.animateToPage(
         next,
@@ -63,6 +65,59 @@ class _HomeBannerCarouselState extends State<HomeBannerCarousel> {
 
   @override
   Widget build(BuildContext context) {
+    final isSkeleton = Skeletonizer.of(context).enabled;
+    if (isSkeleton) {
+      return Container(
+        height: 160,
+        margin: const EdgeInsets.symmetric(horizontal: 4),
+        decoration: BoxDecoration(
+          color: AppColors.neutral200.withValues(alpha: 0.5),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        padding: const EdgeInsets.all(20),
+        child: Row(
+          children: [
+            Expanded(
+              flex: 4,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppColors.white,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+            const SizedBox(width: 20),
+            Expanded(
+              flex: 5,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    height: 28,
+                    width: 120,
+                    decoration: BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    height: 14,
+                    width: 150,
+                    decoration: BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
     return Column(
       children: [
         SizedBox(

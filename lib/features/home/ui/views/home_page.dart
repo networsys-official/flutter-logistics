@@ -9,7 +9,6 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Trigger reference data fetch in background
     ref.watch(referenceDataProvider);
 
     return const Column(

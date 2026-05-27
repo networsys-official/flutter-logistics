@@ -68,8 +68,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            const SizedBox(height: 20),
             const AuthLogoHeader(title: AuthStrings.loginTitle),
-            const SizedBox(height: 42),
+            const SizedBox(height: 30),
             AuthTextField(
               label: AuthStrings.emailAddress,
               hintText: AuthStrings.emailAddressHint,
@@ -79,7 +80,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               validator: Validators.email,
               errorText: fieldErrorFrom(loginError, 'email'),
             ),
-            const SizedBox(height: 22),
+             const SizedBox(height: 14),
             AuthTextField(
               label: AuthStrings.password,
               hintText: AuthStrings.passwordHint,
@@ -99,7 +100,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 ),
               ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 10),
             Align(
               alignment: Alignment.centerRight,
               child: TextButton(
@@ -116,7 +117,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 ),
               ),
             ),
-            const SizedBox(height: 48),
+            const SizedBox(height: 24),
             ElevatedButton(
               onPressed: loginState.isLoading ? null : _submit,
               child: loginState.isLoading
@@ -130,7 +131,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     )
                   : const Text(AuthStrings.loginButton),
             ),
-            const SizedBox(height: 26),
+            const SizedBox(height: 16),
             Text(
               AuthStrings.orLoginWith,
               textAlign: TextAlign.center,
@@ -139,13 +140,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            const SizedBox(height: 18),
+            const SizedBox(height: 12),
             GoogleSignInButton(
               onPressed: loginState.isLoading
                   ? null
                   : () => ref
-                      .read(loginViewModelProvider.notifier)
-                      .loginWithGoogle(),
+                        .read(loginViewModelProvider.notifier)
+                        .loginWithGoogle(),
             ),
             const SizedBox(height: 24),
             Row(

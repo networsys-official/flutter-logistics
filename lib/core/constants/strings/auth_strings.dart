@@ -2,16 +2,16 @@ class AuthStrings {
   AuthStrings._();
 
   // Login
-  static const String loginTitle = 'LOGIN';
+  static const String loginTitle = 'Login';
   static const String loginButton = 'Login';
   static const String forgotPassword = 'Forgot Password?';
-  static const String orLoginWith = 'or login with';
+  static const String orLoginWith = 'OR';
   static const String dontHaveAccount = "Don't have an account? ";
   static const String signUp = 'Sign Up';
 
   // Sign Up
-  static const String signUpTitle = 'SIGN UP';
-  static const String signUpButton = 'SIGN UP';
+  static const String signUpTitle = 'Sign Up';
+  static const String signUpButton = 'Sign Up';
   static const String step1of2 = 'Step 1 of 2';
   static const String step2of2 = 'Step 2 of 2';
   static const String alreadyHaveAccount = 'Already have an account ? ';

@@ -5,7 +5,7 @@ class HomeStrings {
   static const String recentShipments = 'Recent Shipments';
 
   // Action Grid
-  static const String invoice = 'Invoice';
+  static const String invoice = 'Invoiced';
   static const String standBy = 'Stand By';
   static const String cancelled = 'Cancelled';
   static const String calculator = 'Calculator';

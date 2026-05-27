@@ -11,6 +11,7 @@ import 'package:logistic_by_strom/core/models/customs_duty.dart';
 import 'package:logistic_by_strom/features/shipments/data/models/add_shipment_request.dart';
 import 'package:logistic_by_strom/features/shipments/data/models/invoice_model.dart';
 import 'package:logistic_by_strom/features/shipments/data/models/shipment_request_model.dart';
+import 'package:logistic_by_strom/features/shipments/data/models/user_shipment_model.dart';
 import 'package:logistic_by_strom/features/shipments/data/repositories/shipment_repository.dart';
 
 class ShipmentRepositoryImpl implements ShipmentRepository {
@@ -61,6 +62,17 @@ class ShipmentRepositoryImpl implements ShipmentRepository {
       final response = await _apiClient.get(ApiEndpoints.shipmentRequests);
       final List<dynamic> data = response.data['data'];
       return Right(data.map((e) => ShipmentRequestModel.fromJson(e)).toList());
+    } catch (error, stackTrace) {
+      return Left(ErrorMapper.map(error, stackTrace));
+    }
+  }
+
+  @override
+  ResultFuture<List<UserShipmentModel>> getMyOrders() async {
+    try {
+      final response = await _apiClient.get(ApiEndpoints.myOrders);
+      final List<dynamic> data = response.data['data'];
+      return Right(data.map((e) => UserShipmentModel.fromJson(e)).toList());
     } catch (error, stackTrace) {
       return Left(ErrorMapper.map(error, stackTrace));
     }

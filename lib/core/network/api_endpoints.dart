@@ -53,6 +53,7 @@ class ApiEndpoints {
   static const String suppliers = '/suppliers';
   static const String customsDuties = '/customs-duties';
   static const String shipmentRequests = '/shipment-requests';
+  static const String myOrders = '/me/orders';
   static String shipmentInvoice(int id) => '/shipment-request-invoice/$id';
   static String payInvoice(int id) => '/invoices/$id/pay';
   static String downloadInvoice(int id) =>

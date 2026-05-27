@@ -7,8 +7,8 @@ class AppStrings {
   static const String systems = 'Systems';
 
   // Common Buttons
-  static const String next = 'NEXT';
-  static const String back = 'BACK';
+  static const String next = 'Next';
+  static const String back = 'Back';
   static const String cancel = 'Cancel';
   static const String viewAll = 'View All';
   static const String skip = 'Skip';

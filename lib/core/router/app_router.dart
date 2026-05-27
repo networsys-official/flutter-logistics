@@ -12,6 +12,7 @@ import 'package:logistic_by_strom/features/auth/ui/views/forgot_password_page.da
 import 'package:logistic_by_strom/features/auth/ui/views/reset_password_page.dart';
 import 'package:logistic_by_strom/features/auth/ui/views/social_auth_callback_page.dart';
 import 'package:logistic_by_strom/features/home/ui/views/home_page.dart';
+import 'package:logistic_by_strom/features/home/ui/views/status_requests_page.dart';
 import 'package:logistic_by_strom/features/onboarding/ui/views/onboarding_page.dart';
 import 'package:logistic_by_strom/features/onboarding/ui/views/splash_page.dart';
 import 'package:logistic_by_strom/features/onboarding/ui/views/zone_onboarding_page.dart';
@@ -245,6 +246,13 @@ GoRouter appRouter(Ref ref) {
       GoRoute(
         path: AppRoutes.addShipment,
         builder: (context, state) => const AddShipmentPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.statusRequests,
+        builder: (context, state) {
+          final status = state.uri.queryParameters['status'] ?? 'invoiced';
+          return StatusRequestsPage(status: status);
+        },
       ),
       GoRoute(
         path: AppRoutes.shipmentDetail,

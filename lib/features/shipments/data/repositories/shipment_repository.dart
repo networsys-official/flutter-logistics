@@ -5,6 +5,7 @@ import 'package:logistic_by_strom/core/models/supplier.dart';
 import 'package:logistic_by_strom/core/models/customs_duty.dart';
 import 'package:logistic_by_strom/features/shipments/data/models/add_shipment_request.dart';
 import 'package:logistic_by_strom/features/shipments/data/models/shipment_request_model.dart';
+import 'package:logistic_by_strom/features/shipments/data/models/user_shipment_model.dart';
 
 import 'package:logistic_by_strom/features/shipments/data/models/invoice_model.dart';
 import 'package:logistic_by_strom/core/network/api_client.dart';
@@ -27,6 +28,7 @@ abstract interface class ShipmentRepository {
     List<File> documents,
   );
   ResultFuture<List<ShipmentRequestModel>> getShipmentRequests();
+  ResultFuture<List<UserShipmentModel>> getMyOrders();
   ResultFuture<InvoiceModel> getInvoice(int shipmentRequestId);
   ResultFuture<PaymentResponseModel> initiatePayment(int invoiceId, String gateway);
 }

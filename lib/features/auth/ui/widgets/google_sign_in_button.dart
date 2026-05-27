@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
-
-import 'package:logistic_by_strom/core/theme/app_colors.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class GoogleSignInButton extends StatelessWidget {
-  const GoogleSignInButton({super.key, this.onPressed});
+  const GoogleSignInButton({
+    super.key,
+    this.onPressed,
+    this.text = 'Login with Google',
+  });
 
   final VoidCallback? onPressed;
+  final String text;
 
   @override
   Widget build(BuildContext context) {
@@ -18,39 +22,40 @@ class GoogleSignInButton extends StatelessWidget {
       height: 54,
       child: OutlinedButton(
         onPressed: onPressed,
-        style:
-            OutlinedButton.styleFrom(
-              backgroundColor: isEnabled
-                  ? colorScheme.surface
-                  : colorScheme.surfaceContainerHighest.withValues(alpha: 0.45),
-              foregroundColor: colorScheme.onSurface,
-              side: BorderSide(
-                color: isEnabled
-                    ? colorScheme.outline.withValues(alpha: 0.35)
-                    : colorScheme.outline.withValues(alpha: 0.18),
-              ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(14),
-              ),
-              elevation: 0,
-              padding: const EdgeInsets.symmetric(horizontal: 18),
-            ).copyWith(
-              overlayColor: WidgetStateProperty.all(
-                colorScheme.primary.withValues(alpha: 0.06),
-              ),
-            ),
+        style: OutlinedButton.styleFrom(
+          backgroundColor: isEnabled
+              ? Colors.white
+              : Colors.white.withValues(alpha: 0.6),
+          foregroundColor: const Color(0xFF3C4043),
+          side: BorderSide(
+            color: isEnabled
+                ? const Color(0xFFDADCE0)
+                : const Color(0xFFDADCE0).withValues(alpha: 0.5),
+            width: 1.2,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
+          elevation: 0,
+          padding: const EdgeInsets.symmetric(horizontal: 18),
+        ).copyWith(
+          overlayColor: WidgetStateProperty.all(
+            colorScheme.primary.withValues(alpha: 0.05),
+          ),
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const _GoogleBadge(),
-            const SizedBox(width: 12),
+            const SizedBox(width: 14),
             Text(
-              'Login with Google',
+              text,
               style: theme.textTheme.titleSmall?.copyWith(
                 fontWeight: FontWeight.w700,
+                fontSize: 15,
                 color: isEnabled
-                    ? colorScheme.onSurface
-                    : colorScheme.onSurface.withValues(alpha: 0.45),
+                    ? const Color(0xFF3C4043)
+                    : const Color(0xFF3C4043).withValues(alpha: 0.5),
               ),
             ),
           ],
@@ -65,25 +70,13 @@ class _GoogleBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 30,
-      height: 30,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(999),
-        border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.12),
-        ),
-      ),
-      child: const Text(
-        'G',
-        style: TextStyle(
-          fontSize: 18,
-          height: 1,
-          fontWeight: FontWeight.w800,
-          color: Color(0xFF4285F4),
-        ),
+    return SizedBox(
+      width: 22,
+      height: 22,
+      child: SvgPicture.asset(
+        'assets/svg/google_icon.svg',
+        width: 22,
+        height: 22,
       ),
     );
   }

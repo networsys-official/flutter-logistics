@@ -141,7 +141,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
               minHeight: 6,
               borderRadius: BorderRadius.circular(999),
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: 14),
             if (_currentStep == 0)
               _StepOne(
                 firstNameController: _firstNameController,
@@ -184,6 +184,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
               ),
               const SizedBox(height: AppSpacing.sm),
               GoogleSignInButton(
+                text: 'Sign up with Google',
                 onPressed: registerState.isLoading
                     ? null
                     : () => ref
@@ -266,7 +267,7 @@ class _StepOne extends StatelessWidget {
           validator: (value) =>
               Validators.required(value, AuthStrings.firstName),
         ),
-        const SizedBox(height: AppSpacing.lg),
+        const SizedBox(height: 14),
         AuthTextField(
           label: AuthStrings.surname,
           hintText: AuthStrings.surnameHint,
@@ -274,7 +275,7 @@ class _StepOne extends StatelessWidget {
           textInputAction: TextInputAction.next,
           validator: (value) => Validators.required(value, AuthStrings.surname),
         ),
-        const SizedBox(height: AppSpacing.lg),
+        const SizedBox(height: 14),
         AuthTextField(
           label: AuthStrings.emailAddress,
           hintText: AuthStrings.emailAddressHint,
@@ -284,7 +285,7 @@ class _StepOne extends StatelessWidget {
           validator: Validators.email,
           errorText: fieldErrorFrom(error, 'email'),
         ),
-        const SizedBox(height: AppSpacing.lg),
+        const SizedBox(height: 14),
         AuthTextField(
           label: AuthStrings.mobileNumber,
           hintText: AuthStrings.mobileNumberHint,
