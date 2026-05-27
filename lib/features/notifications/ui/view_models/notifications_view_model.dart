@@ -79,6 +79,14 @@ class NotificationsViewModel extends _$NotificationsViewModel {
     await ref.read(storageServiceProvider.notifier).clearNotifications();
   }
 
+  Future<void> removeNotification(String id) async {
+    final currentNotifications = state.value ?? [];
+    final updatedList = currentNotifications.where((n) => n.id != id).toList();
+
+    state = AsyncValue.data(updatedList);
+    await _saveNotifications(updatedList);
+  }
+
   Future<void> _saveNotifications(List<NotificationModel> notifications) async {
     final storageService = ref.read(storageServiceProvider.notifier);
     final jsonList = notifications.map((n) => n.toJson()).toList();

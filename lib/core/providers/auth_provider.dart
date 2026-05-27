@@ -44,6 +44,13 @@ class AuthNotifier extends _$AuthNotifier {
   Future<void> updateSession(AuthState authData) async {
     await _persistAuthData(authData);
     state = AsyncValue.data(authData);
+    
+    // Explicitly sync the FCM token to the server now that we are logged in
+    try {
+      await ref.read(notificationServiceProvider.notifier).getAndSyncToken();
+    } catch (_) {
+      // Ignored
+    }
   }
 
   Future<void> logout() async {

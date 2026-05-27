@@ -62,7 +62,7 @@ class NotificationsPage extends ConsumerWidget {
                   ),
                 ),
                 onDismissed: (_) {
-                   // Optional: Add delete logic here if needed.
+                  ref.read(notificationsViewModelProvider.notifier).removeNotification(notification.id);
                 },
                 child: ListTile(
                   contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
