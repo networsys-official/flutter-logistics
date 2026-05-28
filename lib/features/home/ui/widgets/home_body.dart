@@ -177,7 +177,7 @@ class HomeBody extends ConsumerWidget {
           if (currentShipment != null) ...[
             HomeSectionHeader(
               title: HomeStrings.currentShipment,
-              onViewAll: () => context.go(AppRoutes.shipments),
+              onViewAll: () => context.push(AppRoutes.orders),
             ),
             ShipmentCard(
               title: 'Current',
@@ -188,7 +188,7 @@ class HomeBody extends ConsumerWidget {
               originCountry: currentShipment.originCountry?.name ?? 'USA',
               destinationCountry: currentShipment.destinationCountry?.name ?? 'Bahamas',
               activeStepIndex: _mapStatusToStepIndex(currentShipment.currentStatus),
-              onTap: () => context.go(AppRoutes.shipments),
+              onTap: () => context.push(AppRoutes.orders),
             ),
             const SizedBox(height: 24),
           ],
@@ -197,16 +197,16 @@ class HomeBody extends ConsumerWidget {
           if (recentShipments.isNotEmpty) ...[
             HomeSectionHeader(
               title: HomeStrings.recentShipments,
-              onViewAll: () => context.go(AppRoutes.shipments),
+              onViewAll: () => context.push(AppRoutes.orders),
             ),
-            ...recentShipments.take(3).map((shipment) {
+            ...recentShipments.take(currentShipment == null ? 3 : 2).map((shipment) {
               return ShipmentCard(
                 title: 'Recent',
                 id: '#${shipment.trackingNumber}',
                 status: shipment.currentStatus.label,
                 date: _formatDate(shipment.createdAt),
                 showTimeline: false,
-                onTap: () => context.go(AppRoutes.shipments),
+                onTap: () => context.push(AppRoutes.orders),
               );
             }),
           ],

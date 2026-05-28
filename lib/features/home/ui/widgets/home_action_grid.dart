@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:logistic_by_strom/core/router/app_routes.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 import 'package:logistic_by_strom/core/constants/strings/home_strings.dart';
+import 'package:logistic_by_strom/features/shipments/ui/view_models/shipment_list_view_model.dart';
 
 /// A grid of 4 quick-action items displayed in a white card.
-class HomeActionGrid extends StatelessWidget {
+class HomeActionGrid extends ConsumerWidget {
   const HomeActionGrid({super.key});
 
   static const List<_ActionData> _actions = [
@@ -37,7 +39,12 @@ class HomeActionGrid extends StatelessWidget {
   ];
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final shipmentListAsync = ref.watch(shipmentListViewModelProvider);
+
+    final invoicedCount = shipmentListAsync.value?.invoiced.length ?? 0;
+    final standbyCount = shipmentListAsync.value?.standby.length ?? 0;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
       decoration: BoxDecoration(
@@ -53,7 +60,15 @@ class HomeActionGrid extends StatelessWidget {
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: _actions.map((action) => _ActionItem(data: action)).toList(),
+        children: _actions.map((action) {
+          int badgeCount = 0;
+          if (action.label == HomeStrings.invoice) {
+            badgeCount = invoicedCount;
+          } else if (action.label == HomeStrings.standBy) {
+            badgeCount = standbyCount;
+          }
+          return _ActionItem(data: action, badgeCount: badgeCount);
+        }).toList(),
       ),
     );
   }
@@ -75,11 +90,18 @@ class _ActionData {
 
 class _ActionItem extends StatelessWidget {
   final _ActionData data;
+  final int badgeCount;
 
-  const _ActionItem({required this.data});
+  const _ActionItem({required this.data, this.badgeCount = 0});
 
   @override
   Widget build(BuildContext context) {
+    final actionIcon = Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(color: data.bgColor, shape: BoxShape.circle),
+      child: HugeIcon(icon: data.icon, color: data.color, size: 28),
+    );
+
     return GestureDetector(
       onTap: () {
         if (data.label == HomeStrings.invoice) {
@@ -95,14 +117,13 @@ class _ActionItem extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: data.bgColor,
-              shape: BoxShape.circle,
-            ),
-            child: HugeIcon(icon: data.icon, color: data.color, size: 28),
-          ),
+          badgeCount > 0
+              ? Badge(
+                  label: Text(badgeCount.toString()),
+                  backgroundColor: data.color,
+                  child: actionIcon,
+                )
+              : actionIcon,
           const SizedBox(height: 8),
           Text(
             data.label,

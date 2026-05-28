@@ -22,6 +22,7 @@ sealed class ShipmentRequestModel with _$ShipmentRequestModel {
     @JsonKey(name: 'currency_code') String? currencyCode,
     @JsonKey(name: 'service_rate_per_lb', fromJson: NumParser.doubleFromJson) double? ratePerLb,
     @JsonKey(name: 'special_instructions') String? note,
+    @JsonKey(name: 'standby_message') String? standbyMessage,
     List<ShipmentRequestItemModel>? items,
     List<ShipmentDocumentModel>? documents,
     InvoiceModel? invoice,

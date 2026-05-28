@@ -79,6 +79,33 @@ class ShipmentRepositoryImpl implements ShipmentRepository {
   }
 
   @override
+  ResultFuture<(List<UserShipmentModel> orders, bool hasMore)> getMyOrdersPaginated({
+    required int page,
+    int perPage = 10,
+  }) async {
+    try {
+      final response = await _apiClient.get(
+        ApiEndpoints.myOrders,
+        queryParameters: {
+          'page': page,
+          'per_page': perPage,
+        },
+      );
+      final List<dynamic> data = response.data['data'];
+      final orders = data.map((e) => UserShipmentModel.fromJson(e)).toList();
+
+      final meta = response.data['meta'] as Map<String, dynamic>?;
+      final int currentPage = meta?['current_page'] ?? page;
+      final int lastPage = meta?['last_page'] ?? page;
+      final hasMore = currentPage < lastPage;
+
+      return Right((orders, hasMore));
+    } catch (error, stackTrace) {
+      return Left(ErrorMapper.map(error, stackTrace));
+    }
+  }
+
+  @override
   ResultFuture<InvoiceModel> getInvoice(int shipmentRequestId) async {
     try {
       final response = await _apiClient.get(
@@ -177,6 +204,50 @@ class ShipmentRepositoryImpl implements ShipmentRepository {
         ApiEndpoints.shipmentRequests,
         formData: formData,
       );
+      return const Right(null);
+    } catch (error, stackTrace) {
+      return Left(ErrorMapper.map(error, stackTrace));
+    }
+  }
+
+  @override
+  ResultVoid uploadInvoice(int shipmentRequestId, File file) async {
+    try {
+      final multipartFiles = <MultipartFile>[];
+      final path = file.path;
+      final filename = path.split('/').last;
+
+      String mimeType = 'image/jpeg';
+      if (filename.toLowerCase().endsWith('.png')) {
+        mimeType = 'image/png';
+      } else if (filename.toLowerCase().endsWith('.pdf')) {
+        mimeType = 'application/pdf';
+      }
+      final mimeParts = mimeType.split('/');
+      final mimeSubtype = mimeParts.length > 1 ? mimeParts[1] : '';
+
+      final bytes = await file.readAsBytes();
+
+      multipartFiles.add(
+        MultipartFile.fromBytes(
+          bytes,
+          filename: filename,
+          contentType: DioMediaType(mimeParts[0], mimeSubtype),
+        ),
+      );
+
+      final formData = FormData.fromMap({
+        '_method': 'PATCH',
+      });
+      formData.files.addAll(
+        multipartFiles.map((f) => MapEntry('documents[]', f)),
+      );
+
+      await _apiClient.uploadFile(
+        '${ApiEndpoints.shipmentRequests}/$shipmentRequestId',
+        formData: formData,
+      );
+
       return const Right(null);
     } catch (error, stackTrace) {
       return Left(ErrorMapper.map(error, stackTrace));

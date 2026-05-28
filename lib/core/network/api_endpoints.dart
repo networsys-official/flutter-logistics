@@ -61,15 +61,10 @@ class ApiEndpoints {
 
   // Customer Notification endpoints
   static const String notifications = '/me/notifications';
-  static const String unreadNotificationCount = '/me/notifications/unread-count';
+  static const String unreadNotificationCount =
+      '/me/notifications/unread-count';
   static String markNotificationRead(String id) => '/me/notifications/$id/read';
   static const String markAllNotificationsRead = '/me/notifications/read-all';
   static String deleteNotification(String id) => '/me/notifications/$id';
   static const String clearNotifications = '/me/notifications';
-
-  // Admin Notification endpoints
-  static const String adminNotifications = '/admin/notifications';
-  static const String adminUnreadNotificationCount = '/admin/notifications/unread-count';
-  static String adminMarkNotificationRead(String id) => '/admin/notifications/$id/read';
-  static const String adminMarkAllNotificationsRead = '/admin/notifications/read-all';
 }

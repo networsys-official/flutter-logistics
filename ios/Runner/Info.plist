@@ -85,6 +85,8 @@
 	</array>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Allow Logistic By Strom to access your photo library to attach images to shipment requests.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Allow Logistic By Strom to access your camera to capture receipts or invoices for your shipment requests.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

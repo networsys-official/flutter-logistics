@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:image_picker/image_picker.dart';
 
 class FileUtils {
   FileUtils._();
@@ -34,5 +35,17 @@ class FileUtils {
     if (path == null) return null;
 
     return File(path);
+  }
+
+  /// Captures an image from the camera.
+  static Future<File?> captureFromCamera() async {
+    try {
+      final ImagePicker picker = ImagePicker();
+      final XFile? image = await picker.pickImage(source: ImageSource.camera);
+      if (image == null) return null;
+      return File(image.path);
+    } catch (_) {
+      return null;
+    }
   }
 }

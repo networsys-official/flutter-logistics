@@ -28,6 +28,7 @@ import 'package:logistic_by_strom/features/accounts/ui/views/terms_and_condition
 import 'package:logistic_by_strom/features/accounts/ui/views/privacy_policy_page.dart';
 import 'package:logistic_by_strom/features/accounts/ui/views/faq_page.dart';
 import 'package:logistic_by_strom/features/shipments/ui/views/shipments_page.dart';
+import 'package:logistic_by_strom/features/shipments/ui/views/orders_page.dart';
 import 'package:logistic_by_strom/features/shipments/ui/views/add_shipment_page.dart';
 import 'package:logistic_by_strom/features/shipments/ui/views/shipment_detail_page.dart';
 import 'package:logistic_by_strom/features/shipments/data/models/shipment_request_model.dart';
@@ -253,6 +254,10 @@ GoRouter appRouter(Ref ref) {
           final status = state.uri.queryParameters['status'] ?? 'invoiced';
           return StatusRequestsPage(status: status);
         },
+      ),
+      GoRoute(
+        path: AppRoutes.orders,
+        builder: (context, state) => const OrdersPage(),
       ),
       GoRoute(
         path: AppRoutes.shipmentDetail,

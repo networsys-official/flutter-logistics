@@ -29,6 +29,11 @@ abstract interface class ShipmentRepository {
   );
   ResultFuture<List<ShipmentRequestModel>> getShipmentRequests();
   ResultFuture<List<UserShipmentModel>> getMyOrders();
+  ResultFuture<(List<UserShipmentModel> orders, bool hasMore)> getMyOrdersPaginated({
+    required int page,
+    int perPage = 10,
+  });
   ResultFuture<InvoiceModel> getInvoice(int shipmentRequestId);
   ResultFuture<PaymentResponseModel> initiatePayment(int invoiceId, String gateway);
+  ResultVoid uploadInvoice(int shipmentRequestId, File file);
 }

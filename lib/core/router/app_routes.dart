@@ -28,6 +28,7 @@ class AppRoutes {
   static const String zoneOnboarding = '/zone-onboarding';
   static const String setupAddress = '/setup-address';
   static const String statusRequests = '/status-requests';
+  static const String orders = '/orders';
 
   // Order must match StatefulShellRoute branches in AppRouter
   static const List<String> bottomNavLocations = [

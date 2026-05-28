@@ -65,7 +65,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
       builder: (context, ref, child) {
         final notificationsAsync = ref.watch(notificationsViewModelProvider);
         final theme = Theme.of(context);
-        
+
         final unreadCount = notificationsAsync.maybeWhen(
           data: (list) => list.where((n) => !n.isRead).length,
           orElse: () => 0,
