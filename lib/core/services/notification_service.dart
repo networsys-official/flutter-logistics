@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -204,12 +205,13 @@ class NotificationService extends _$NotificationService {
   Future<void> syncTokenToServer(String token) async {
     try {
       final client = ref.read(apiClientProvider);
+      final deviceName = await _getDeviceName();
       await client.post(
         ApiEndpoints.fcmToken,
         data: {
           'fcm_token': token,
           'platform': Platform.operatingSystem,
-          'device_name': Platform.localHostname,
+          'device_name': deviceName,
         },
       );
       if (kDebugMode) {
@@ -220,6 +222,39 @@ class NotificationService extends _$NotificationService {
         print('Failed to sync FCM Token to server: $e');
       }
     }
+  }
+
+  Future<String> _getDeviceName() async {
+    try {
+      final deviceInfo = DeviceInfoPlugin();
+      if (kIsWeb) {
+        final webBrowserInfo = await deviceInfo.webBrowserInfo;
+        return webBrowserInfo.browserName.toString();
+      }
+      if (Platform.isAndroid) {
+        final androidInfo = await deviceInfo.androidInfo;
+        return '${androidInfo.brand} ${androidInfo.model}';
+      }
+      if (Platform.isIOS) {
+        final iosInfo = await deviceInfo.iosInfo;
+        return iosInfo.name;
+      }
+      if (Platform.isMacOS) {
+        final macInfo = await deviceInfo.macOsInfo;
+        return macInfo.computerName;
+      }
+      if (Platform.isWindows) {
+        final windowsInfo = await deviceInfo.windowsInfo;
+        return windowsInfo.computerName;
+      }
+      if (Platform.isLinux) {
+        final linuxInfo = await deviceInfo.linuxInfo;
+        return linuxInfo.name;
+      }
+    } catch (_) {
+      // Fallback
+    }
+    return Platform.localHostname;
   }
 
   Future<String?> _waitForApnsToken() async {
