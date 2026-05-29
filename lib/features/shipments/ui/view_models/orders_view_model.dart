@@ -36,9 +36,9 @@ class OrdersState {
 @riverpod
 class OrdersViewModel extends _$OrdersViewModel {
   @override
-  Future<OrdersState> build() async {
+  Future<OrdersState> build({String? status}) async {
     final repository = ref.read(shipmentRepositoryProvider);
-    final result = await repository.getMyOrdersPaginated(page: 1);
+    final result = await repository.getMyOrdersPaginated(page: 1, status: status);
 
     return switch (result) {
       Left(value: final failure) => throw failure.message,
@@ -60,7 +60,7 @@ class OrdersViewModel extends _$OrdersViewModel {
 
     final nextPage = currentState.page + 1;
     final repository = ref.read(shipmentRepositoryProvider);
-    final result = await repository.getMyOrdersPaginated(page: nextPage);
+    final result = await repository.getMyOrdersPaginated(page: nextPage, status: status);
 
     state = result.fold(
       (failure) => AsyncValue.error(failure.message, StackTrace.current),

@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:logistic_by_strom/core/router/app_routes.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
-
 import 'package:logistic_by_strom/core/models/user_address.dart';
 import 'package:logistic_by_strom/features/accounts/ui/view_models/user_address_view_model.dart';
 
@@ -15,81 +14,116 @@ class AddressCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Safely map string label back to enum for UI color/icon
     final typeEnum = AddressType.values.firstWhere(
       (e) => e.name == address.label,
       orElse: () => AddressType.home,
     );
 
-    return Container(
-      padding: const EdgeInsets.all(18),
-      decoration: BoxDecoration(
-        color: AppColors.white,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () => context.push(AppRoutes.addAddress, extra: address),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: address.isDefault
-              ? AppColors.primary.withValues(alpha: 0.5)
-              : AppColors.neutral200.withValues(alpha: 0.5),
-          width: address.isDefault ? 1.5 : 1.0,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.neutral900.withValues(alpha: 0.04),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              _AddressCardIcon(type: typeEnum),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          address.label?.toUpperCase() ?? 'ADDRESS',
-                          style: TextStyle(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w800,
-                            color: _getColor(typeEnum),
-                            letterSpacing: 0.5,
-                          ),
-                        ),
-                        if (address.isDefault) ...[
-                          const SizedBox(width: 8),
-                          const _AddressDefaultBadge(),
-                        ],
-                      ],
-                    ),
-                    Text(
-                      address.poBox ?? 'No P.O. Box',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.neutral900,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              _AddressCardActionButtons(
-                address: address,
-                onDelete: () => _showDeleteDialog(context, ref, address),
+        child: Container(
+          padding: const EdgeInsets.all(18),
+          decoration: BoxDecoration(
+            color: AppColors.white,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: address.isDefault
+                  ? AppColors.primary.withValues(alpha: 0.5)
+                  : AppColors.neutral200.withValues(alpha: 0.5),
+              width: address.isDefault ? 1.5 : 1.0,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.neutral900.withValues(alpha: 0.04),
+                blurRadius: 20,
+                offset: const Offset(0, 10),
               ),
             ],
           ),
-          const SizedBox(height: 16),
-          _AddressCardDetails(address: address),
-          const SizedBox(height: 12),
-          _AddressCardLocationInfo(address: address),
-        ],
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _AddressCardIcon(type: typeEnum),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              address.label?.toUpperCase() ?? 'ADDRESS',
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w800,
+                                color: _getColor(typeEnum),
+                                letterSpacing: 0.5,
+                              ),
+                            ),
+                            if (address.isDefault) ...[
+                              const SizedBox(width: 8),
+                              const _AddressDefaultBadge(),
+                            ],
+                          ],
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          address.addressLine1,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.neutral900,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  _AddressCardActionButtons(
+                    address: address,
+                    onDelete: () => _showDeleteDialog(context, ref, address),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              if (address.poBox != null && address.poBox!.isNotEmpty) ...[
+                Text(
+                  'P.O. Box ${address.poBox}',
+                  style: const TextStyle(
+                    fontSize: 13,
+                    color: AppColors.neutral500,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 6),
+              ],
+              Row(
+                children: [
+                  const HugeIcon(
+                    icon: HugeIcons.strokeRoundedLocation01,
+                    size: 14,
+                    color: AppColors.neutral500,
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    '${address.island ?? 'New Providence'}, Bahamas',
+                    style: const TextStyle(
+                      fontSize: 13,
+                      color: AppColors.neutral700,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -197,76 +231,9 @@ class _AddressCardActionButtons extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         _ActionButton(
-          icon: Icons.edit_outlined,
-          color: AppColors.neutral500,
-          onTap: () => context.push(AppRoutes.addAddress, extra: address),
-        ),
-        const SizedBox(width: 8),
-        _ActionButton(
           icon: Icons.delete_outline,
           color: AppColors.error.withValues(alpha: 0.8),
           onTap: onDelete,
-        ),
-      ],
-    );
-  }
-}
-
-class _AddressCardDetails extends StatelessWidget {
-  final UserAddress address;
-  const _AddressCardDetails({required this.address});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          '${address.addressLine1}${address.addressLine2 != null ? ', ${address.addressLine2}' : ''}',
-          style: const TextStyle(
-            fontSize: 14,
-            color: AppColors.neutral700,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        if (address.zone != null || address.city != null)
-          Padding(
-            padding: const EdgeInsets.only(top: 2),
-            child: Text(
-              '${address.zone ?? ''}${address.zone != null && address.city != null ? ', ' : ''}${address.city ?? ''}',
-              style: const TextStyle(
-                fontSize: 13,
-                color: AppColors.neutral500,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-      ],
-    );
-  }
-}
-
-class _AddressCardLocationInfo extends StatelessWidget {
-  final UserAddress address;
-  const _AddressCardLocationInfo({required this.address});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const HugeIcon(
-          icon: HugeIcons.strokeRoundedLocation01,
-          size: 14,
-          color: AppColors.neutral500,
-        ),
-        const SizedBox(width: 6),
-        Text(
-          address.island ?? 'No Island',
-          style: const TextStyle(
-            fontSize: 13,
-            color: AppColors.neutral700,
-            fontWeight: FontWeight.w600,
-          ),
         ),
       ],
     );

@@ -82,6 +82,7 @@ class ShipmentRepositoryImpl implements ShipmentRepository {
   ResultFuture<(List<UserShipmentModel> orders, bool hasMore)> getMyOrdersPaginated({
     required int page,
     int perPage = 10,
+    String? status,
   }) async {
     try {
       final response = await _apiClient.get(
@@ -89,6 +90,7 @@ class ShipmentRepositoryImpl implements ShipmentRepository {
         queryParameters: {
           'page': page,
           'per_page': perPage,
+          'status':? status,
         },
       );
       final List<dynamic> data = response.data['data'];

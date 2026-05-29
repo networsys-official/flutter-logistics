@@ -27,6 +27,7 @@ import 'package:logistic_by_strom/features/accounts/ui/views/update_password_pag
 import 'package:logistic_by_strom/features/accounts/ui/views/terms_and_conditions_page.dart';
 import 'package:logistic_by_strom/features/accounts/ui/views/privacy_policy_page.dart';
 import 'package:logistic_by_strom/features/accounts/ui/views/faq_page.dart';
+import 'package:logistic_by_strom/features/accounts/ui/views/about_page.dart';
 import 'package:logistic_by_strom/features/shipments/ui/views/shipments_page.dart';
 import 'package:logistic_by_strom/features/shipments/ui/views/orders_page.dart';
 import 'package:logistic_by_strom/features/shipments/ui/views/add_shipment_page.dart';
@@ -257,7 +258,10 @@ GoRouter appRouter(Ref ref) {
       ),
       GoRoute(
         path: AppRoutes.orders,
-        builder: (context, state) => const OrdersPage(),
+        builder: (context, state) {
+          final status = state.uri.queryParameters['status'];
+          return OrdersPage(status: status);
+        },
       ),
       GoRoute(
         path: AppRoutes.shipmentDetail,
@@ -296,6 +300,10 @@ GoRouter appRouter(Ref ref) {
       GoRoute(
         path: AppRoutes.faq,
         builder: (context, state) => const FAQPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.about,
+        builder: (context, state) => const AboutPage(),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {

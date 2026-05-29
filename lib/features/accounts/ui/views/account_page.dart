@@ -1,3 +1,4 @@
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -22,7 +23,18 @@ class AccountPage extends ConsumerWidget {
       backgroundColor: AppColors.neutral100,
       body: accountState.when(
         data: (profile) => _buildContent(context, ref, profile),
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => Skeletonizer(
+          enabled: true,
+          child: _buildContent(
+            context,
+            ref,
+            const UserProfile(
+              id: '1',
+              name: 'Loading User Profile',
+              email: 'loading.profile@gmail.com',
+            ),
+          ),
+        ),
         error: (e, _) => Center(child: Text('Error: $e')),
       ),
     );
@@ -67,18 +79,11 @@ class AccountPage extends ConsumerWidget {
                 _buildSectionHeader('General'),
                 _buildMenuContainer([
                   _MenuAction(
-                    icon: HugeIcons.strokeRoundedSettings01,
-                    title: 'Settings',
-                    onTap: () {},
+                    icon: HugeIcons.strokeRoundedDeliveryBox01,
+                    title: 'Delivery History',
+                    onTap: () => context.push('${AppRoutes.orders}?status=delivered'),
                     color: AppColors.info,
                     bgColor: const Color(0xFFFFF8E1),
-                  ),
-                  _MenuAction(
-                    icon: HugeIcons.strokeRoundedCustomerService,
-                    title: 'Help & Support',
-                    onTap: () => context.push(AppRoutes.support),
-                    color: AppColors.secondary,
-                    bgColor: const Color(0xFFD6EEF4),
                   ),
                   _MenuAction(
                     icon: HugeIcons.strokeRoundedHelpCircle,
@@ -108,7 +113,7 @@ class AccountPage extends ConsumerWidget {
                   _MenuAction(
                     icon: HugeIcons.strokeRoundedInformationCircle,
                     title: 'About',
-                    onTap: () {},
+                    onTap: () => context.push(AppRoutes.about),
                     color: AppColors.neutral700,
                     bgColor: AppColors.neutral200.withValues(alpha: 0.3),
                   ),
@@ -130,58 +135,65 @@ class AccountPage extends ConsumerWidget {
         ? NetworkImage(resolvedUrl)
         : const AssetImage(AppImages.userProfile);
 
-    return Container(
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: AppColors.white,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () => context.push(AppRoutes.editProfile),
         borderRadius: BorderRadius.circular(AppSpacing.radiusXxl),
-        boxShadow: AppSpacing.shadowMd,
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(4),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(color: AppColors.neutral200),
-            ),
-            child: CircleAvatar(
-              radius: 42,
-              backgroundColor: AppColors.secondaryContainer,
-              backgroundImage: imageProvider,
-            ),
+        child: Container(
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: AppColors.white,
+            borderRadius: BorderRadius.circular(AppSpacing.radiusXxl),
+            boxShadow: AppSpacing.shadowMd,
           ),
-          const SizedBox(width: AppSpacing.lg),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  profile?.name ?? 'Guest User',
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.neutral900,
-                  ),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: AppColors.neutral200),
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  profile?.email ?? 'No email provided',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: AppColors.neutral500,
-                    fontWeight: FontWeight.w500,
-                  ),
+                child: CircleAvatar(
+                  radius: 42,
+                  backgroundColor: AppColors.secondaryContainer,
+                  backgroundImage: imageProvider,
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(width: AppSpacing.lg),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      profile?.name ?? 'Guest User',
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800,
+                        color: AppColors.neutral900,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      profile?.email ?? 'No email provided',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: AppColors.neutral500,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              IconButton(
+                onPressed: () => context.push(AppRoutes.editProfile),
+                icon: const Icon(Icons.edit_outlined, size: 24),
+                color: AppColors.neutral700,
+              ),
+            ],
           ),
-          IconButton(
-            onPressed: () => context.push(AppRoutes.editProfile),
-            icon: const Icon(Icons.edit_outlined, size: 24),
-            color: AppColors.neutral700,
-          ),
-        ],
+        ),
       ),
     );
   }

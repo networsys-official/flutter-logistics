@@ -25,6 +25,7 @@ class AppRoutes {
   static const String termsAndConditions = '/terms-and-conditions';
   static const String privacyPolicy = '/privacy-policy';
   static const String faq = '/faq';
+  static const String about = '/about';
   static const String zoneOnboarding = '/zone-onboarding';
   static const String setupAddress = '/setup-address';
   static const String statusRequests = '/status-requests';

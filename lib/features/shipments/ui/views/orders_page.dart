@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:intl/intl.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 import 'package:logistic_by_strom/core/widgets/app_app_bar.dart';
 import 'package:logistic_by_strom/features/home/ui/widgets/shipment_card.dart';
@@ -9,7 +10,8 @@ import 'package:logistic_by_strom/features/shipments/data/models/user_shipment_m
 import 'package:logistic_by_strom/features/shipments/ui/view_models/orders_view_model.dart';
 
 class OrdersPage extends ConsumerStatefulWidget {
-  const OrdersPage({super.key});
+  final String? status;
+  const OrdersPage({super.key, this.status});
 
   @override
   ConsumerState<OrdersPage> createState() => _OrdersPageState();
@@ -34,7 +36,7 @@ class _OrdersPageState extends ConsumerState<OrdersPage> {
   void _onScroll() {
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 200) {
-      ref.read(ordersViewModelProvider.notifier).fetchNextPage();
+      ref.read(ordersViewModelProvider(status: widget.status).notifier).fetchNextPage();
     }
   }
 
@@ -49,17 +51,40 @@ class _OrdersPageState extends ConsumerState<OrdersPage> {
 
   @override
   Widget build(BuildContext context) {
-    final stateAsync = ref.watch(ordersViewModelProvider);
+    final stateAsync = ref.watch(ordersViewModelProvider(status: widget.status));
 
     return Scaffold(
       backgroundColor: AppColors.neutral100,
       body: Column(
         children: [
-          const AppAppBar(title: 'All Tracked Orders'),
+          AppAppBar(
+            title: widget.status == 'delivered'
+                ? 'Delivery History'
+                : 'All Tracked Orders',
+          ),
           Expanded(
             child: stateAsync.when(
-              loading: () => const Center(
-                child: CircularProgressIndicator(color: AppColors.primary),
+              loading: () => Skeletonizer(
+                enabled: true,
+                child: ListView.builder(
+                  padding: const EdgeInsets.all(18),
+                  itemCount: 4,
+                  itemBuilder: (context, index) {
+                    return const Padding(
+                      padding: EdgeInsets.only(bottom: 16),
+                      child: ShipmentCard(
+                        title: 'Order',
+                        id: '#STROM123456789',
+                        status: 'Pending',
+                        date: 'May 29, 2026',
+                        showTimeline: false,
+                        originCountry: 'United States',
+                        destinationCountry: 'Bahamas',
+                        onTap: null,
+                      ),
+                    );
+                  },
+                ),
               ),
               error: (err, stack) => Center(
                 child: Padding(
@@ -84,7 +109,7 @@ class _OrdersPageState extends ConsumerState<OrdersPage> {
                       const SizedBox(height: 16),
                       ElevatedButton(
                         onPressed: () => ref
-                            .read(ordersViewModelProvider.notifier)
+                            .read(ordersViewModelProvider(status: widget.status).notifier)
                             .refresh(),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.primary,
@@ -131,7 +156,7 @@ class _OrdersPageState extends ConsumerState<OrdersPage> {
                 return RefreshIndicator(
                   color: AppColors.primary,
                   onRefresh: () =>
-                      ref.read(ordersViewModelProvider.notifier).refresh(),
+                      ref.read(ordersViewModelProvider(status: widget.status).notifier).refresh(),
                   child: ListView.builder(
                     controller: _scrollController,
                     padding: const EdgeInsets.all(18),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 import 'package:logistic_by_strom/core/utils/error_message.dart';
 import 'package:logistic_by_strom/core/widgets/app_app_bar.dart';
@@ -128,7 +129,28 @@ class _AddEditAddressPageState extends ConsumerState<AddEditAddressPage> {
                 onDefaultChanged: (v) => setState(() => _isDefault = v),
                 onSubmit: _submit,
               ),
-              loading: () => const Center(child: CircularProgressIndicator()),
+              loading: () => Skeletonizer(
+                enabled: true,
+                child: _AddressForm(
+                  formKey: GlobalKey<FormState>(),
+                  address: null,
+                  zones: const [
+                    {'id': 1, 'name': 'Zone A'},
+                    {'id': 2, 'name': 'Zone B'},
+                  ],
+                  isSubmitting: false,
+                  label: 'home',
+                  islandController: TextEditingController(text: 'New Providence'),
+                  addressLine1Controller: TextEditingController(text: 'Street Address Description'),
+                  poBoxController: TextEditingController(text: 'PO Box Number'),
+                  selectedZoneId: 1,
+                  isDefault: false,
+                  onLabelChanged: (v) {},
+                  onZoneChanged: (v) {},
+                  onDefaultChanged: (v) {},
+                  onSubmit: () {},
+                ),
+              ),
               error: (error, stack) =>
                   Center(child: Text(errorMessageFrom(error))),
             ),
