@@ -178,7 +178,7 @@ class _OrdersPageState extends ConsumerState<OrdersPage> {
 
                       final shipment = state.orders[index];
                       return Padding(
-                        padding: const EdgeInsets.only(bottom: 16),
+                        padding: const EdgeInsets.only(bottom: 0),
                         child: ShipmentCard(
                           title: 'Order',
                           id: '#${shipment.trackingNumber}',

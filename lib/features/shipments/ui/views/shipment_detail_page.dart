@@ -32,6 +32,13 @@ class _ShipmentDetailPageState extends ConsumerState<ShipmentDetailPage> {
             .fetchInvoice();
       }
     });
+
+      debugPrint('Shipment ID: ${widget.shipment.id}');
+      debugPrint('Booking Status: ${widget.shipment.bookingStatus}');
+      debugPrint('Payment Status: ${widget.shipment.paymentStatus}');
+      debugPrint('Request Number: ${widget.shipment.requestNumber}');
+      debugPrint('Invoice: ${widget.shipment.invoice}');
+
   }
 
   @override

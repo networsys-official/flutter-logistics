@@ -51,7 +51,7 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
               ),
               const Spacer(),
-              if (actions != null) ...actions!,
+              ...?actions,
               if (showNotification) _buildNotificationIcon(context),
             ],
           ),

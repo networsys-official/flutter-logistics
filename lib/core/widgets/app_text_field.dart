@@ -17,6 +17,7 @@ class AppTextField extends StatelessWidget {
   final String? errorText;
   final ValueChanged<String>? onChanged;
 
+
   const AppTextField({
     super.key,
     this.label,
@@ -68,21 +69,21 @@ class AppTextField extends StatelessWidget {
             errorText: errorText,
             prefixIcon: prefixIcon != null
                 ? Padding(
-                    padding: const EdgeInsets.all(12.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: prefixIcon,
                   )
                 : null,
             suffixIcon: suffixIcon != null
                 ? Padding(
-                    padding: const EdgeInsets.all(12.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: suffixIcon,
                   )
                 : null,
             filled: true,
             fillColor: AppColors.white,
             contentPadding: const EdgeInsets.symmetric(
-              horizontal: 20,
-              vertical: 18,
+              horizontal: 16,
+              vertical: 8,
             ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),

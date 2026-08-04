@@ -24,17 +24,19 @@ class HomeSectionHeader extends StatelessWidget {
               color: AppColors.neutral900,
             ),
           ),
-          GestureDetector(
-            onTap: onViewAll,
-            child: const Text(
-              AppStrings.viewAll,
-              style: TextStyle(
-                color: AppColors.primary,
-                fontWeight: FontWeight.w700,
-                fontSize: 14,
+
+          if (onViewAll != null)
+            GestureDetector(
+              onTap: onViewAll,
+              child: const Text(
+                AppStrings.viewAll,
+                style: TextStyle(
+                  color: AppColors.primary,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 14,
+                ),
               ),
             ),
-          ),
         ],
       ),
     );

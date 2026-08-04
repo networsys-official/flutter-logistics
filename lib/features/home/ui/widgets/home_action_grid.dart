@@ -117,13 +117,42 @@ class _ActionItem extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          badgeCount > 0
-              ? Badge(
-                  label: Text(badgeCount.toString()),
-                  backgroundColor: data.color,
-                  child: actionIcon,
-                )
-              : actionIcon,
+          Stack(
+            clipBehavior: Clip.none,
+            children: [
+              actionIcon,
+
+              if (badgeCount > 0)
+                Positioned(
+                  top: -4,
+                  right: -4,
+                  child: Container(
+                    constraints: const BoxConstraints(
+                      minWidth: 20,
+                      minHeight: 20,
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: data.color,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: AppColors.white,
+                        width: 2,
+                      ),
+                    ),
+                    child: Text(
+                      badgeCount > 99 ? '99+' : badgeCount.toString(),
+                      style: const TextStyle(
+                        color: AppColors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ),
+            ],
+          ),
           const SizedBox(height: 8),
           Text(
             data.label,

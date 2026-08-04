@@ -35,6 +35,12 @@ class ShipmentTrackingFields extends StatelessWidget {
           controller: trackingController,
           hint: 'Enter tracking number',
           onChanged: onTrackingChanged,
+          validator: (value) {
+            if (value == null || value.trim().isEmpty) {
+              return 'Tracking number is required';
+            }
+            return null;
+          },
         ),
         const SizedBox(height: AppSpacing.lg),
         AppTextField(
@@ -46,6 +52,12 @@ class ShipmentTrackingFields extends StatelessWidget {
             color: AppColors.neutral500,
             size: 20,
           ),
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please select an arrival date';
+            }
+            return null;
+          },
           readOnly: true,
           onTap: onDateTap,
         ),
@@ -55,6 +67,12 @@ class ShipmentTrackingFields extends StatelessWidget {
           hint: 'Search Store/Supplier',
           value: state.selectedSupplier,
           items: state.suppliers,
+          validator: (supplier) {
+            if (supplier == null) {
+              return 'Please select a supplier';
+            }
+            return null;
+          },
           itemLabelBuilder: (supplier) => supplier.company,
           onChanged: onSupplierChanged,
         ),

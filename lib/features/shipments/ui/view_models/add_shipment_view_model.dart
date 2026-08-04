@@ -130,13 +130,14 @@ class AddShipmentViewModel extends _$AddShipmentViewModel {
 
   Future<void> pickFile(DocumentPickerSource source) async {
     final pickedFile = source == DocumentPickerSource.camera
-        ? await FileUtils.pickImage()
+        ? await FileUtils.captureFromCamera()
         : await FileUtils.pickDocument();
 
     if (pickedFile != null) {
       _updateState(
-        (s) =>
-            s.copyWith(selectedDocuments: [...s.selectedDocuments, pickedFile]),
+            (s) => s.copyWith(
+          selectedDocuments: [...s.selectedDocuments, pickedFile],
+        ),
       );
     }
   }

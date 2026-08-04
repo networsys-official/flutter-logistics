@@ -60,8 +60,8 @@ class AuthStrings {
   static const String sendOtp = 'Send Reset Link';
   static const String resetLinkSent =
       'A password reset link has been sent to your email address.';
-  static const String resetPasswordTitle = 'RESET PASSWORD';
-  static const String resetPasswordSubtitle = 'Enter your new password below';
+  static const String resetPasswordTitle = 'Create New Password';
+  static const String resetPasswordSubtitle = 'Create a secure password for your account. Make sure it is strong and easy for you to remember.';
   static const String newPassword = 'New Password';
   static const String newPasswordHint = 'Enter new password';
   static const String updatePassword = 'Update Password';

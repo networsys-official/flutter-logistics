@@ -79,6 +79,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
           password: _passwordController.text,
         );
 
+    // print(" sign up response$response");
     if (response != null && mounted) {
       final message = response.message ?? AuthStrings.registrationSuccess;
       ScaffoldMessenger.of(

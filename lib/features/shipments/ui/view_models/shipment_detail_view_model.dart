@@ -15,6 +15,14 @@ class ShipmentDetailViewModel extends _$ShipmentDetailViewModel {
     );
   }
 
+  void markPaymentCompleted() {
+    state = state.copyWith(
+      shipment: state.shipment.copyWith(
+        paymentStatus: 'paid',
+      ),
+    );
+  }
+
   Future<void> fetchInvoice() async {
     state = state.copyWith(isLoadingInvoice: true, errorMessage: null);
 

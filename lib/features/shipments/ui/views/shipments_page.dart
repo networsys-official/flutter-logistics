@@ -350,7 +350,7 @@ class _StatChip extends StatelessWidget {
       ),
       child: Row(
         children: [
-          HugeIcon(icon: icon, color: color, size: 20),
+          HugeIcon(icon: icon, color: color, size: 18),
           const SizedBox(width: 6),
           Expanded(
             child: Column(
@@ -359,7 +359,7 @@ class _StatChip extends StatelessWidget {
                 Text(
                   value,
                   style: TextStyle(
-                    fontSize: 26,
+                    fontSize: 24,
                     fontWeight: FontWeight.w800,
                     color: color,
                     height: 1.1,
@@ -368,7 +368,7 @@ class _StatChip extends StatelessWidget {
                 Text(
                   label,
                   style: const TextStyle(
-                    fontSize: 11,
+                    fontSize: 10,
                     fontWeight: FontWeight.w600,
                     color: AppColors.neutral500,
                   ),
