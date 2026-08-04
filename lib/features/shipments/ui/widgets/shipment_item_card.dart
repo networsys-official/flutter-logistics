@@ -31,6 +31,7 @@ class ShipmentItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(16),
@@ -42,6 +43,7 @@ class ShipmentItemCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -74,7 +76,7 @@ class ShipmentItemCard extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.md),
           AppTextField(
-            label: 'Price (USD)',
+            label: 'Price (BSD)',
             hint: '0.00',
             keyboardType: TextInputType.number,
             onChanged: (value) => onPriceChanged(double.tryParse(value) ?? 0),

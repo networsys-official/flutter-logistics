@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 class FileUtils {
   FileUtils._();
@@ -34,18 +35,44 @@ class FileUtils {
     final path = result.files.single.path;
     if (path == null) return null;
 
-    return File(path);
+    return await _compressImage(File(path));
   }
 
   /// Captures an image from the camera.
   static Future<File?> captureFromCamera() async {
     try {
-      final ImagePicker picker = ImagePicker();
-      final XFile? image = await picker.pickImage(source: ImageSource.camera);
+      final picker = ImagePicker();
+
+      final XFile? image = await picker.pickImage(
+        source: ImageSource.camera,
+        imageQuality: 80,
+        maxWidth: 1500,
+        maxHeight: 1500,
+      );
+
       if (image == null) return null;
-      return File(image.path);
+
+      return await _compressImage(File(image.path));
     } catch (_) {
       return null;
     }
   }
+
+  static Future<File?> _compressImage(File file) async {
+    final targetPath =
+        '${file.parent.path}/${DateTime.now().millisecondsSinceEpoch}.jpg';
+
+    final compressed = await FlutterImageCompress.compressAndGetFile(
+      file.path,
+      targetPath,
+      quality: 70,
+      minWidth: 1200,
+      minHeight: 1200,
+    );
+
+    if (compressed == null) return null;
+
+    return File(compressed.path);
+  }
+
 }

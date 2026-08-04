@@ -13,6 +13,7 @@ class AppSearchableSelect<T> extends StatefulWidget {
   final String Function(T)? itemSubtitleBuilder;
   final Function(T?) onChanged;
   final bool isLoading;
+  final String? Function(T?)? validator;
 
   const AppSearchableSelect({
     super.key,
@@ -24,6 +25,7 @@ class AppSearchableSelect<T> extends StatefulWidget {
     this.value,
     this.itemSubtitleBuilder,
     this.isLoading = false,
+    this.validator
   });
 
   @override
@@ -50,11 +52,18 @@ class _AppSearchableSelectState<T> extends State<AppSearchableSelect<T>> {
 
   @override
   Widget build(BuildContext context) {
-    final selectedLabel = widget.value != null
-        ? widget.itemLabelBuilder(widget.value as T)
-        : null;
+    return FormField<T>(
+        initialValue: widget.value,
+        validator: widget.validator,
+        builder: (field) {
+          // final selectedLabel = field.value != null
+          //     ? widget.itemLabelBuilder(field.value as T)
+          //     : null;
 
-    return Column(
+          final selectedLabel = widget.value != null
+              ? widget.itemLabelBuilder(widget.value as T)
+              : null;
+          return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (widget.label.isNotEmpty) ...[
@@ -112,6 +121,7 @@ class _AppSearchableSelectState<T> extends State<AppSearchableSelect<T>> {
           ),
         ),
       ],
+    );}
     );
   }
 }

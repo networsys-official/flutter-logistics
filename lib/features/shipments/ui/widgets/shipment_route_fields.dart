@@ -12,6 +12,7 @@ class ShipmentRouteFields extends StatelessWidget {
     required this.onServiceTypeChanged,
     required this.onDeliveryTypeChanged,
     required this.onLocationChanged,
+
   });
 
   final AddShipmentFormData state;
@@ -19,7 +20,6 @@ class ShipmentRouteFields extends StatelessWidget {
   final ValueChanged<int> onServiceTypeChanged;
   final ValueChanged<String> onDeliveryTypeChanged;
   final ValueChanged<DeliveryZone?> onLocationChanged;
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -28,6 +28,12 @@ class ShipmentRouteFields extends StatelessWidget {
           label: 'Origin Warehouse',
           hint: 'Select Origin',
           value: state.originFacilityId,
+          validator: (value) {
+            if (value == null) {
+              return 'Please select an origin warehouse';
+            }
+            return null;
+          },
           dropdownItems: const [
             DropdownMenuItem(value: 2, child: Text('Miami Warehouse (US)')),
             DropdownMenuItem(value: 3, child: Text('Shenzhen Warehouse (CN)')),
@@ -41,6 +47,12 @@ class ShipmentRouteFields extends StatelessWidget {
           label: 'Service Type',
           hint: 'Select Service Type',
           value: state.serviceTypeId,
+          validator: (value) {
+            if (value == null) {
+              return 'Please select a service type';
+            }
+            return null;
+          },
           dropdownItems: const [
             DropdownMenuItem(value: 1, child: Text('Standard (1.25 BSD/lb)')),
             DropdownMenuItem(value: 2, child: Text('Priority (1.99 BSD/lb)')),
@@ -54,6 +66,12 @@ class ShipmentRouteFields extends StatelessWidget {
           label: 'Delivery Type',
           hint: 'Select Delivery Type',
           value: state.deliveryType,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please select a delivery type';
+            }
+            return null;
+          },
           dropdownItems: const [
             DropdownMenuItem(value: 'pickup', child: Text('Pickup from Store')),
             DropdownMenuItem(
@@ -71,6 +89,12 @@ class ShipmentRouteFields extends StatelessWidget {
             label: 'Zone',
             hint: 'Select Delivery Zone',
             value: state.selectedLocation,
+            validator: (value) {
+              if (value == null) {
+                return 'Please select a delivery zone';
+              }
+              return null;
+            },
             dropdownItems: state.locations
                 .map(
                   (zone) => DropdownMenuItem(

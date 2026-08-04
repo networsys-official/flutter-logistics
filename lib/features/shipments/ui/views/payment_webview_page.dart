@@ -32,6 +32,27 @@ class _PaymentWebViewPageState extends State<PaymentWebViewPage> {
               _isLoading = true;
             });
           },
+          // onPageFinished: (String url) {
+          //   setState(() {
+          //     _isLoading = false;
+          //   });
+          //   if (url.contains('admin.logisticsystemsbs.com/payment/success')) {
+          //     Navigator.pop(context, true); // Return true on success
+          //   }
+          // },
+          // onNavigationRequest: (NavigationRequest request) {
+          //   if (request.url.contains('admin.logisticsystemsbs.com/payment/cancel')) {
+          //     Navigator.pop(context, false); // Return false on cancel
+          //     return NavigationDecision.prevent;
+          //   }
+          //   if (request.url.contains('admin.logisticsystemsbs.com/payment/success')) {
+          //     Navigator.pop(context, true);
+          //     return NavigationDecision.prevent;
+          //   }
+          //   return NavigationDecision.navigate;
+          // },
+
+
           onPageFinished: (String url) {
             setState(() {
               _isLoading = false;

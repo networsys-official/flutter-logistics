@@ -13,5 +13,6 @@ sealed class ShipmentDetailState with _$ShipmentDetailState {
     @Default(false) bool isInitiatingPayment,
     String? errorMessage,
     PaymentResponseModel? paymentResponse,
+
   }) = _ShipmentDetailState;
 }

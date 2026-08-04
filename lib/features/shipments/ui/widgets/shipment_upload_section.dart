@@ -11,11 +11,14 @@ class ShipmentUploadSection extends StatelessWidget {
     required this.documents,
     required this.onUploadTap,
     required this.onRemoveDocument,
+    this.errorText,
   });
 
   final List<File> documents;
   final VoidCallback onUploadTap;
   final ValueChanged<int> onRemoveDocument;
+  final String? errorText;
+
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +32,9 @@ class ShipmentUploadSection extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 16),
             decoration: BoxDecoration(
               border: Border.all(
-                color: AppColors.primary.withValues(alpha: 0.5),
-                width: 1,
+                color: errorText != null
+                    ? Colors.red
+                    : AppColors.primary.withValues(alpha: 0.5),
               ),
               borderRadius: BorderRadius.circular(20),
             ),
@@ -55,14 +59,27 @@ class ShipmentUploadSection extends StatelessWidget {
             ),
           ),
         ),
+        if (errorText != null) ...[
+          const SizedBox(height: 6),
+          Padding(
+            padding: const EdgeInsets.only(left: 12),
+            child: Text(
+              errorText!,
+              style: const TextStyle(
+                color: Colors.red,
+                fontSize: 12,
+              ),
+            ),
+          ),
+        ],
         if (documents.isNotEmpty) ...[
           const SizedBox(height: AppSpacing.md),
           ...List.generate(
             documents.length,
-            (index) => SelectedDocumentTile(
-              file: documents[index],
-              onRemove: () => onRemoveDocument(index),
-            ),
+                (index) => SelectedDocumentTile(
+                  file: documents[index],
+                  onRemove: () => onRemoveDocument(index),
+                ),
           ),
         ],
       ],

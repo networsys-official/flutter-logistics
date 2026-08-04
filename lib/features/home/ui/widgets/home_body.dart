@@ -177,7 +177,7 @@ class HomeBody extends ConsumerWidget {
           if (currentShipment != null) ...[
             HomeSectionHeader(
               title: HomeStrings.currentShipment,
-              onViewAll: () => context.push(AppRoutes.orders),
+              // onViewAll: () => context.push(AppRoutes.orders),
             ),
             ShipmentCard(
               title: 'Current',
@@ -188,7 +188,8 @@ class HomeBody extends ConsumerWidget {
               originCountry: currentShipment.originCountry?.name ?? 'USA',
               destinationCountry: currentShipment.destinationCountry?.name ?? 'Bahamas',
               activeStepIndex: _mapStatusToStepIndex(currentShipment.currentStatus),
-              onTap: () => context.push(AppRoutes.orders),
+              onTap: (){},
+              // onTap: () => context.push(AppRoutes.orders),
             ),
             const SizedBox(height: 24),
           ],

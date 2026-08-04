@@ -4,9 +4,10 @@ import 'package:flutter/foundation.dart';
 class ApiEndpoints {
   static const String configuredBaseUrl = String.fromEnvironment(
     'BASE_URL',
-    // defaultValue: '',
     // defaultValue: 'https://sprinkler-celibate-unreached.ngrok-free.dev/api/v1',
-    defaultValue: 'https://logisticsystems.webandappdevelopmenttech.com/api/v1',
+     defaultValue: 'https://logisticsystems.webandappdevelopmenttech.com/api/v1',
+    // defaultValue: 'https://admin.logisticsystemsbs.com/api/v1',
+
   );
 
   static String get baseUrl {
@@ -56,13 +57,11 @@ class ApiEndpoints {
   static const String myOrders = '/me/orders';
   static String shipmentInvoice(int id) => '/shipment-request-invoice/$id';
   static String payInvoice(int id) => '/invoices/$id/pay';
-  static String downloadInvoice(int id) =>
-      '/shipment-request-invoice/$id/download';
+  static String downloadInvoice(int id) => '/shipment-request-invoice/$id/download';
 
   // Customer Notification endpoints
   static const String notifications = '/me/notifications';
-  static const String unreadNotificationCount =
-      '/me/notifications/unread-count';
+  static const String unreadNotificationCount = '/me/notifications/unread-count';
   static String markNotificationRead(String id) => '/me/notifications/$id/read';
   static const String markAllNotificationsRead = '/me/notifications/read-all';
   static String deleteNotification(String id) => '/me/notifications/$id';

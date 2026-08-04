@@ -31,6 +31,8 @@ class _AddShipmentFormState extends ConsumerState<AddShipmentForm> {
 
   bool _isSubmitting = false;
   String? _localError;
+  String? _documentError;
+
 
   @override
   void dispose() {
@@ -53,8 +55,15 @@ class _AddShipmentFormState extends ConsumerState<AddShipmentForm> {
     UiUtils.showCustomBottomSheet(
       context: context,
       builder: (context) => UploadOptionBottomSheet(
-        onPick: (source) {
-          ref.read(addShipmentViewModelProvider.notifier).pickFile(source);
+        onPick: (source) async {
+          await ref.read(addShipmentViewModelProvider.notifier).pickFile(source);
+
+          if (mounted) {
+            setState(() {
+              _documentError = null;
+            });
+          }
+
           context.pop();
         },
       ),
@@ -73,7 +82,8 @@ class _AddShipmentFormState extends ConsumerState<AddShipmentForm> {
 
   void _showMissingAddressSnackBar({
     String message = 'Please update your address first.',
-  }) {
+  })
+  {
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(
@@ -101,6 +111,16 @@ class _AddShipmentFormState extends ConsumerState<AddShipmentForm> {
   }
 
   Future<void> _submit(AddShipmentFormData formData) async {
+    setState(() {
+      _documentError = null;
+    });
+
+    if (formData.selectedDocuments.isEmpty) {
+      setState(() {
+        _documentError = 'Please upload a receipt.';
+      });
+      return;
+    }
     if (formData.addresses.isEmpty) {
       _showMissingAddressSnackBar();
       return;
@@ -196,16 +216,31 @@ class _AddShipmentFormState extends ConsumerState<AddShipmentForm> {
               onPriceChanged: notifier.updateItemPrice,
             ),
             const SizedBox(height: AppSpacing.lg),
+            // AppTextField(
+            //   label: 'Note for packages',
+            //   controller: _noteController,
+            //   hint: 'Enter your note here...',
+            //   maxLines: 4,
+            //   onChanged: notifier.updateNote,
+            // ),
             AppTextField(
               label: 'Note for packages',
               controller: _noteController,
               hint: 'Enter your note here...',
               maxLines: 4,
+              validator: (value) {
+                if (value == null || value.trim().isEmpty) {
+                  return 'Note is required';
+                }
+                return null;
+              },
               onChanged: notifier.updateNote,
+
             ),
             const SizedBox(height: AppSpacing.xl),
             ShipmentUploadSection(
               documents: formData.selectedDocuments,
+              errorText: _documentError,
               onUploadTap: _showUploadOptions,
               onRemoveDocument: notifier.removeDocument,
             ),
@@ -220,4 +255,6 @@ class _AddShipmentFormState extends ConsumerState<AddShipmentForm> {
       },
     );
   }
+
+
 }

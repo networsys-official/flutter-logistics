@@ -8,6 +8,7 @@ part 'shipment_request_model.g.dart';
 
 @freezed
 sealed class ShipmentRequestModel with _$ShipmentRequestModel {
+
   const factory ShipmentRequestModel({
     required int id,
     @JsonKey(name: 'request_number') required String requestNumber,
@@ -58,6 +59,7 @@ sealed class ShipmentDocumentModel with _$ShipmentDocumentModel {
   factory ShipmentDocumentModel.fromJson(Map<String, dynamic> json) =>
       _$ShipmentDocumentModelFromJson(json);
 }
+
 
 extension ShipmentDocumentModelX on ShipmentDocumentModel {
   String? get resolvedFileUrl {

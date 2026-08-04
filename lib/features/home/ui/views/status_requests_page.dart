@@ -304,9 +304,15 @@ class _PaymentBubbleCardState extends ConsumerState<_PaymentBubbleCard> {
     if (!mounted) return;
 
     if (result == true) {
-      ref
-          .read(shipmentDetailViewModelProvider(widget.shipment).notifier)
-          .fetchInvoice();
+      final notifier =
+      ref.read(shipmentDetailViewModelProvider(widget.shipment).notifier);
+
+      // Update the local state immediately
+      notifier.markPaymentCompleted();
+
+      // Refresh invoice in the background
+      await notifier.fetchInvoice();
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Payment completed successfully!'),
@@ -315,6 +321,29 @@ class _PaymentBubbleCardState extends ConsumerState<_PaymentBubbleCard> {
       );
     }
   }
+  // void _navigateToPayment(String url) async {
+  //   final result = await Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) =>
+  //           PaymentWebViewPage(url: url, title: 'Secure Payment'),
+  //     ),
+  //   );
+  //
+  //   if (!mounted) return;
+  //
+  //   if (result == true) {
+  //     ref
+  //         .read(shipmentDetailViewModelProvider(widget.shipment).notifier)
+  //         .fetchInvoice();
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(
+  //         content: Text('Payment completed successfully!'),
+  //         backgroundColor: AppColors.success,
+  //       ),
+  //     );
+  //   }
+  // }
 
   void _showPaymentMethodSelector(
     BuildContext context,
@@ -399,7 +428,10 @@ class _PaymentBubbleCardState extends ConsumerState<_PaymentBubbleCard> {
     final invoice = detailState.invoice;
     final currency = invoice?.currencyCode ?? '\$';
     final amount = invoice?.totalAmount ?? '0.00';
-    final isPaid = detailState.shipment.paymentStatus.toLowerCase() == 'paid';
+    // final isPaid =
+    //     detailState.paymentCompleted ||
+    //         detailState.shipment.paymentStatus.toLowerCase() == 'paid';
+     final isPaid = detailState.shipment.paymentStatus.toLowerCase() == 'paid';
 
     return Align(
       alignment: Alignment.centerRight,
@@ -457,9 +489,12 @@ class _PaymentBubbleCardState extends ConsumerState<_PaymentBubbleCard> {
               style: const TextStyle(fontSize: 10, color: AppColors.neutral500),
             ),
             const SizedBox(height: 12),
+
+            if (!isPaid)
             SizedBox(
               height: 36,
               child: AppButton(
+
                 text: isPaid ? 'Paid' : 'Pay Now',
                 isLoading:
                     detailState.isInitiatingPayment ||
@@ -478,6 +513,8 @@ class _PaymentBubbleCardState extends ConsumerState<_PaymentBubbleCard> {
     );
   }
 }
+
+
 
 class _StandbyMessageBubble extends StatelessWidget {
   final String message;

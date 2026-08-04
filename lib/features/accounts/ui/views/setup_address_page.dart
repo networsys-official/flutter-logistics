@@ -110,11 +110,13 @@ class _SetupAddressPageState extends ConsumerState<SetupAddressPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'Setup Address',
-                        style: textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.w900,
-                          color: AppColors.neutral900,
+                      Expanded(
+                        child: Text(
+                          'Setup Address',
+                          style: textTheme.headlineSmall?.copyWith(
+                            fontWeight: FontWeight.w900,
+                            color: AppColors.neutral900,
+                          ),
                         ),
                       ),
                       Container(

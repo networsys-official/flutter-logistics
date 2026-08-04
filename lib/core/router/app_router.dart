@@ -62,44 +62,74 @@ GoRouter appRouter(Ref ref) {
     initialLocation: AppRoutes.splash,
     navigatorKey: _rootNavigatorKey,
     refreshListenable: routerStateNotifier,
-    onException: (context, state, router) {
-      final uri = state.uri;
-      if (uri.scheme == 'stromapp' ||
-          uri.toString().startsWith('stromapp://')) {
-        final host = uri.host;
-        final path = uri.path;
+    // onException: (context, state, router) {
+    //   final uri = state.uri;
+    //   if (uri.scheme == 'stromapp' ||
+    //       uri.toString().startsWith('stromapp://')) {
+    //     final host = uri.host;
+    //     final path = uri.path;
+    //
+    //     if (host == 'reset-password' || path == '/reset-password') {
+    //       final token = uri.queryParameters['token'];
+    //       final email = uri.queryParameters['email'];
+    //       router.go(
+    //         Uri(
+    //           path: AppRoutes.resetPassword,
+    //             queryParameters: {
+    //               if (token != null) 'token': token,
+    //               if (email != null) 'email': email,
+    //             },
+    //         ).toString(),
+    //       );
+    //       return;
+    //     }
+    //
+    //
+    //     debugPrint("Redirect called");
+    //     debugPrint("Current Path : ${state.uri.path}");
+    //
+    //     final token = uri.queryParameters['token'];
+    //     final user = uri.queryParameters['user'];
+    //     router.go(
+    //       Uri(
+    //         path: AppRoutes.authCallback,
+    //         queryParameters: {
+    //           'token':? token,
+    //           'user':? user,
+    //         },
+    //       ).toString(),
+    //     );
+    //     return;
+    //   }
+    //   router.go(AppRoutes.login);
+    // },
 
-        if (host == 'reset-password' || path == '/reset-password') {
-          final token = uri.queryParameters['token'];
-          final email = uri.queryParameters['email'];
-          router.go(
-            Uri(
-              path: AppRoutes.resetPassword,
-              queryParameters: {
-                'token':? token,
-                'email':? email,
-              },
-            ).toString(),
-          );
-          return;
+
+    redirect: (context, state) {
+      final currentPath = state.uri.path;
+
+      final uri = state.uri;
+
+      // Handle deep links before auth logic
+      if (uri.scheme == 'stromapp') {
+
+        if (uri.host == 'reset-password') {
+
+          return Uri(
+            path: AppRoutes.resetPassword,
+            queryParameters: uri.queryParameters,
+          ).toString();
         }
 
-        final token = uri.queryParameters['token'];
-        final user = uri.queryParameters['user'];
-        router.go(
-          Uri(
-            path: AppRoutes.authCallback,
-            queryParameters: {
-              'token':? token,
-              'user':? user,
-            },
-          ).toString(),
-        );
-        return;
+        return Uri(
+          path: AppRoutes.authCallback,
+          queryParameters: uri.queryParameters,
+        ).toString();
       }
-      router.go(AppRoutes.login);
-    },
-    redirect: (context, state) {
+      // Always allow password reset screen.
+      // if (currentPath == AppRoutes.resetPassword) {
+      //   return null;
+      // }
       final authState = ref.read(authProvider);
       final onboardingState = ref.read(onboardingProvider);
 
@@ -107,7 +137,14 @@ GoRouter appRouter(Ref ref) {
       final isUserLoggedIn = authState.value?.isLoggedIn ?? false;
       final hasSeenOnboarding = onboardingState.value ?? false;
 
-      final currentPath = state.uri.path;
+      // final currentPath = state.uri.path;
+      // debugPrint("========== REDIRECT ==========");
+      // debugPrint("Current path : ${state.uri.path}");
+      // debugPrint("Logged in    : $isUserLoggedIn");
+      // debugPrint("URI          : ${state.uri}");
+      // debugPrint(
+      //   "Redirect -> ${state.uri} | loggedIn=$isUserLoggedIn",
+      // );
 
       final authRoutes = [
         AppRoutes.login,
@@ -278,10 +315,26 @@ GoRouter appRouter(Ref ref) {
         path: AppRoutes.shipmentAddress,
         builder: (context, state) => const ShipmentAddressPage(),
       ),
+      // GoRoute(
+      //   path: AppRoutes.addAddress,
+      //   builder: (context, state) {
+      //     final address = state.extra as UserAddress?;
+      //     return AddEditAddressPage(address: address);
+      //   },
+      // ),
       GoRoute(
         path: AppRoutes.addAddress,
         builder: (context, state) {
-          final address = state.extra as UserAddress?;
+          final extra = state.extra;
+
+          UserAddress? address;
+
+          if (extra is UserAddress) {
+            address = extra;
+          } else if (extra is Map<String, dynamic>) {
+            address = UserAddress.fromJson(extra);
+          }
+
           return AddEditAddressPage(address: address);
         },
       ),

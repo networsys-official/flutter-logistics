@@ -94,8 +94,14 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
       backgroundColor: Colors.transparent,
       builder: (context) => ImageSourceBottomSheet(
         onCameraTap: () async {
-          final image = await FileUtils.pickImage();
-          if (image != null) setState(() => _imageFile = File(image.path));
+
+          await Future.delayed(const Duration(milliseconds: 200));
+
+          final image = await FileUtils.captureFromCamera();
+
+          if (image != null && mounted) {
+            setState(() => _imageFile = image);
+          }
         },
         onGalleryTap: () async {
           final image = await FileUtils.pickImage();
@@ -210,7 +216,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                     suffixIcon: const HugeIcon(
                       icon: HugeIcons.strokeRoundedTick01,
                       color: AppColors.success,
-                      size: 18,
+                      size: 16,
                     ),
                   ),
                   const SizedBox(height: AppSpacing.lg),
@@ -230,7 +236,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                     suffixIcon: const HugeIcon(
                       icon: HugeIcons.strokeRoundedCalendar01,
                       color: AppColors.neutral500,
-                      size: 20,
+                      size: 16,
                     ),
                   ),
                   const SizedBox(height: AppSpacing.lg),

@@ -53,12 +53,12 @@ class AuthRepositoryImpl implements AuthRepository {
 
       final registrationResponse = RegistrationResponse.fromJson(data);
 
-      if (registrationResponse.userId.isEmpty) {
-        throw ServerException(
-          'Registration succeeded but the response format was not recognized.',
-          statusCode: response.statusCode,
-        );
-      }
+      // if (registrationResponse.userId.isEmpty) {
+      //   throw ServerException(
+      //     'Registration succeeded but the response format was not recognized.',
+      //     statusCode: response.statusCode,
+      //   );
+      // }
 
       return right(registrationResponse);
     } catch (error, stackTrace) {

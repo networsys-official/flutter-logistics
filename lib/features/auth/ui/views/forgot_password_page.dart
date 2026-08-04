@@ -42,7 +42,7 @@ class _ForgotPasswordPageState extends ConsumerState<ForgotPasswordPage> {
           ),
         );
         // Optionally go back to login after some delay or immediately
-        context.pop();
+        // context.pop();
       }
     }
   }
