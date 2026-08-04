@@ -6,6 +6,7 @@ class ApiEndpoints {
     'BASE_URL',
     // defaultValue: 'https://sprinkler-celibate-unreached.ngrok-free.dev/api/v1',
     //  defaultValue: 'https://logisticsystems.webandappdevelopmenttech.com/api/v1',
+
     defaultValue: 'https://admin.logisticsystemsbs.com/api/v1',
 
   );
