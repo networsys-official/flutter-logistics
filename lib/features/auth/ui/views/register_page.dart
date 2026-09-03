@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logistic_by_strom/core/constants/strings/app_strings.dart';
@@ -255,6 +256,7 @@ class _StepOne extends StatelessWidget {
   final TextEditingController mobileController;
   final Object? error;
 
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -265,6 +267,12 @@ class _StepOne extends StatelessWidget {
           hintText: AuthStrings.firstNameHint,
           controller: firstNameController,
           textInputAction: TextInputAction.next,
+          inputFormatters: [
+            FilteringTextInputFormatter.allow(
+              RegExp(r"[a-zA-Z\s'-]"),
+            ),
+            LengthLimitingTextInputFormatter(15),
+          ],
           validator: (value) =>
               Validators.required(value, AuthStrings.firstName),
         ),
@@ -274,6 +282,13 @@ class _StepOne extends StatelessWidget {
           hintText: AuthStrings.surnameHint,
           controller: surnameController,
           textInputAction: TextInputAction.next,
+
+          inputFormatters: [
+            FilteringTextInputFormatter.allow(
+              RegExp(r"[a-zA-Z\s'-]"),
+            ),
+            LengthLimitingTextInputFormatter(15),
+          ],
           validator: (value) => Validators.required(value, AuthStrings.surname),
         ),
         const SizedBox(height: 14),
@@ -294,11 +309,17 @@ class _StepOne extends StatelessWidget {
           keyboardType: TextInputType.phone,
           textInputAction: TextInputAction.next,
           validator: Validators.mobile,
+          inputFormatters: [
+            FilteringTextInputFormatter.digitsOnly,
+            LengthLimitingTextInputFormatter(12),
+          ],
           errorText: fieldErrorFrom(error, 'phone'),
         ),
       ],
     );
   }
+
+
 }
 
 class _StepTwo extends StatelessWidget {

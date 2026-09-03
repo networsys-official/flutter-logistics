@@ -39,6 +39,8 @@ class ShipmentRouteFields extends StatelessWidget {
             DropdownMenuItem(value: 3, child: Text('Shenzhen Warehouse (CN)')),
           ],
           onChanged: (value) {
+            debugPrint('SELECTED ORIGIN FACILITY ID: $value');
+
             if (value != null) onOriginFacilityChanged(value);
           },
         ),

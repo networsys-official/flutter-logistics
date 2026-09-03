@@ -7,8 +7,8 @@ class ApiEndpoints {
     // defaultValue: 'https://sprinkler-celibate-unreached.ngrok-free.dev/api/v1',
     //  defaultValue: 'https://logisticsystems.webandappdevelopmenttech.com/api/v1',
 
-    defaultValue: 'https://admin.logisticsystemsbs.com/api/v1',
-
+      defaultValue: 'https://admin.logisticsystemsbs.com/api/v1',
+     // defaultValue: 'http://192.168.1.82:8080/api/v1',
   );
 
   static String get baseUrl {
