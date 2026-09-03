@@ -419,8 +419,7 @@ class _ShipmentDetailPageState extends ConsumerState<ShipmentDetailPage> {
         shipment.items
             ?.map((e) => e.commodityType ?? 'Unknown')
             .where((e) => e.isNotEmpty)
-            .toSet()
-            .join(', ') ??
+            .toSet().join(', ') ??
         'N/A';
 
     return Container(
