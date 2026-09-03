@@ -92,8 +92,30 @@ class AddShipmentViewModel extends _$AddShipmentViewModel {
   }
 
   void updateNote(String value) => _updateState((s) => s.copyWith(note: value));
-  void updateOriginFacility(int id) =>
-      _updateState((s) => s.copyWith(originFacilityId: id));
+  void updateOriginFacility(int id) {
+    _updateState((s) {
+      switch (id) {
+        case 2:
+        // Miami Warehouse → United States
+          return s.copyWith(
+            originCountryId: 2,
+            originFacilityId: 2,
+          );
+
+        case 3:
+        // Shenzhen Warehouse → China
+          return s.copyWith(
+            originCountryId: 3,
+            originFacilityId: 3,
+          );
+
+        default:
+          return s.copyWith(
+            originFacilityId: id,
+          );
+      }
+    });
+  }
   void updateServiceType(int id) =>
       _updateState((s) => s.copyWith(serviceTypeId: id));
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
 
 class AuthTextField extends StatelessWidget {
@@ -13,6 +14,8 @@ class AuthTextField extends StatelessWidget {
     this.suffixIcon,
     this.validator,
     this.errorText,
+    this.inputFormatters,
+    this.maxLength,
   });
 
   final String label;
@@ -24,6 +27,8 @@ class AuthTextField extends StatelessWidget {
   final Widget? suffixIcon;
   final String? Function(String?)? validator;
   final String? errorText;
+  final List<TextInputFormatter>? inputFormatters;
+  final int? maxLength;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +40,17 @@ class AuthTextField extends StatelessWidget {
       textInputAction: textInputAction,
       obscureText: obscureText,
       validator: validator,
+      inputFormatters: inputFormatters,
+      maxLength: maxLength,
+      // Hides the default 0/50 character counter
+      buildCounter: (
+          context, {
+            required currentLength,
+            required isFocused,
+            maxLength,
+          }) {
+        return null;
+      },
       style: textTheme.bodyLarge?.copyWith(
         color: AppColors.neutral900,
         fontWeight: FontWeight.w600,

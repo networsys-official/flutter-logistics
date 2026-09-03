@@ -141,17 +141,63 @@ class _AddShipmentFormState extends ConsumerState<AddShipmentForm> {
       _isSubmitting = true;
       _localError = null;
     });
-
     try {
+      debugPrint('========== SHIPMENT SUBMIT DATA ==========');
+
+      debugPrint('originFacilityId: ${formData.originFacilityId}');
+      debugPrint('serviceTypeId: ${formData.serviceTypeId}');
+      debugPrint('deliveryType: ${formData.deliveryType}');
+      debugPrint('selectedLocation: ${formData.selectedLocation?.id}');
+      // debugPrint('supplierName: ${formData.supplierName}');
+      debugPrint('trackingNumber: ${formData.trackingNumber}');
+      debugPrint('expectedArrival: ${formData.expectedArrival}');
+      // debugPrint('specialInstructions: ${formData.specialInstructions}');
+      debugPrint('selectedDocuments count: ${formData.selectedDocuments.length}');
+      debugPrint('addresses count: ${formData.addresses.length}');
+
+      debugPrint('===========================================');
+
+      debugPrint('========== SHIPMENT REQUEST ==========');
+      debugPrint('originCountryId: ${formData.originCountryId}');
+      debugPrint('originFacilityId: ${formData.originFacilityId}');
+      debugPrint(
+        'destinationCountryId: ${formData.destinationCountryId}',
+      );
+      debugPrint(
+        'destinationFacilityId: ${formData.destinationFacilityId}',
+      );
+      debugPrint('serviceTypeId: ${formData.serviceTypeId}');
+      debugPrint('deliveryType: ${formData.deliveryType}');
+      // debugPrint('deliveryAddressId: ${deliveryAddress.id}');
+      debugPrint('supplierName: ${formData.selectedSupplier!.company}');
+      debugPrint('trackingNumber: ${formData.trackingNumber}');
+      debugPrint('expectedArrival: ${formData.expectedArrival}');
+      debugPrint('note: ${formData.note}');
+
+      for (var i = 0; i < formData.items.length; i++) {
+        final item = formData.items[i];
+
+        debugPrint(
+          'item[$i] commodity: ${item.commodity?.item ?? item.description}',
+        );
+        debugPrint('item[$i] price: ${item.price}');
+      }
+
+      debugPrint('======================================');
+
+
       await ref.read(addShipmentViewModelProvider.notifier).submit();
 
       if (!mounted) return;
+
       ref.invalidate(shipmentListViewModelProvider);
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Shipment request submitted successfully!'),
         ),
       );
+
       context.pop();
     } catch (e) {
       if (mounted) {
