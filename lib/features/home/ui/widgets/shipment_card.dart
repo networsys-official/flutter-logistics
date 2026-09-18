@@ -73,11 +73,11 @@ class ShipmentCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                const HugeIcon(
-                  icon: HugeIcons.strokeRoundedArrowRight01,
-                  size: 16,
-                  color: AppColors.neutral500,
-                ),
+                // const HugeIcon(
+                //   icon: HugeIcons.strokeRoundedArrowRight01,
+                //   size: 16,
+                //   color: AppColors.neutral500,
+                // ),
               ],
             ),
             if (showTimeline) ...[

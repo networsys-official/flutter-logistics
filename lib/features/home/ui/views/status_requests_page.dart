@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:intl/intl.dart';
 import 'package:logistic_by_strom/core/theme/app_colors.dart';
@@ -12,6 +13,8 @@ import 'package:logistic_by_strom/features/shipments/ui/view_models/shipment_det
 import 'package:logistic_by_strom/features/shipments/ui/views/payment_webview_page.dart';
 import 'package:logistic_by_strom/core/utils/file_utils.dart';
 import 'package:logistic_by_strom/features/shipments/data/repositories/shipment_repository.dart';
+
+import '../../../../core/router/app_routes.dart';
 
 class StatusRequestsPage extends ConsumerWidget {
   final String status;
@@ -292,26 +295,63 @@ class _PaymentBubbleCardState extends ConsumerState<_PaymentBubbleCard> {
     }
   }
 
+
   void _navigateToPayment(String url) async {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>
-            PaymentWebViewPage(url: url, title: 'Secure Payment'),
+        builder: (context) => PaymentWebViewPage(
+          url: url,
+          title: 'Secure Payment',
+        ),
       ),
     );
 
     if (!mounted) return;
 
-    if (result == true) {
-      final notifier =
-      ref.read(shipmentDetailViewModelProvider(widget.shipment).notifier);
+    final notifier =
+    ref.read(shipmentDetailViewModelProvider(widget.shipment).notifier);
 
-      // Update the local state immediately
+    bool actuallyPaid = false;
+
+    // Give the backend some time to complete the payment capture.
+    for (var attempt = 0; attempt < 5; attempt++) {
+      await notifier.fetchInvoice();
+
+      if (!mounted) return;
+
+      final currentState =
+      ref.read(shipmentDetailViewModelProvider(widget.shipment));
+
+      final invoiceStatus =
+      currentState.invoice?.status.toLowerCase();
+
+      debugPrint(
+        'PAYMENT CHECK ${attempt + 1}: invoiceStatus=$invoiceStatus',
+      );
+
+      actuallyPaid = invoiceStatus == 'paid';
+
+      if (actuallyPaid) {
+        break;
+      }
+
+      await Future.delayed(const Duration(seconds: 2));
+    }
+
+    if (!mounted) return;
+
+    if (result == true && actuallyPaid) {
       notifier.markPaymentCompleted();
 
-      // Refresh invoice in the background
-      await notifier.fetchInvoice();
+      // Refresh "Waiting for Payment" list.
+      // This removes the request if the backend no longer
+      // returns paid invoices in the "invoiced" endpoint.
+      await ref
+          .read(statusRequestsViewModelProvider('invoiced').notifier)
+          .refresh();
+
+      if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -319,8 +359,78 @@ class _PaymentBubbleCardState extends ConsumerState<_PaymentBubbleCard> {
           backgroundColor: AppColors.success,
         ),
       );
+
+      await Future.delayed(const Duration(milliseconds: 500));
+
+      if (!mounted) return;
+
+      // Go directly to Home.
+      context.go(AppRoutes.home);
+    } else if (result == true && !actuallyPaid) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'We could not confirm your payment yet. '
+                'If you were charged, please contact support with your request number.',
+          ),
+          backgroundColor: AppColors.error,
+        ),
+      );
     }
   }
+
+  // void _navigateToPayment(String url) async {
+  //   final result = await Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) => PaymentWebViewPage(url: url, title: 'Secure Payment'),
+  //     ),
+  //   );
+  //
+  //   if (!mounted) return;
+  //
+  //   final notifier =
+  //   ref.read(shipmentDetailViewModelProvider(widget.shipment).notifier);
+  //
+  //   bool actuallyPaid = false;
+  //
+  //   // Backend PayPal capture takes a second or two to complete after the
+  //   // WebView closes — poll a few times instead of trusting a single check.
+  //   for (var attempt = 0; attempt < 5; attempt++) {
+  //     await notifier.fetchInvoice();
+  //     if (!mounted) return;
+  //
+  //     final currentState =
+  //     ref.read(shipmentDetailViewModelProvider(widget.shipment));
+  //     actuallyPaid = currentState.shipment.paymentStatus.toLowerCase() == 'paid';
+  //
+  //     if (actuallyPaid) break;
+  //     await Future.delayed(const Duration(seconds: 2));
+  //   }
+  //
+  //   if (!mounted) return;
+  //
+  //   if (result == true && actuallyPaid) {
+  //     notifier.markPaymentCompleted();
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(
+  //         content: Text('Payment completed successfully!'),
+  //         backgroundColor: AppColors.success,
+  //       ),
+  //     );
+  //   } else if (result == true && !actuallyPaid) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(
+  //         content: Text(
+  //           'We could not confirm your payment yet. If you were charged, '
+  //               'please contact support with your request number.',
+  //         ),
+  //         backgroundColor: AppColors.error,
+  //       ),
+  //     );
+  //   }
+  // }
+
   // void _navigateToPayment(String url) async {
   //   final result = await Navigator.push(
   //     context,
@@ -431,7 +541,8 @@ class _PaymentBubbleCardState extends ConsumerState<_PaymentBubbleCard> {
     // final isPaid =
     //     detailState.paymentCompleted ||
     //         detailState.shipment.paymentStatus.toLowerCase() == 'paid';
-     final isPaid = detailState.shipment.paymentStatus.toLowerCase() == 'paid';
+    final isPaid =
+        detailState.invoice?.status.toLowerCase() == 'paid';
 
     return Align(
       alignment: Alignment.centerRight,

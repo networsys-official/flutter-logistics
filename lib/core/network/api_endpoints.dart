@@ -29,7 +29,7 @@ class ApiEndpoints {
   static String get googleRedirectUrl => '$baseUrl/auth/google/redirect';
 
   // Auth endpoints
-  static const String login = '/auth/login';
+  static const String login = '/auth/customer/login';
   static const String register = '/auth/register';
   static const String verifyOtp = '/auth/verify-otp';
   static const String resendOtp = '/auth/send-otp';
